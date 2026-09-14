@@ -8,21 +8,31 @@
  * de contraste WCAG verificados de cada par.
  */
 :root {
-  /* Tokens base — valores de tema claro (también el default sin data-theme). */
-  --bg-primario: #ffffff;
-  --bg-secundario: #f6f5f2;
-  --borde: #ddd9d0;
-  --texto-primario: #23211d;
-  --texto-secundario: #5f5c53;
+  /* Tokens base — valores de tema claro (también el default sin data-theme).
+     Paleta "Academic Blue" (notas-de-diseno.md §1, revisión 2026-09-14). */
+  --bg-primario: #fafaf7;
+  --bg-secundario: #f2f4f5;
+  --borde: #dde2e5;
+  --texto-primario: #303840;
+  --texto-secundario: #64717a;
 
   /* Estados especiales — cada uno con su propio par, deliberadamente
      distintos entre sí (Requisito 5.3, 6.4, 7). */
-  --nucleo-bg: #fdecc8;
-  --nucleo-texto: #7a4a00;
-  --bookmark-bg: #efe6fb;
-  --bookmark-texto: #5b3a9e;
-  --revision-bg: #e2edfb;
-  --revision-texto: #1e4f8c;
+  --nucleo-bg: #fff1b8;
+  --nucleo-texto: #4a4325;
+  --bookmark-bg: #e4ddf5;
+  --bookmark-texto: #40375a;
+  --revision-bg: #dceaf7;
+  --revision-texto: #1e3a5f;
+
+  /* Estados de texto enriquecido de contenido (notas-de-diseno §14) —
+     mismo principio de par bg/texto verificado a ≥4.5:1. */
+  --ejemplo-bg: #dcebd8;
+  --ejemplo-texto: #29402c;
+  --excepcion-bg: #f3d6d6;
+  --excepcion-texto: #552b2b;
+  --atencion-bg: #f2decc;
+  --atencion-texto: #513a2c;
 
   /* Tamaño de letra del contenido de lectura — redefinido por
      [data-tamano-letra] más abajo (Requisito 8). */
@@ -53,31 +63,44 @@
 /* Elección explícita de tema (Requisito 3) — mayor especificidad que el
    prefers-color-scheme de más abajo, así que gana en cuanto existe. */
 :root[data-theme="claro"] {
-  --bg-primario: #ffffff;
-  --bg-secundario: #f6f5f2;
-  --borde: #ddd9d0;
-  --texto-primario: #23211d;
-  --texto-secundario: #5f5c53;
-  --nucleo-bg: #fdecc8;
-  --nucleo-texto: #7a4a00;
-  --bookmark-bg: #efe6fb;
-  --bookmark-texto: #5b3a9e;
-  --revision-bg: #e2edfb;
-  --revision-texto: #1e4f8c;
+  --bg-primario: #fafaf7;
+  --bg-secundario: #f2f4f5;
+  --borde: #dde2e5;
+  --texto-primario: #303840;
+  --texto-secundario: #64717a;
+  --nucleo-bg: #fff1b8;
+  --nucleo-texto: #4a4325;
+  --bookmark-bg: #e4ddf5;
+  --bookmark-texto: #40375a;
+  --revision-bg: #dceaf7;
+  --revision-texto: #1e3a5f;
+  --ejemplo-bg: #dcebd8;
+  --ejemplo-texto: #29402c;
+  --excepcion-bg: #f3d6d6;
+  --excepcion-texto: #552b2b;
+  --atencion-bg: #f2decc;
+  --atencion-texto: #513a2c;
 }
 
 :root[data-theme="oscuro"] {
-  --bg-primario: #1b1b19;
-  --bg-secundario: #242320;
-  --borde: #3a3833;
-  --texto-primario: #ece9e1;
-  --texto-secundario: #b3afa3;
-  --nucleo-bg: #4a3410;
-  --nucleo-texto: #f5c877;
-  --bookmark-bg: #3a2a54;
-  --bookmark-texto: #c9b3f0;
-  --revision-bg: #193353;
-  --revision-texto: #8fbdf2;
+  /* Paleta "Focused Night" (notas-de-diseno.md §1). */
+  --bg-primario: #121820;
+  --bg-secundario: #1b2530;
+  --borde: #35424d;
+  --texto-primario: #e8edf2;
+  --texto-secundario: #aab5be;
+  --nucleo-bg: #453d21;
+  --nucleo-texto: #d8c78f;
+  --bookmark-bg: #2b2145;
+  --bookmark-texto: #a89acb;
+  --revision-bg: #213845;
+  --revision-texto: #91bbd4;
+  --ejemplo-bg: #214529;
+  --ejemplo-texto: #91b89a;
+  --excepcion-bg: #452121;
+  --excepcion-texto: #c98f8f;
+  --atencion-bg: #453221;
+  --atencion-texto: #c99a72;
 }
 
 /* Primera visita, sin cookie todavía (Requisito 3.1): se respeta la
@@ -86,17 +109,23 @@
    por especificidad de atributo. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --bg-primario: #1b1b19;
-    --bg-secundario: #242320;
-    --borde: #3a3833;
-    --texto-primario: #ece9e1;
-    --texto-secundario: #b3afa3;
-    --nucleo-bg: #4a3410;
-    --nucleo-texto: #f5c877;
-    --bookmark-bg: #3a2a54;
-    --bookmark-texto: #c9b3f0;
-    --revision-bg: #193353;
-    --revision-texto: #8fbdf2;
+    --bg-primario: #121820;
+    --bg-secundario: #1b2530;
+    --borde: #35424d;
+    --texto-primario: #e8edf2;
+    --texto-secundario: #aab5be;
+    --nucleo-bg: #453d21;
+    --nucleo-texto: #d8c78f;
+    --bookmark-bg: #2b2145;
+    --bookmark-texto: #a89acb;
+    --revision-bg: #213845;
+    --revision-texto: #91bbd4;
+    --ejemplo-bg: #214529;
+    --ejemplo-texto: #91b89a;
+    --excepcion-bg: #452121;
+    --excepcion-texto: #c98f8f;
+    --atencion-bg: #453221;
+    --atencion-texto: #c99a72;
   }
 }
 
@@ -121,6 +150,12 @@
   --color-bookmark-texto: var(--bookmark-texto);
   --color-revision-bg: var(--revision-bg);
   --color-revision-texto: var(--revision-texto);
+  --color-ejemplo-bg: var(--ejemplo-bg);
+  --color-ejemplo-texto: var(--ejemplo-texto);
+  --color-excepcion-bg: var(--excepcion-bg);
+  --color-excepcion-texto: var(--excepcion-texto);
+  --color-atencion-bg: var(--atencion-bg);
+  --color-atencion-texto: var(--atencion-texto);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
