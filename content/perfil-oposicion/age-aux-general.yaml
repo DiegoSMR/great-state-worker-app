@@ -1,0 +1,59 @@
+# Perfil de oposición: AGE — Cuerpo General Auxiliar de la Administración del Estado
+# Datos redactados por preparador-opos a partir de
+# specs/018-perfil-oposicion/investigacion-datos.md (fecha de consulta general 2026-09-14).
+# Oferta de ámbito estatal (1.700 plazas totales, no desglosadas por Aragón) —
+# entra en el radar de Diego como proceso de ranking nacional con destino
+# aceptable (Madrid/Barcelona por AVE), no solo por plaza directa en Aragón.
+
+oposicionId: age-aux-general
+
+introduccion:
+  cuerpoEscala:
+    estado: "confirmado"
+    valor: "Cuerpo General Auxiliar de la Administración del Estado, ingreso libre"
+    fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública (https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262); complementado con INAP (https://sede.inap.gob.es/es/procedimientos-y-servicios/seleccion/procesos-selectivos-de-cuerpos-y-escalas-generales/cuerpo-general-auxiliar-de-la-administracion-del-estado-ingreso-libre-convocatoria-2025)"
+    fechaConsulta: "2026-09-14"
+
+  grupoSubgrupo:
+    estado: "confirmado"
+    valor: "Subgrupo C2"
+    fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública (https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262)"
+    fechaConsulta: "2026-09-14"
+
+  requisitos:
+    titulacion:
+      estado: "confirmado"
+      valor: "Graduado en Educación Secundaria Obligatoria o equivalente/superior"
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública (https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262)"
+      fechaConsulta: "2026-09-14"
+
+    edad:
+      estado: "confirmado"
+      valor: "De 16 a 65 años"
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública (https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262)"
+      fechaConsulta: "2026-09-14"
+
+    nacionalidad:
+      estado: "confirmado"
+      valor: "Española (nacionales de Estados miembros de la Unión Europea en igualdad de condiciones)"
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública (https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262)"
+      fechaConsulta: "2026-09-14"
+
+    otros:
+      estado: "confirmado"
+      valor: |
+        Oferta de ámbito estatal: 1.700 plazas totales (1.544 de turno general y 156
+        reservadas a personas con discapacidad igual o superior al 33%), no desglosadas
+        por comunidad autónoma ni por provincia — el destino concreto dentro del
+        territorio nacional se asigna según el resultado del proceso selectivo, no
+        se convoca por Aragón específicamente.
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública (https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262)"
+      fechaConsulta: "2026-09-14"
+
+  funciones:
+    estado: "pendiente_confirmar"
+    nota: "No encontradas en fuente oficial accesible. Es esperado: la investigación confirma que este dato falta en las 4 oposiciones del radar, no es un hueco propio de esta."
+
+retribuciones: []
+participacion: []
+faqEspecificas: []

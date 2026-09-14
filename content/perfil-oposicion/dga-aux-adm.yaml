@@ -1,0 +1,50 @@
+# Perfil de oposición: Gobierno de Aragón (DGA) — Escala Auxiliar Administrativa
+# Datos redactados por preparador-opos a partir de
+# specs/018-perfil-oposicion/investigacion-datos.md (fecha de consulta general 2026-09-14).
+# La mejor documentada de las 4 — acceso directo al texto íntegro del BOA.
+
+oposicionId: dga-aux-adm
+
+introduccion:
+  cuerpoEscala:
+    estado: "confirmado"
+    valor: "Cuerpo Auxiliar de la Administración General de la Comunidad Autónoma de Aragón, Escala Auxiliar Administrativa (Auxiliares Administrativos)"
+    fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública (https://www.boa.aragon.es/cgi-bin/EBOA/BRSCGI?CMD=VEROBJ&MLKOB=1427870670404)"
+    fechaConsulta: "2026-09-14"
+
+  grupoSubgrupo:
+    estado: "confirmado"
+    valor: "Subgrupo C2"
+    fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública (https://www.boa.aragon.es/cgi-bin/EBOA/BRSCGI?CMD=VEROBJ&MLKOB=1427870670404)"
+    fechaConsulta: "2026-09-14"
+
+  requisitos:
+    titulacion:
+      estado: "confirmado"
+      valor: "Graduado en Educación Secundaria Obligatoria, título de Técnico o equivalente"
+      fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública (https://www.boa.aragon.es/cgi-bin/EBOA/BRSCGI?CMD=VEROBJ&MLKOB=1427870670404)"
+      fechaConsulta: "2026-09-14"
+
+    edad:
+      estado: "confirmado"
+      valor: "16 años cumplidos, sin exceder la edad máxima de jubilación forzosa"
+      fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública (https://www.boa.aragon.es/cgi-bin/EBOA/BRSCGI?CMD=VEROBJ&MLKOB=1427870670404)"
+      fechaConsulta: "2026-09-14"
+
+    nacionalidad:
+      estado: "confirmado"
+      valor: "Española, de un Estado miembro de la Unión Europea, o asimilados según el artículo 57.1 del EBEP"
+      fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública (https://www.boa.aragon.es/cgi-bin/EBOA/BRSCGI?CMD=VEROBJ&MLKOB=1427870670404)"
+      fechaConsulta: "2026-09-14"
+
+    otros:
+      estado: "pendiente_confirmar"
+      nota: "Sin requisitos adicionales localizados más allá de titulación, edad y nacionalidad en el texto del BOA consultado."
+
+  funciones:
+    estado: "pendiente_confirmar"
+    nota: "No detalladas en la convocatoria — el propio texto del BOA remite al temario en vez de describir funciones. Es esperado: la investigación confirma que este dato falta en las 4 oposiciones del radar, no es un hueco propio de esta."
+
+retribuciones: []
+participacion: []
+faqEspecificas: []

@@ -1,0 +1,47 @@
+# Perfil de oposición: Ayuntamiento de Zaragoza — Auxiliar Administrativo
+# Datos redactados por preparador-opos a partir de
+# specs/018-perfil-oposicion/investigacion-datos.md (fecha de consulta general 2026-09-14).
+# No inventar datos: cada hueco documentado en la investigación se deja como
+# pendiente_confirmar con su nota — nunca en blanco sin explicación.
+
+oposicionId: ayto-zgz-aux-adm
+
+introduccion:
+  cuerpoEscala:
+    estado: "confirmado"
+    valor: "Escala de Administración General, Subescala Auxiliar"
+    fuente: "zaragoza.es/oferta id=1681 (https://www.zaragoza.es/oferta/ofertaDetalle.jsp?id=1681)"
+    fechaConsulta: "2026-09-14"
+
+  grupoSubgrupo:
+    estado: "confirmado"
+    valor: "C2"
+    fuente: "zaragoza.es/oferta id=1681 (https://www.zaragoza.es/oferta/ofertaDetalle.jsp?id=1681)"
+    fechaConsulta: "2026-09-14"
+
+  requisitos:
+    titulacion:
+      estado: "confirmado"
+      valor: "Título de Graduado en Educación Secundaria Obligatoria (ESO) o equivalente"
+      fuente: "zaragoza.es/oferta id=1681 (https://www.zaragoza.es/oferta/ofertaDetalle.jsp?id=1681)"
+      fechaConsulta: "2026-09-14"
+
+    edad:
+      estado: "pendiente_confirmar"
+      nota: "No localizada en la ficha resumen de zaragoza.es. Probablemente detallada en el PDF de bases (411 KB), no accesible por scraping automático."
+
+    nacionalidad:
+      estado: "pendiente_confirmar"
+      nota: "No localizada en la ficha resumen de zaragoza.es. Probablemente detallada en el PDF de bases (411 KB), no accesible por scraping automático."
+
+    otros:
+      estado: "pendiente_confirmar"
+      nota: "Sin requisitos adicionales localizados más allá de titulación — el PDF de bases completo no fue accesible por scraping automático."
+
+  funciones:
+    estado: "pendiente_confirmar"
+    nota: "No encontradas en fuente oficial accesible. Es esperado: la investigación de investigacion-datos.md confirma que este dato falta en las 4 oposiciones del radar, no es un hueco propio de esta."
+
+retribuciones: []
+participacion: []
+faqEspecificas: []

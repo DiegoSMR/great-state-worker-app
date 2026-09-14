@@ -1,0 +1,53 @@
+# Perfil de oposición: Diputación de Zaragoza — Auxiliar Administrativo
+# Datos redactados por preparador-opos a partir de
+# specs/018-perfil-oposicion/investigacion-datos.md (fecha de consulta general 2026-09-14).
+#
+# ATENCIÓN: dpz.es dio error de certificado SSL en todas las herramientas de
+# acceso disponibles durante la investigación, y el HTML descargado por curl
+# no contenía el texto (carga dinámica) — bloqueo técnico documentado al
+# final de investigacion-datos.md, todavía sin resolver. Este perfil queda
+# casi entero pendiente_confirmar hasta que alguien con navegador normal
+# pueda confirmar si el sitio es accesible así. No es un fallo de redacción,
+# es el estado real de la investigación disponible.
+
+oposicionId: dpz-aux-adm
+
+introduccion:
+  cuerpoEscala:
+    estado: "confirmado"
+    valor: "Escala de Administración General, Subescala Auxiliar"
+    fuente: "Extractos de BOE-A-2026-9821 y BOPZ nº68 (25/03/2026)"
+    fechaConsulta: "2026-09-14"
+
+  grupoSubgrupo:
+    estado: "confirmado"
+    valor: "C2"
+    fuente: "Extractos de BOE-A-2026-9821 y BOPZ nº68 (25/03/2026)"
+    fechaConsulta: "2026-09-14"
+
+  requisitos:
+    titulacion:
+      estado: "pendiente_confirmar"
+      nota: "Titulación dudosa: una síntesis de búsqueda no oficial dice \"Bachillerato\", lo que contradice el patrón de las otras 3 oposiciones C2 del radar (ESO/Técnico). No se da por bueno sin verificación directa de las bases, bloqueadas por el problema de acceso a dpz.es."
+
+    nacionalidad:
+      estado: "confirmado"
+      valor: "Nacionalidad española o de otro Estado de la Unión Europea, con capacidad funcional para el desempeño de las funciones"
+      fuente: "Extractos de BOE-A-2026-9821 y BOPZ nº68 (25/03/2026)"
+      fechaConsulta: "2026-09-14"
+
+    edad:
+      estado: "pendiente_confirmar"
+      nota: "No localizada en los extractos disponibles de BOE-A-2026-9821/BOPZ nº68. Bases completas no accesibles por el bloqueo SSL en dpz.es."
+
+    otros:
+      estado: "pendiente_confirmar"
+      nota: "Bases completas no accesibles por bloqueo de certificado SSL en dpz.es (curl tampoco devolvió el texto, carga dinámica) — no se pudo verificar si hay requisitos adicionales."
+
+  funciones:
+    estado: "pendiente_confirmar"
+    nota: "No encontradas en fuente oficial accesible. Es esperado: la investigación confirma que este dato falta en las 4 oposiciones del radar, no es un hueco propio de esta. Agravado además por el bloqueo de acceso a dpz.es."
+
+retribuciones: []
+participacion: []
+faqEspecificas: []
