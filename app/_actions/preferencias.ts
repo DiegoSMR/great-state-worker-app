@@ -5,6 +5,7 @@ import {
   PREFERENCIAS_COOKIE,
   parsearPreferencias,
   type Preferencias,
+  type PreferenciasPatch,
 } from "@/lib/preferencias";
 
 const UN_ANO_EN_SEGUNDOS = 60 * 60 * 24 * 365;
@@ -15,7 +16,7 @@ const UN_ANO_EN_SEGUNDOS = 60 * 60 * 24 * 365;
  * instante en el cliente (ver PreferenciasProvider), esto solo persiste de
  * cara al próximo request (specs/003-sistema-de-diseno/design.md).
  */
-export async function guardarPreferencias(patch: Partial<Preferencias>): Promise<void> {
+export async function guardarPreferencias(patch: PreferenciasPatch): Promise<void> {
   const store = await cookies();
   const actuales = parsearPreferencias(store.get(PREFERENCIAS_COOKIE)?.value);
 

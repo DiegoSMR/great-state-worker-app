@@ -355,12 +355,33 @@ lectura: {
 
 ### Tokens nuevos para el modo manuscrito
 
-| Token | Light | Dark/Papel | Uso |
+| Token | Light / Papel | Dark | Uso |
 |---|---|---|---|
-| `--acento-titulo` | `#B0526F` | a verificar por `lead-developer` en oscuro (derivar igual que en §1: mismo matiz, desaturado y oscurecido) | Color de encabezados h1 en modo manuscrito |
-| `--acento-resumen` | `#5C7A52` | ídem | Color de encabezados h2/h3 en modo manuscrito |
+| `--acento-titulo` | `#B0526F` | `#D590A5` | Color de encabezados h1 en modo manuscrito |
+| `--acento-resumen` | `#5C7A52` | `#9FCA91` | Color de encabezados h2/h3 en modo manuscrito |
 
-Son candidatos nuevos, no estaban en §1 — `lead-developer` debe verificar su contraste contra `bg-primario`/`bg-papel` en los tres temas antes de darlos por buenos (mismo criterio de todo el documento: ≥4.5:1 para texto normal; los títulos son texto grande, así que ≥3:1 basta si al final el tamaño elegido lo justifica).
+**Resultado de la verificación (`lead-developer`, implementación):**
+
+- **Papel hereda los valores de claro tal cual** (mismo criterio que el resto de §16: son colores de texto, no de fondo, y el fondo de papel es lo bastante próximo al de claro como para no necesitar un tercer valor).
+- **Dark se deriva** manteniendo el mismo matiz (H) que el valor de claro y ajustando saturación/luminosidad para leerse como texto sobre fondo oscuro (no como fondo, que habría sido "oscurecer" — aquí el uso es al revés: es un color de encabezado, hay que aclararlo, no oscurecerlo): `#B0526F` → HSL(341°, 37%, 51%) → `#D590A5` HSL(341°, 45%, 70%); `#5C7A52` → HSL(105°, 20%, 40%) → `#9FCA91` HSL(105°, 35%, 68%).
+- **Ratios verificados** (fórmula WCAG real):
+
+| Combinación | Ratio | ¿Cumple? |
+|---|---|---|
+| `acento-titulo` claro / `bg-primario` claro | 4.69:1 | Sí (incluso para texto normal) |
+| `acento-titulo` claro / `bg-secundario` claro | 4.45:1 | Large text sí (≥3:1); texto normal no (queda a 0.05 de 4.5) |
+| `acento-titulo` papel / `bg-primario` papel | 4.62:1 | Sí |
+| `acento-titulo` papel / `bg-secundario` papel | 4.16:1 | Large text sí; texto normal no |
+| `acento-titulo` dark / `bg-primario` dark | 7.11:1 | Sí (con margen amplio) |
+| `acento-titulo` dark / `bg-secundario` dark | 6.18:1 | Sí (con margen amplio) |
+| `acento-resumen` claro / `bg-primario` claro | 4.61:1 | Sí |
+| `acento-resumen` claro / `bg-secundario` claro | 4.37:1 | Large text sí; texto normal no |
+| `acento-resumen` papel / `bg-primario` papel | 4.54:1 | Sí |
+| `acento-resumen` papel / `bg-secundario` papel | 4.09:1 | Large text sí; texto normal no |
+| `acento-resumen` dark / `bg-primario` dark | 9.63:1 | Sí (con margen amplio) |
+| `acento-resumen` dark / `bg-secundario` dark | 8.37:1 | Sí (con margen amplio) |
+
+Los cuatro casos que no llegan a 4.5:1 son exactamente el escenario que la propia spec ya preveía ("los títulos son texto grande, así que ≥3:1 basta") — h1/h2/h3 en modo manuscrito siempre se renderizan muy por encima de 24px (la intensidad más baja ya usa 2.1rem para h1 y 1.5rem/1.85rem para h3/h2), así que el umbral aplicable es 3:1 y los cuatro lo superan con margen (4.09–4.45:1). No ha hecho falta ajustar ningún valor de claro/papel para esto; el par dark se calculó desde cero (la spec no daba un valor, solo el método).
 
 ---
 
@@ -385,6 +406,8 @@ Parte de la misma familia cálida que ya usa "Academic Blue" (claro), pero con u
 | `texto-secundario` | `#64717A` | Igual que claro |
 
 Los pares de estado (`nucleo`, `bookmark`, `revision`, `ejemplo`, `excepcion`, `atencion`) se heredan tal cual de claro — son los mismos colores semánticos, el papel solo cambia el fondo general. `lead-developer` debe reverificar el contraste texto/fondo de cada uno contra el `bg-primario`/`bg-secundario` de papel (probablemente pase sin cambios al ser tonos muy próximos a claro, pero confirmarlo, no asumirlo).
+
+**Resultado de la verificación:** los 6 pares de estado no necesitan reverificación real porque su contraste es autocontenido (texto propio sobre fondo propio, p. ej. `nucleo-texto` sobre `nucleo-bg`) — ninguno de los dos lados es `bg-primario`/`bg-secundario`, así que el cambio de tema no los afecta en absoluto; siguen siendo exactamente los ratios ya verificados en §1 (8.08–9.40:1 en claro). Sí se ha verificado, en cambio, el par base `texto-secundario`/`bg-secundario` (usado en metadatos, badges de oposición, etc., no es uno de los "6 pares" pero sí usa `bg-secundario`): en claro daba 4.55:1 (§1, "margen ajustado"); contra el `bg-secundario` de papel (`#F2ECDD`, algo menos luminoso que el `#F2F4F5` de claro) el ratio baja a **4.26:1 — por debajo del mínimo AA de 4.5:1 para texto normal** (aunque bastante por encima del 3:1 de large text). Es un hallazgo real del fondo `#F2ECDD` ya decidido en el mockup, no algo que se pueda resolver eligiendo un valor distinto sin salirse de "no inventar los colores de nuevo" — se implementa tal cual está especificado y se deja anotado aquí para que Diego decida si quiere aceptar ese margen (el texto afectado es metadato secundario, nunca cuerpo de lectura) o ajustar `bg-secundario` de papel ligeramente más oscuro en una próxima revisión.
 
 ### El patrón de líneas de cuaderno
 

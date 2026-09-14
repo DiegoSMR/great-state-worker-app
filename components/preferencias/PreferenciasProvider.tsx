@@ -9,17 +9,29 @@ import {
   type ReactNode,
 } from "react";
 import { guardarPreferencias } from "@/app/_actions/preferencias";
-import type { NavDensidad, Preferencias, Tema, TamanoLetra } from "@/lib/preferencias";
+import type {
+  EstiloTexto,
+  IntensidadManuscrito,
+  NavDensidad,
+  Preferencias,
+  PreferenciasPatch,
+  Tema,
+  TamanoLetra,
+} from "@/lib/preferencias";
 
 type PreferenciasContextValue = {
   tema: Tema;
   navDensidad: NavDensidad | null;
   tamanoLetra: TamanoLetra;
+  estiloTexto: EstiloTexto;
+  intensidadManuscrito: IntensidadManuscrito;
   /** Estado de sesión, no persistente — se reinicia a false en cada carga (ver design.md). */
   concentracion: boolean;
   setTema: (tema: Tema) => void;
   setNavDensidad: (navDensidad: NavDensidad | null) => void;
   setTamanoLetra: (tamanoLetra: TamanoLetra) => void;
+  setEstiloTexto: (estiloTexto: EstiloTexto) => void;
+  setIntensidadManuscrito: (intensidad: IntensidadManuscrito) => void;
   toggleConcentracion: () => void;
 };
 
@@ -46,6 +58,12 @@ export function PreferenciasProvider({
   const [tamanoLetra, setTamanoLetraState] = useState<TamanoLetra>(
     preferenciasIniciales.lectura.tamanoLetra
   );
+  const [estiloTexto, setEstiloTextoState] = useState<EstiloTexto>(
+    preferenciasIniciales.lectura.estiloTexto
+  );
+  const [intensidadManuscrito, setIntensidadManuscritoState] = useState<IntensidadManuscrito>(
+    preferenciasIniciales.lectura.intensidadManuscrito
+  );
   const [concentracion, setConcentracion] = useState(false);
   const [, startTransition] = useTransition();
 
@@ -59,7 +77,15 @@ export function PreferenciasProvider({
     document.documentElement.setAttribute("data-tamano-letra", tamanoLetra);
   }, [tamanoLetra]);
 
-  function persistir(patch: Partial<Preferencias>) {
+  useEffect(() => {
+    document.documentElement.setAttribute("data-estilo-texto", estiloTexto);
+  }, [estiloTexto]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-intensidad-manuscrito", intensidadManuscrito);
+  }, [intensidadManuscrito]);
+
+  function persistir(patch: PreferenciasPatch) {
     startTransition(() => {
       void guardarPreferencias(patch);
     });
@@ -80,6 +106,16 @@ export function PreferenciasProvider({
     persistir({ lectura: { tamanoLetra: nuevoTamano } });
   }
 
+  function setEstiloTexto(nuevoEstilo: EstiloTexto) {
+    setEstiloTextoState(nuevoEstilo);
+    persistir({ lectura: { estiloTexto: nuevoEstilo } });
+  }
+
+  function setIntensidadManuscrito(nuevaIntensidad: IntensidadManuscrito) {
+    setIntensidadManuscritoState(nuevaIntensidad);
+    persistir({ lectura: { intensidadManuscrito: nuevaIntensidad } });
+  }
+
   function toggleConcentracion() {
     setConcentracion((activo) => !activo);
   }
@@ -90,10 +126,14 @@ export function PreferenciasProvider({
         tema,
         navDensidad,
         tamanoLetra,
+        estiloTexto,
+        intensidadManuscrito,
         concentracion,
         setTema,
         setNavDensidad,
         setTamanoLetra,
+        setEstiloTexto,
+        setIntensidadManuscrito,
         toggleConcentracion,
       }}
     >

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Caveat, Kalam } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
 import { PREFERENCIAS_COOKIE, parsearPreferencias } from "@/lib/preferencias";
@@ -14,6 +14,22 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// Modo de texto "Manuscrito" (notas-de-diseno.md §15) — autoalojadas con
+// next/font/google (mismo patrón que Geist arriba), nunca por <link> a
+// fonts.googleapis.com en runtime. Caveat para encabezados (600/700), Kalam
+// para cuerpo (400/700, el 700 para negrita dentro del cuerpo manuscrito).
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  weight: ["600", "700"],
+});
+
+const kalam = Kalam({
+  variable: "--font-kalam",
+  subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -37,8 +53,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       lang="es"
       data-theme={temaExplicito ? preferencias.tema : undefined}
       data-tamano-letra={preferencias.lectura.tamanoLetra}
+      data-estilo-texto={preferencias.lectura.estiloTexto}
+      data-intensidad-manuscrito={preferencias.lectura.intensidadManuscrito}
       data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${caveat.variable} ${kalam.variable} h-full antialiased`}
     >
       <body className="min-h-full">
         <PreferenciasProvider preferenciasIniciales={preferencias}>

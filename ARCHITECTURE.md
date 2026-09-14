@@ -98,6 +98,15 @@ Tema, densidad de navegación y tamaño de letra son **preferencias de dispositi
 
 Detalle completo de las 13 decisiones de esta spec (tokens de color, `NavShell` y sus tres variantes de densidad, tabs+scrollspy, estados especiales, accesibilidad) en `specs/003-sistema-de-diseno/design.md`.
 
+### Extensión (2026-09-14): tercer tema "papel" y modo de texto "manuscrito"
+
+Aplicación directa de los dos puntos de extensibilidad que ya exigían `requirements.md` (Requisito 3.4: tema como string, no booleano; Requisito 8.4: `readingSettings` como objeto extensible) — no reabre `requirements.md` ni el modelo de persistencia (sigue siendo la misma cookie `gsw_prefs`).
+
+- `Tema` pasa de `"claro" | "oscuro"` a `"claro" | "oscuro" | "papel"`. `ReadingSettings` (el objeto `lectura` de `Preferencias`) gana `estiloTexto: "digital" | "manuscrito"` y `intensidadManuscrito: "ligera" | "media" | "intensa"` (solo relevante cuando `estiloTexto === "manuscrito"`). `PreferenciasPatch` (nuevo tipo en `lib/preferencias.ts`) sustituye a `Partial<Preferencias>` como forma de los parches que aceptan `guardarPreferencias`/`persistir`, porque `lectura` ahora tiene varios campos y un cambio de uno solo no debe obligar a repetir los demás.
+- **Tipografías del modo manuscrito (Caveat para encabezados, Kalam para cuerpo) autoalojadas vía `next/font/google`** en `app/layout.tsx` — mismo patrón que Geist, nunca `<link>` a `fonts.googleapis.com` en runtime (verificado en el CSS de producción: los `@font-face` generados apuntan a `.woff2` locales, cero referencias a `fonts.googleapis.com`).
+- Toda la lógica de tamaño/color/interlineado del modo manuscrito y del patrón de líneas de "papel" vive en `app/globals.css` como CSS puro (custom properties condicionadas por `[data-estilo-texto]`/`[data-intensidad-manuscrito]`/`[data-theme="papel"]`), no en componentes — sigue el principio transversal de la spec (ningún color/tamaño suelto en un componente).
+- **Hallazgo incidental corregido en la misma revisión:** el bloque `--tw-prose-*` que `globals.css` ya definía en `:root` (para que `@tailwindcss/typography` pintara el contenido Markdown con los tokens de la app) nunca llegaba a aplicarse — el plugin redeclara esas mismas variables directamente sobre `.prose` con su propia paleta por defecto, y una declaración puesta directamente sobre un elemento gana siempre a un valor heredado de un ancestro. En `data-theme="oscuro"` esto hacía el contenido de estudio (`<blockquote>` de "Texto oficial" incluido) casi ilegible. Corregido redeclarando el mismo bloque directamente sobre `.prose`. Detalle y ratios en `specs/003-sistema-de-diseno/notas-de-diseno.md` §15/§16.
+
 ## Decidido: texto enriquecido embebido en el contenido de estudio (`notas-de-diseno.md` §14)
 
 `components/estudio/Markdown.tsx` renderizaba con `react-markdown` + `remark-gfm` sin soporte de HTML embebido — `<u>`/`<mark class="ink-...">` escritos a mano en `content/estudio/*.md` se limpiaban antes de llegar al DOM. Se añaden dos dependencias al pipeline:
