@@ -163,3 +163,60 @@ Cómo debe quedar este sistema para no rehacerse cuando lleguen tests/exámenes 
 - **Persistencia de preferencias de interfaz (tema, modo de densidad de navegación, ajustes de lectura) — requisito de diseño para `lead-developer` (Fase 2):** las tres viven en el mismo panel (secciones 4 y 5) y comparten la misma naturaleza — elecciones del usuario sobre cómo se ve/comporta la app para él, no datos de contenido. La app es single-user hoy, pero la arquitectura general del proyecto (principio 6 de `CONSTITUTION.md`, y el patrón ya usado por la tabla `bookmark` de `specs/001-seccion-estudio/design.md`, que usa `usuario_id` aunque solo exista un usuario fijo) está pensada para multiusuario futuro. **No se diseña aquí la solución técnica de persistencia** (cookie vs. `localStorage` vs. tabla en Postgres es decisión de `lead-developer` en el `design.md` técnico), pero si la elección técnica es guardar estas preferencias en base de datos, el requisito de diseño que deben cumplir las tres por igual es el mismo patrón que `bookmark`: la fila debe llevar `usuario_id` desde el primer día, no añadirse como columna nueva cuando llegue el segundo usuario. Si la elección técnica es `localStorage`/cookie de cliente, debe quedar documentado en el `design.md` técnico como decisión consciente de que esas preferencias no viajan entre dispositivos hasta que exista una cuenta de usuario real — no una limitación descubierta tarde.
 - **Estados especiales como catálogo abierto.** Los 4 estados de la sección 7 no deben tratarse como una lista cerrada de 4 casos especiales en el código — el patrón (badge con color propio + icono + texto corto, o banner informativo con borde e icono) debe quedar documentado como una receta reutilizable, porque es razonable esperar estados nuevos a futuro (p. ej. "flashcard pendiente de repaso hoy" en el planificador). Esto es una nota para que `lead-developer` lo tenga en cuenta al construir el componente base de badge/estado en Fase 2, no una petición de construir ya ese catálogo genérico.
 - **Panel de configuración de lectura extensible (sección 5) por el mismo motivo que el selector de tema.** Cuando lleguen flashcards o tests, es razonable esperar controles de lectura adicionales relevantes para esas pantallas (p. ej. modo "solo texto grande" para repasar en movimiento) — el modelo de ajustes de lectura como objeto extensible (no un valor suelto) es lo que evita rehacerlo cuando llegue ese momento.
+
+---
+
+## 9. Modo concentración — propuesta visual
+
+Responde al Requisito 9 de `requirements.md` y al principio de producto 2.6 ("la interfaz debe desaparecer durante el estudio").
+
+- **Activación:** un icono/botón (ojo, o "Concentración") visible en cualquiera de los tres niveles de densidad del menú global, junto al selector de tema — no enterrado en un submenú.
+- **Efecto:** colapsa el menú global a su expresión mínima (icono único para salir, sin las demás entradas) y oculta cualquier chrome no esencial (breadcrumbs, cabeceras secundarias). La navegación local del concepto (sección 3, tabs del §6) se mantiene, porque sigue siendo necesaria para moverse dentro del contenido que se está leyendo.
+- **Qué se conserva siempre visible:** el botón de salir del modo, y algo que identifique en qué concepto/tema está el usuario (p. ej. un título discreto, no una barra completa de contexto).
+- **Salida:** el mismo control de activación actúa como interruptor, y además cualquier navegación explícita (ej. pulsar el menú local) puede sacar del modo automáticamente — a decidir en Fase 2 si conviene ese comportamiento implícito o si debe ser siempre una acción explícita.
+- **Versión mínima aceptable si el alcance de v1 se recorta (ver "Decisiones pendientes" en `requirements.md`):** un solo botón que alterna `display` del `NavShell` a su variante `collapsed` y oculta metadatos de cabecera, sin animación ni persistencia de la elección entre conceptos.
+
+---
+
+## 10. Progreso de lectura — propuesta visual
+
+Responde al Requisito 10. Deliberadamente mínimo: posición y continuidad, no dominio.
+
+- **"Continuar donde lo dejaste":** al reabrir un concepto con posición de scroll guardada, restaurar el scroll automáticamente (sin salto brusco) y mostrar un aviso discreto y temporal (p. ej. una línea pequeña bajo la cabecera, "Continuando desde donde lo dejaste", que desaparece a los pocos segundos o al primer scroll manual) — nunca un modal ni un elemento que bloquee la lectura.
+- **Indicador de progreso (opcional en v1, ver decisión pendiente):** una barra fina horizontal, fija en la parte superior de la columna de lectura (no del viewport completo, para no competir con el menú global), que crece con el scroll dentro del contenido del concepto. Color neutro (`texto-secundario` o `borde`), nunca uno de los colores de estado (ámbar/violeta/azul) para no confundirse con núcleo común, bookmark o revisión.
+- **Qué NO es esto:** no hay checkmark de "completado", no hay porcentaje de dominio, no hay relación con si el usuario ha estudiado bien o mal el concepto — es puramente "cuánto texto ha recorrido", útil solo para retomar la lectura.
+
+---
+
+## 11. Trazabilidad de fuentes normativas — propuesta visual
+
+Responde al Requisito 11. La fuente ya vive en el frontmatter (`fuentes:`) de cada concepto — ver ejemplo real en `content/estudio/prevencion-riesgos-laborales.md`, que ya incluye norma, artículo y enlace en un único string.
+
+- **Ubicación:** un elemento secundario y colapsable (p. ej. `<details>`/acordeón nativo, o un icono "fuente" junto al título de "Texto oficial") — nunca una ficha fija siempre expandida que compita con el contenido.
+- **Contenido al expandir:** la norma y artículo tal cual están en `fuentes:`, con el enlace oficial como link real (no solo texto), y, si el concepto está "en revisión" (Requisito 6), un enlace directo desde el aviso de revisión hacia esta misma fuente en vez de duplicar la información.
+- **Tono visual:** texto pequeño, `texto-secundario`, sin caja ni color de estado propio — es metadato de referencia, no un aviso.
+- **No parsear el string de `fuentes:` en campos estructurados (norma/artículo/enlace por separado) en esta spec** — mostrarlo tal cual existe hoy es suficiente para el requisito; estructurarlo es una decisión de `lib/contenido.ts` que puede esperar a que haga falta (p. ej. para filtrar o enlazar automáticamente).
+
+---
+
+## 12. Accesibilidad mínima — checklist de aplicación práctica
+
+Responde al Requisito 12. No es una sección de diseño visual nueva — es una lista de comprobación que aplica transversalmente a todos los componentes ya descritos en este documento:
+
+| Componente | Qué revisar |
+|---|---|
+| `NavShell` (§3) | Foco visible en cada entrada; `aria-label` en modo iconos; navegable con Tab/flechas. |
+| Selector de tema (§4) y panel de lectura (§5) | Roles semánticos correctos (`role="radiogroup"` o `<select>` nativo mejor que `div` a medida); foco visible; operable solo con teclado. |
+| Tabs de concepto (§6) | Anclas reales (`<a href="#...">`), no solo `onClick`; foco visible al navegar con teclado. |
+| Badges y estados (§7) | Nunca solo color — icono/forma/texto acompañan siempre (ya contemplado: glifo relleno/contorno en bookmark, texto fijo en avisos). |
+| Botón de modo concentración (§9) y barra de progreso (§10) | Botón real (`<button>`), no `div`; la barra de progreso no lleva foco ni interacción (es informativa, `aria-hidden` si no aporta valor a lector de pantalla). |
+| Cualquier transición/animación (apertura de overlay, scroll suave, aparición de avisos) | Envolver en `@media (prefers-reduced-motion: no-preference)` — con `reduce`, el cambio es instantáneo. |
+
+---
+
+## 13. Jerarquía visual y robustez de color — notas de aplicación
+
+Responde al Requisito 13 y extiende el §1 y §7 con la lista de estados interactivos que `design.md` debe verificar, no solo el par texto/fondo estático:
+
+- Estados a verificar con los mismos tokens de §1 (nunca un color suelto nuevo): `hover`, `focus`, `active`, controles deshabilitados (`texto-secundario` sobre `bg-secundario`, nunca simplemente "más transparente"), enlaces (subrayado o color propio, no solo `texto-primario`), selección de texto, indicador de progreso (§10), mensajes temporales (p. ej. "Continuando donde lo dejaste", §10), superficies anidadas (una caja de "Texto oficial" dentro de una página que ya tiene `bg-secundario` en el panel de navegación — deben distinguirse entre sí), y bordes informativos (discontinuo = sin escribir, sólido = en revisión, ya definido en §7).
+- **Regla de jerarquía:** ante cualquier duda sobre si un elemento nuevo (badge, aviso, indicador) debe destacar más que el contenido, la respuesta por defecto es no — solo se permite mayor peso visual que el cuerpo de texto cuando existe un riesgo real que el usuario deba atender antes de seguir leyendo (que hoy no se da en ningún estado definido: ni "sin escribir" ni "en revisión" son ese caso, de ahí su tratamiento deliberadamente tranquilo en §7).
