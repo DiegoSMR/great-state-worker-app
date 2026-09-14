@@ -11,6 +11,15 @@
 1. **Sustitución completa de la paleta de color (§1)** por "Academic Blue"/"Focused Night", a partir de un documento de referencia que Diego aportó fuera del repo. Los 5 tokens base y los 3 pares de estado existentes cambian de valor (mismos nombres de token, mismos usos); se añaden 3 tokens de estado nuevos (`ejemplo`, `excepcion`, `atencion`) pensados para el punto 2. Contraste WCAG AA reverificado de cero para todos los pares, no reutilizado de la v1. Se decide **no** introducir tokens de acento para h1/h2/enlaces (`Primary`/`Primary dark`/`Secondary` del documento de Diego) porque dos de los tres no cumplen 4.5:1 contra el `bg-primario` elegido — ver justificación completa al final de §1.
 2. **Especificación de texto enriquecido para el contenido de estudio (§14, nueva)**: subrayado (`<u>`), resaltado con fondo (`<mark class="ink-...">`, 6 variantes reutilizando tokens de §1) y la decisión de no incluir una variante de solo color de texto. Requiere que `lead-developer` añada soporte de HTML embebido (`rehype-raw` o equivalente) a `components/estudio/Markdown.tsx`, que hoy no lo tiene — anotado como premisa técnica al principio de §14, no implementado en esta revisión.
 
+## Registro de cambios de esta revisión (2026-09-14, tercera pasada — modo manuscrito y tema "papel")
+
+A partir de una imagen de referencia (apuntes de cuaderno con rotuladores) y de una exploración visual iterada con Diego en un mockup, se añade una tercera capacidad — igual que las dos anteriores, dentro del alcance ya aprobado (Requisito 3.4 y 8.4 ya exigían que tema y perfil de lectura fueran extensibles precisamente para casos como este, así que esto no reabre `requirements.md`):
+
+3. **Modo de texto "Manuscrito" (§15, nueva) — nuevo campo `lectura.estiloTexto`**: además de `tamanoLetra`, el perfil de lectura gana `estiloTexto: "digital" | "manuscrito"` (default `"digital"`, sin cambios visuales respecto a hoy) y, solo relevante cuando `estiloTexto === "manuscrito"`, `intensidadManuscrito: "ligera" | "media" | "intensa"` (default `"media"`). En digital nada cambia. En manuscrito, títulos y cuerpo de texto pasan a tipografías de mano (`Caveat` para encabezados, `Kalam` para cuerpo — cargadas con `next/font/google`, nunca por `<link>` en runtime), con tamaño/interlineado del cuerpo ajustados un poco al alza respecto al modo digital (una tipografía de mano necesita más aire para seguir siendo legible) y esa necesidad de aire escala con la intensidad. **El control de intensidad solo se muestra (pop-in) cuando se elige "Manuscrito"** — no tiene sentido con "Digital" seleccionado.
+4. **Tercer tema "Papel" (§16, nueva) — el selector de tema (Requisito 3) gana una tercera opción**: `tema` pasa de `"claro" | "oscuro"` a `"claro" | "oscuro" | "papel"` — una fila más en el mismo selector ya diseñado como lista extensible, tal como pedía el Requisito 3.4 explícitamente para este caso. "Papel" es un fondo cálido tipo cuaderno con un patrón muy sutil de líneas horizontales — no es una alternativa al modo manuscrito (son ejes independientes: se puede tener texto digital sobre papel, o texto manuscrito sobre fondo claro).
+
+Ver §15 y §16 para el detalle técnico de valores y verificación de contraste.
+
 ---
 
 ## 1. Paleta de tokens de color
@@ -309,3 +318,78 @@ recordar el orden del art. 15. **Importante:** <mark class="ink-importante">el c
 seguridad nunca recae sobre el trabajador</mark> — <u>esta frase se pregunta prácticamente en cada
 convocatoria</u>.
 ```
+
+---
+
+## 15. Modo de texto "Manuscrito"
+
+Encargo de Diego (2026-09-14), validado antes con un mockup visual interactivo. Vive en el panel de preferencias, sección "Lectura", junto al tamaño de letra (§5) — es otro eje del mismo `readingSettings` extensible que ya exigía el Requisito 8.4.
+
+### Modelo de datos
+
+```ts
+lectura: {
+  tamanoLetra: "pequeno" | "mediano" | "grande";
+  estiloTexto: "digital" | "manuscrito";           // nuevo, default "digital"
+  intensidadManuscrito: "ligera" | "media" | "intensa"; // nuevo, default "media"
+}
+```
+
+`intensidadManuscrito` solo es relevante (y solo se muestra en el panel) cuando `estiloTexto === "manuscrito"` — con `"digital"` seleccionado, el control de intensidad no se renderiza (pop-in condicional, no un control siempre visible pero deshabilitado).
+
+### Qué cambia en cada modo
+
+- **Digital** (default): sin cambios respecto al sistema ya construido — tipografía de UI en toda la app, tokens de §1 y §2 tal cual.
+- **Manuscrito**: los encabezados (h1-h3, incluidos los de `--tw-prose-headings` dentro del contenido Markdown) pasan a `Caveat` (peso 700 para h1, 600 para h2/h3), con un ligero acento de color reutilizando `--acento-titulo`/`--acento-resumen` (dos tokens nuevos, ver más abajo). El cuerpo de texto (`--tw-prose-body`, párrafos de `Markdown.tsx`) pasa a `Kalam`. Ambas se cargan con `next/font/google` (mismo patrón que Geist, nunca `<link>` a Google Fonts en runtime — eso solo vale para el mockup en Claude Artifacts).
+- **Por qué el cuerpo sube de tamaño/interlineado en manuscrito:** una tipografía de mano necesita más aire para seguir siendo cómoda en sesiones largas — verificado visualmente en el mockup. Los tres niveles de intensidad controlan cuánto:
+
+| Intensidad | Tamaño título | Tamaño cuerpo | Interlineado cuerpo |
+|---|---|---|---|
+| Ligera | 2.1rem | 17.5px | 1.8 |
+| Media (default) | 2.8rem | 18px | 1.85 |
+| Intensa | 3.4rem | 18.5px | 1.9 |
+
+(Valores de partida tomados del mockup validado por Diego; `lead-developer` puede ajustarlos ligeramente al integrarlos si el resultado real en pantalla lo pide, sin que haga falta otra ronda de aprobación por un ajuste tan fino.)
+
+- **Contraste:** `Caveat`/`Kalam` en manuscrito siguen usando los mismos tokens de color de texto (`--texto-primario`, `--acento-titulo`, `--acento-resumen`) ya verificados en ambos temas (Requisito 1) — el cambio de tipografía no cambia ningún color, así que no hace falta reverificar contraste, solo confirmar visualmente que el trazo más fino de una fuente manuscrita no compromete la lectura (si hiciera falta, aumentar peso/tamaño antes que tocar el color).
+
+### Tokens nuevos para el modo manuscrito
+
+| Token | Light | Dark/Papel | Uso |
+|---|---|---|---|
+| `--acento-titulo` | `#B0526F` | a verificar por `lead-developer` en oscuro (derivar igual que en §1: mismo matiz, desaturado y oscurecido) | Color de encabezados h1 en modo manuscrito |
+| `--acento-resumen` | `#5C7A52` | ídem | Color de encabezados h2/h3 en modo manuscrito |
+
+Son candidatos nuevos, no estaban en §1 — `lead-developer` debe verificar su contraste contra `bg-primario`/`bg-papel` en los tres temas antes de darlos por buenos (mismo criterio de todo el documento: ≥4.5:1 para texto normal; los títulos son texto grande, así que ≥3:1 basta si al final el tamaño elegido lo justifica).
+
+---
+
+## 16. Tercer tema "Papel"
+
+Encargo de Diego (2026-09-14): el selector de tema (Requisito 3, §4) gana una tercera opción, `"papel"`, junto a `"claro"`/`"oscuro"` — exactamente el caso para el que el Requisito 3.4 exigía un modelo de tema no binario desde el principio.
+
+### Qué es y qué no es
+
+"Papel" es un **tema de fondo**, independiente del modo de texto (§15) — los dos ejes se combinan libremente: texto digital sobre papel, texto manuscrito sobre fondo claro, etc. No es "modo manuscrito con otro nombre".
+
+### Valores propuestos
+
+Parte de la misma familia cálida que ya usa "Academic Blue" (claro), pero con un tono de papel más marcado y el patrón de líneas de cuaderno:
+
+| Token | Valor | Nota |
+|---|---|---|
+| `bg-primario` | `#FBF8F0` | Más cálido que el `#FAFAF7` de claro — diferenciable a simple vista |
+| `bg-secundario` | `#F2ECDD` | Paneles/tarjetas sobre el papel |
+| `borde` | `#DED2B8` | |
+| `texto-primario` | `#303840` | Igual que claro — no hace falta reinventar el texto principal |
+| `texto-secundario` | `#64717A` | Igual que claro |
+
+Los pares de estado (`nucleo`, `bookmark`, `revision`, `ejemplo`, `excepcion`, `atencion`) se heredan tal cual de claro — son los mismos colores semánticos, el papel solo cambia el fondo general. `lead-developer` debe reverificar el contraste texto/fondo de cada uno contra el `bg-primario`/`bg-secundario` de papel (probablemente pase sin cambios al ser tonos muy próximos a claro, pero confirmarlo, no asumirlo).
+
+### El patrón de líneas de cuaderno
+
+Un `background-image` muy sutil (`repeating-linear-gradient` horizontal, opacidad ≤0.10, espaciado igual al interlineado del cuerpo activo) aplicado solo al contenedor de contenido de lectura cuando `data-theme="papel"` — nunca a toda la página (nav, paneles) para no ensuciar visualmente el chrome de la app. Ver el mockup para el efecto exacto; `lead-developer` tiene margen para ajustar la opacidad/espaciado al verlo en pantalla real.
+
+### Modelo de datos
+
+Sin cambios de forma — `tema` ya era un string libre por el Requisito 3.4, solo se añade el valor `"papel"` a las opciones válidas de `lib/preferencias.ts` y al selector de `PreferenciasPanel`.
