@@ -5,9 +5,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS, esNavItemActivo } from "@/lib/nav-items";
 import { usePreferencias } from "@/components/preferencias/PreferenciasProvider";
-import { IconoApariencia, IconoCerrar, IconoConcentracion, IconoMenu, IconoLibro, IconoMarcador } from "./iconos";
+import {
+  IconoApariencia,
+  IconoCerrar,
+  IconoConcentracion,
+  IconoMenu,
+  IconoLibro,
+  IconoMarcador,
+  IconoPregunta,
+} from "./iconos";
 
-const ICONOS = { libro: IconoLibro, marcador: IconoMarcador };
+const ICONOS = { libro: IconoLibro, marcador: IconoMarcador, pregunta: IconoPregunta };
 
 /** Densidad "collapsed": icono fijo arriba + overlay que se abre sobre el contenido (móvil por defecto). */
 export function NavHamburguesa({

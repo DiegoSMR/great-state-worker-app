@@ -1,0 +1,200 @@
+# Perfil de oposición: Ayuntamiento de Zaragoza — Auxiliar Administrativo
+# Datos redactados por preparador-opos a partir de
+# specs/018-perfil-oposicion/investigacion-datos.md (fecha de consulta general 2026-09-14).
+# No inventar datos: cada hueco documentado en la investigación se deja como
+# pendiente_confirmar con su nota — nunca en blanco sin explicación.
+
+oposicionId: ayto-zgz-aux-adm
+
+introduccion:
+  cuerpoEscala:
+    estado: "confirmado"
+    valor: "Escala de Administración General, Subescala Auxiliar"
+    fuente: "zaragoza.es/oferta id=1681 (https://www.zaragoza.es/oferta/ofertaDetalle.jsp?id=1681)"
+    fechaConsulta: "2026-09-14"
+
+  grupoSubgrupo:
+    estado: "confirmado"
+    valor: "C2"
+    fuente: "zaragoza.es/oferta id=1681 (https://www.zaragoza.es/oferta/ofertaDetalle.jsp?id=1681)"
+    fechaConsulta: "2026-09-14"
+
+  requisitos:
+    titulacion:
+      estado: "confirmado"
+      valor: "Título de Graduado en Educación Secundaria Obligatoria (ESO) o equivalente"
+      fuente: "zaragoza.es/oferta id=1681 (https://www.zaragoza.es/oferta/ofertaDetalle.jsp?id=1681)"
+      fechaConsulta: "2026-09-14"
+
+    edad:
+      estado: "pendiente_confirmar"
+      nota: "No localizada en la ficha resumen de zaragoza.es. Probablemente detallada en el PDF de bases (411 KB), no accesible por scraping automático."
+
+    nacionalidad:
+      estado: "pendiente_confirmar"
+      nota: "No localizada en la ficha resumen de zaragoza.es. Probablemente detallada en el PDF de bases (411 KB), no accesible por scraping automático."
+
+    otros:
+      estado: "pendiente_confirmar"
+      nota: "Sin requisitos adicionales localizados más allá de titulación — el PDF de bases completo no fue accesible por scraping automático."
+
+  funciones:
+    estado: "pendiente_confirmar"
+    nota: "No encontradas en fuente oficial accesible. Es esperado: la investigación de investigacion-datos.md confirma que este dato falta en las 4 oposiciones del radar, no es un hueco propio de esta."
+
+retribuciones:
+  - concepto: "Sueldo base"
+    grupo: "base"
+    anio: 2025
+    dato:
+      estado: "confirmado"
+      valor: "738,50 €/mes"
+      fuente: "zaragoza.es/sede/organizacion/retribuciones (https://www.zaragoza.es/sede/portal/organizacion/retribuciones)"
+      fechaConsulta: "2026-09-14"
+
+  - concepto: "Paga extra"
+    grupo: "base"
+    anio: 2025
+    dato:
+      estado: "confirmado"
+      valor: "731,77 €"
+      fuente: "zaragoza.es/sede/organizacion/retribuciones (https://www.zaragoza.es/sede/portal/organizacion/retribuciones)"
+      fechaConsulta: "2026-09-14"
+
+  - concepto: "Total bruto anual"
+    grupo: "base"
+    anio: 2025
+    dato:
+      estado: "confirmado"
+      valor: "10.325,54 €/año"
+      fuente: "zaragoza.es/sede/organizacion/retribuciones (https://www.zaragoza.es/sede/portal/organizacion/retribuciones)"
+      fechaConsulta: "2026-09-14"
+
+  - concepto: "Complemento de destino (nivel 22)"
+    grupo: "base"
+    anio: 2025
+    dato:
+      estado: "confirmado"
+      valor: "628,31 €/mes (8.796,34 €/año)"
+      fuente: "zaragoza.es/sede/organizacion/retribuciones (https://www.zaragoza.es/sede/portal/organizacion/retribuciones)"
+      fechaConsulta: "2026-09-14"
+
+  - concepto: "Sueldo base"
+    grupo: "base"
+    anio: 2026
+    dato:
+      estado: "confirmado"
+      valor: "749,58 €/mes"
+      fuente: "zaragoza.es/sede/organizacion/retribuciones (https://www.zaragoza.es/sede/portal/organizacion/retribuciones)"
+      fechaConsulta: "2026-09-14"
+
+  - concepto: "Complemento de destino (nivel 22)"
+    grupo: "base"
+    anio: 2026
+    dato:
+      estado: "confirmado"
+      valor: "637,73 €/mes (8.928,22 €/año)"
+      fuente: "zaragoza.es/sede/organizacion/retribuciones (https://www.zaragoza.es/sede/portal/organizacion/retribuciones)"
+      fechaConsulta: "2026-09-14"
+
+  - concepto: "Complemento específico del puesto de Auxiliar Administrativo"
+    grupo: "complemento_especifico"
+    anio: 2026
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "La tabla oficial de complementos específicos del Ayuntamiento tiene varios estratos, y no se ha podido confirmar cuál corresponde exactamente al puesto de Auxiliar Administrativo. No se usa la cifra publicada por la academia Cierzo Formación (nivel 15, estrato 03012, 1.081,99 €) por ser fuente no oficial y contradictoria con el resto de datos verificados."
+
+  - concepto: "Complemento específico — ejemplo estrato 00002 (no necesariamente el que aplica a Auxiliar Administrativo)"
+    grupo: "complemento_especifico"
+    anio: 2026
+    dato:
+      estado: "confirmado"
+      valor: "1.006,64 €/mes"
+      fuente: "zaragoza.es/sede/organizacion/retribuciones (https://www.zaragoza.es/sede/portal/organizacion/retribuciones) — tabla de estratos de complemento específico, estrato 00002 tomado solo como ejemplo de formato de la tabla"
+      fechaConsulta: "2026-09-14"
+
+participacion:
+  - etiqueta: "Convocatoria 2025 — turno libre ordinario"
+    plazas:
+      estado: "confirmado"
+      valor: 43
+      fuente: "BOP nº147 (30/06/2025); BOE nº257 (25/10/2025)"
+      fechaConsulta: "2026-09-14"
+    aspirantes:
+      estado: "pendiente_confirmar"
+      nota: "No se ha localizado en fuente oficial accesible el número de aspirantes presentados a esta convocatoria."
+
+  - etiqueta: "Convocatoria 2025 — ampliación (2 de las 4 plazas reservadas a discapacidad)"
+    plazas:
+      estado: "confirmado"
+      valor: 4
+      fuente: "BOP nº147 (30/06/2025); BOE nº257 (25/10/2025)"
+      fechaConsulta: "2026-09-14"
+    aspirantes:
+      estado: "pendiente_confirmar"
+      nota: "No se ha localizado en fuente oficial accesible el número de aspirantes presentados a esta convocatoria."
+
+  - etiqueta: "Convocatoria 2019 (referencia histórica, fuente secundaria no oficial)"
+    plazas:
+      estado: "pendiente_confirmar"
+      nota: "Una fuente secundaria no oficial apunta a que la convocatoria de 2019 también fue de 47 plazas, pero no se ha podido confirmar con una fuente primaria (BOP/BOE) — no se da por buena hasta verificarla directamente."
+    aspirantes:
+      estado: "pendiente_confirmar"
+      nota: "No se ha localizado en fuente oficial accesible el número de aspirantes presentados a esta convocatoria."
+
+faqEspecificas:
+  - id: "cuantos-ejercicios-tiene-ayto-zgz"
+    pregunta: "¿Cuántos ejercicios tiene el proceso selectivo del Ayuntamiento de Zaragoza?"
+    respuesta: |
+      Dos ejercicios eliminatorios, ambos el mismo día:
+
+      1. **Primer ejercicio (test):** 50 preguntas, con un tiempo máximo de
+         55 minutos.
+      2. **Segundo ejercicio (práctico):** dos supuestos teórico-prácticos,
+         con 10 preguntas cada uno.
+
+      El sistema exacto de puntuación de cada ejercicio (cuántos puntos
+      vale cada acierto, si hay penalización por error y de cuánto) no está
+      confirmado todavía — ver la pregunta siguiente.
+    fuente:
+      estado: "confirmado"
+      fuente: "Resumen de bases de la convocatoria vía zaragoza.es/oferta (id=1681, https://www.zaragoza.es/oferta/ofertaDetalle.jsp?id=1681)"
+      fechaConsulta: "2026-09-14"
+
+  - id: "como-se-puntua-ayto-zgz"
+    pregunta: "¿Cómo se puntúa cada ejercicio en el Ayuntamiento de Zaragoza?"
+    respuesta: |
+      No confirmado. Se conoce la estructura de los dos ejercicios (ver
+      pregunta anterior), pero no el sistema exacto de puntuación — si hay
+      penalización por error, cuál es el mínimo para aprobar cada
+      ejercicio, cómo se pondera cada supuesto del ejercicio práctico. El
+      PDF completo de las bases (411 KB) no fue accesible por scraping
+      automático durante la investigación; hace falta consultarlo
+      directamente para confirmar este dato.
+    fuente:
+      estado: "pendiente_confirmar"
+      nota: "PDF de bases (411 KB) no accesible por scraping automático — pendiente de consulta directa."
+
+  - id: "genera-bolsa-ayto-zgz"
+    pregunta: "¿Esta oposición genera bolsa de trabajo?"
+    respuesta: |
+      No confirmado. No se ha localizado en fuente oficial accesible si el
+      proceso genera una bolsa de trabajo o lista de espera de interinos
+      tras su resolución. El PDF completo de las bases no fue accesible
+      durante la investigación — es probable que la respuesta esté ahí.
+    fuente:
+      estado: "pendiente_confirmar"
+      nota: "PDF de bases (411 KB) no accesible por scraping automático — pendiente de consulta directa."
+
+  - id: "cada-cuanto-se-convoca-ayto-zgz"
+    pregunta: "¿Cada cuánto se convoca esta oposición en el Ayuntamiento de Zaragoza?"
+    respuesta: |
+      No verificado con fuente oficial. Una fuente secundaria (no oficial)
+      apunta a que la convocatoria de 2019 también fue de 47 plazas, lo que
+      sugeriría cierta similitud entre convocatorias, pero al no ser una
+      fuente primaria no se puede confirmar una periodicidad concreta. La
+      convocatoria vigente (BOP nº147, 30/06/2025; BOE nº257, 25/10/2025)
+      es la única confirmada con fuente oficial hasta ahora.
+    fuente:
+      estado: "pendiente_confirmar"
+      nota: "Solo una fuente secundaria no oficial sugiere la cifra de la convocatoria de 2019, sin confirmar con fuente primaria."

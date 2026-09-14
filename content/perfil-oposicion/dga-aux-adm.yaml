@@ -1,0 +1,136 @@
+# Perfil de oposición: Gobierno de Aragón (DGA) — Escala Auxiliar Administrativa
+# Datos redactados por preparador-opos a partir de
+# specs/018-perfil-oposicion/investigacion-datos.md (fecha de consulta general 2026-09-14).
+# La mejor documentada de las 4 — acceso directo al texto íntegro del BOA.
+
+oposicionId: dga-aux-adm
+
+introduccion:
+  cuerpoEscala:
+    estado: "confirmado"
+    valor: "Cuerpo Auxiliar de la Administración General de la Comunidad Autónoma de Aragón, Escala Auxiliar Administrativa (Auxiliares Administrativos)"
+    fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública (https://www.boa.aragon.es/cgi-bin/EBOA/BRSCGI?CMD=VEROBJ&MLKOB=1427870670404)"
+    fechaConsulta: "2026-09-14"
+
+  grupoSubgrupo:
+    estado: "confirmado"
+    valor: "Subgrupo C2"
+    fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública (https://www.boa.aragon.es/cgi-bin/EBOA/BRSCGI?CMD=VEROBJ&MLKOB=1427870670404)"
+    fechaConsulta: "2026-09-14"
+
+  requisitos:
+    titulacion:
+      estado: "confirmado"
+      valor: "Graduado en Educación Secundaria Obligatoria, título de Técnico o equivalente"
+      fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública (https://www.boa.aragon.es/cgi-bin/EBOA/BRSCGI?CMD=VEROBJ&MLKOB=1427870670404)"
+      fechaConsulta: "2026-09-14"
+
+    edad:
+      estado: "confirmado"
+      valor: "16 años cumplidos, sin exceder la edad máxima de jubilación forzosa"
+      fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública (https://www.boa.aragon.es/cgi-bin/EBOA/BRSCGI?CMD=VEROBJ&MLKOB=1427870670404)"
+      fechaConsulta: "2026-09-14"
+
+    nacionalidad:
+      estado: "confirmado"
+      valor: "Española, de un Estado miembro de la Unión Europea, o asimilados según el artículo 57.1 del EBEP"
+      fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública (https://www.boa.aragon.es/cgi-bin/EBOA/BRSCGI?CMD=VEROBJ&MLKOB=1427870670404)"
+      fechaConsulta: "2026-09-14"
+
+    otros:
+      estado: "pendiente_confirmar"
+      nota: "Sin requisitos adicionales localizados más allá de titulación, edad y nacionalidad en el texto del BOA consultado."
+
+  funciones:
+    estado: "pendiente_confirmar"
+    nota: "No detalladas en la convocatoria — el propio texto del BOA remite al temario en vez de describir funciones. Es esperado: la investigación confirma que este dato falta en las 4 oposiciones del radar, no es un hueco propio de esta."
+
+retribuciones:
+  - concepto: "Sueldo base"
+    grupo: "base"
+    anio: 2025
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "No se encontró tabla oficial con cifras exactas de sueldo para el Subgrupo C2 en la Administración de la Comunidad Autónoma de Aragón. Se confirmó la existencia de un Acuerdo de 14/01/2026 del Gobierno de Aragón que actualiza las retribuciones de administración general (incremento del 2,5% en 2025 según el Decreto-Ley 8/2025, citado por fuentes secundarias), pero no se accedió al documento con las cifras exactas."
+
+  - concepto: "Complemento de destino"
+    grupo: "base"
+    anio: 2025
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "No se encontró tabla oficial con cifras exactas de complemento de destino para el Subgrupo C2 en la Administración de la Comunidad Autónoma de Aragón. Mismo Acuerdo de 14/01/2026 citado en el sueldo base, sin cifras exactas accesibles."
+
+  - concepto: "Complemento específico"
+    grupo: "complemento_especifico"
+    anio: 2025
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "No se encontró tabla oficial con cifras exactas de complemento específico para el Subgrupo C2 en la Administración de la Comunidad Autónoma de Aragón. Mismo Acuerdo de 14/01/2026 citado en el sueldo base, sin cifras exactas accesibles."
+
+participacion:
+  - etiqueta: "Convocatoria 25/0109 — plazas acumuladas OEP 2023+2024+2025 (1 reservada a víctimas de violencia de género)"
+    plazas:
+      estado: "confirmado"
+      valor: 28
+      fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública"
+      fechaConsulta: "2026-09-14"
+    aspirantes:
+      estado: "pendiente_confirmar"
+      nota: "No se ha localizado en fuente oficial el número de aspirantes presentados, ni en esta convocatoria (25/0109) ni en las anteriores (18/19, 22/23), de las que tampoco se ha podido confirmar el número de plazas."
+
+faqEspecificas:
+  - id: "cuantos-ejercicios-tiene-dga"
+    pregunta: "¿Cuántos ejercicios tiene el proceso selectivo del Gobierno de Aragón?"
+    respuesta: |
+      Dos ejercicios eliminatorios, ambos tipo test y el mismo día:
+
+      1. **Primer ejercicio (teórico):** 70 preguntas más 5 de reserva, con
+         4 opciones de respuesta y una sola válida. Duración: 2 horas. Hay
+         que acertar un mínimo de 35 de 70 para superarlo.
+      2. **Segundo ejercicio (práctico):** 30 preguntas más 5 de reserva
+         sobre uno o varios supuestos prácticos. Duración: 1 hora. Hay que
+         acertar un mínimo de 15 de 30 — y solo se corrige a quien ya haya
+         superado el primer ejercicio.
+    fuente:
+      estado: "confirmado"
+      fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública"
+      fechaConsulta: "2026-09-14"
+
+  - id: "como-se-puntua-dga"
+    pregunta: "¿Cómo se puntúan los errores en el examen del Gobierno de Aragón?"
+    respuesta: |
+      Cada error resta 0,3333 puntos (un tercio de punto). Las preguntas no
+      contestadas no penalizan. Este sistema se aplica a los dos
+      ejercicios, además de los mínimos de aciertos exigidos en cada uno
+      (ver la pregunta sobre la estructura de los ejercicios).
+    fuente:
+      estado: "confirmado"
+      fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública"
+      fechaConsulta: "2026-09-14"
+
+  - id: "genera-bolsa-dga"
+    pregunta: "¿Esta oposición genera bolsa de trabajo?"
+    respuesta: |
+      Sí, aunque la convocatoria no usa literalmente la palabra "bolsa": el
+      artículo 9 de la convocatoria prevé que se forme una lista de espera
+      de personal interino con quienes participen en el proceso sin
+      obtener plaza fija, que cumple en la práctica la misma función que
+      una bolsa de trabajo.
+    fuente:
+      estado: "confirmado"
+      fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública, artículo 9"
+      fechaConsulta: "2026-09-14"
+
+  - id: "que-es-el-curso-de-formacion-selectivo-dga"
+    pregunta: "¿Qué es el curso de formación selectivo del Gobierno de Aragón?"
+    respuesta: |
+      Es una fase adicional del proceso, después de superar los dos
+      ejercicios: un curso de formación de 20 horas, impartido online, que
+      hay que superar para completar el acceso al cuerpo. No es una fase
+      de concurso de méritos (el proceso sigue siendo oposición, no
+      concurso-oposición) — es un requisito formativo posterior a la parte
+      puramente examinadora.
+    fuente:
+      estado: "confirmado"
+      fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública"
+      fechaConsulta: "2026-09-14"

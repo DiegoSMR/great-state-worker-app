@@ -93,3 +93,13 @@ export function IconoPendiente(props: SVGProps<SVGSVGElement>) {
     </Base>
   );
 }
+
+export function IconoPregunta(props: SVGProps<SVGSVGElement>) {
+  return (
+    <Base {...props}>
+      <circle cx="10" cy="10" r="7" />
+      <path d="M7.8 8.2a2.2 2.2 0 1 1 3.3 1.9c-.7.4-1.1.9-1.1 1.7v.4" />
+      <circle cx="10" cy="14.3" r="0.9" fill="currentColor" stroke="none" />
+    </Base>
+  );
+}

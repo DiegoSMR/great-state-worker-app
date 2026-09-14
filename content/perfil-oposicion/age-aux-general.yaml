@@ -1,0 +1,179 @@
+# Perfil de oposición: AGE — Cuerpo General Auxiliar de la Administración del Estado
+# Datos redactados por preparador-opos a partir de
+# specs/018-perfil-oposicion/investigacion-datos.md (fecha de consulta general 2026-09-14).
+# Oferta de ámbito estatal (1.700 plazas totales, no desglosadas por Aragón) —
+# entra en el radar de Diego como proceso de ranking nacional con destino
+# aceptable (Madrid/Barcelona por AVE), no solo por plaza directa en Aragón.
+
+oposicionId: age-aux-general
+
+introduccion:
+  cuerpoEscala:
+    estado: "confirmado"
+    valor: "Cuerpo General Auxiliar de la Administración del Estado, ingreso libre"
+    fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública (https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262); complementado con INAP (https://sede.inap.gob.es/es/procedimientos-y-servicios/seleccion/procesos-selectivos-de-cuerpos-y-escalas-generales/cuerpo-general-auxiliar-de-la-administracion-del-estado-ingreso-libre-convocatoria-2025)"
+    fechaConsulta: "2026-09-14"
+
+  grupoSubgrupo:
+    estado: "confirmado"
+    valor: "Subgrupo C2"
+    fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública (https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262)"
+    fechaConsulta: "2026-09-14"
+
+  requisitos:
+    titulacion:
+      estado: "confirmado"
+      valor: "Graduado en Educación Secundaria Obligatoria o equivalente/superior"
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública (https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262)"
+      fechaConsulta: "2026-09-14"
+
+    edad:
+      estado: "confirmado"
+      valor: "De 16 a 65 años"
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública (https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262)"
+      fechaConsulta: "2026-09-14"
+
+    nacionalidad:
+      estado: "confirmado"
+      valor: "Española (nacionales de Estados miembros de la Unión Europea en igualdad de condiciones)"
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública (https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262)"
+      fechaConsulta: "2026-09-14"
+
+    otros:
+      estado: "confirmado"
+      valor: |
+        Oferta de ámbito estatal: 1.700 plazas totales (1.544 de turno general y 156
+        reservadas a personas con discapacidad igual o superior al 33%), no desglosadas
+        por comunidad autónoma ni por provincia — el destino concreto dentro del
+        territorio nacional se asigna según el resultado del proceso selectivo, no
+        se convoca por Aragón específicamente.
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública (https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-26262)"
+      fechaConsulta: "2026-09-14"
+
+  funciones:
+    estado: "pendiente_confirmar"
+    nota: "No encontradas en fuente oficial accesible. Es esperado: la investigación confirma que este dato falta en las 4 oposiciones del radar, no es un hueco propio de esta."
+
+retribuciones:
+  - concepto: "Sueldo base"
+    grupo: "base"
+    anio: 2026
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "Una fuente secundaria (no verificada directamente) cita un sueldo base de aproximadamente 749,58 €/mes para el Subgrupo C2 en 2026, según el Real Decreto-ley 14/2025, de 2 de diciembre — pero no se pudo confirmar directamente por fallo de acceso (timeout) al PDF oficial de la Secretaría de Estado de Presupuestos y Gastos (https://www.sepg.pap.hacienda.gob.es/sitios/sepg/es-ES/CostesPersonal/EstadisticasInformes/Documents/A%C3%91O%202025/Retribuciones%20del%20personal%20funcionario.%20Real%20Decreto-ley%2014%202025,%20de%202%20de%20diciembre.pdf). Esta cifra se recoge solo como referencia de una fuente secundaria, no como dato confirmado."
+
+  - concepto: "Complemento de destino"
+    grupo: "base"
+    anio: 2026
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "No encontrado en fuente oficial verificable para el puesto de Cuerpo General Auxiliar de la AGE."
+
+  - concepto: "Complemento específico"
+    grupo: "complemento_especifico"
+    anio: 2026
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "No encontrado en fuente oficial verificable para el puesto de Cuerpo General Auxiliar de la AGE."
+
+participacion:
+  - etiqueta: "OEP 2025 (examen previsto 23/05/2026, fecha provisional)"
+    plazas:
+      estado: "confirmado"
+      valor: 1700
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025 (1.544 turno general + 156 reservadas a discapacidad ≥33%)"
+      fechaConsulta: "2026-09-14"
+    aspirantes:
+      estado: "pendiente_confirmar"
+      nota: "El examen todavía no se ha celebrado (previsto 23/05/2026) — no puede existir cifra de aspirantes presentados hasta entonces. No es un hueco de la investigación."
+
+  - etiqueta: "OEP 2023 (acumulada 2021+2022)"
+    plazas:
+      estado: "pendiente_confirmar"
+      nota: "Cifra de 1.150 plazas procedente de síntesis de búsqueda, no de lectura directa del BOE correspondiente — no se da por confirmada al 100%."
+    aspirantes:
+      estado: "pendiente_confirmar"
+      nota: "No se ha encontrado cifra agregada de aspirantes presentados — el INAP no centraliza este dato, remite a cada convocatoria individual."
+
+  - etiqueta: "OEP 2021"
+    plazas:
+      estado: "pendiente_confirmar"
+      nota: "Cifra de 550 plazas procedente de síntesis de búsqueda, no de lectura directa del BOE correspondiente — no se da por confirmada al 100%."
+    aspirantes:
+      estado: "pendiente_confirmar"
+      nota: "No se ha encontrado cifra agregada de aspirantes presentados — el INAP no centraliza este dato, remite a cada convocatoria individual."
+
+faqEspecificas:
+  - id: "cuantos-ejercicios-tiene-age"
+    pregunta: "¿Cuántos ejercicios tiene el proceso selectivo de la AGE (Cuerpo General Auxiliar)?"
+    respuesta: |
+      Un único ejercicio, pero dividido en dos partes obligatorias y
+      eliminatorias que se realizan en el mismo acto, con 90 minutos en
+      total:
+
+      1. **Parte 1:** hasta 60 preguntas (30 del Bloque I de temario más 30
+         de pruebas psicotécnicas). Se puntúa de 0 a 50 puntos, con un
+         mínimo de 25 para superarla.
+      2. **Parte 2:** hasta 50 preguntas del Bloque II de temario. Se
+         puntúa de 0 a 50 puntos, con un mínimo de 25 para superarla.
+
+      Al ser un único ejercicio (no dos ejercicios distintos en días
+      separados), ambas partes se responden en la misma sesión.
+    fuente:
+      estado: "confirmado"
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública"
+      fechaConsulta: "2026-09-14"
+
+  - id: "como-se-puntua-age"
+    pregunta: "¿Cómo se puntúan los errores en el examen de la AGE?"
+    respuesta: |
+      Cada error resta un tercio de punto (penalización de -1/3 por
+      pregunta fallada), sobre las dos partes del ejercicio. Además de esta
+      penalización, hay que superar el mínimo de 25 puntos exigido en cada
+      una de las dos partes por separado (ver la pregunta sobre la
+      estructura del ejercicio).
+    fuente:
+      estado: "confirmado"
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública"
+      fechaConsulta: "2026-09-14"
+
+  - id: "genera-bolsa-age"
+    pregunta: "¿Esta oposición genera bolsa de trabajo?"
+    respuesta: |
+      Sí. Tras el proceso selectivo se forman listas de personal interino
+      (bolsa de trabajo) gestionadas por la Comisión Permanente de
+      Selección, a las que recurre la Administración para cubrir vacantes
+      temporales del Cuerpo General Auxiliar.
+    fuente:
+      estado: "confirmado"
+      fuente: "INAP — procesos selectivos de cuerpos y escalas generales, Cuerpo General Auxiliar de la Administración del Estado (https://sede.inap.gob.es/es/procedimientos-y-servicios/seleccion/procesos-selectivos-de-cuerpos-y-escalas-generales/cuerpo-general-auxiliar-de-la-administracion-del-estado-ingreso-libre-convocatoria-2025)"
+      fechaConsulta: "2026-09-14"
+
+  - id: "donde-se-destina-el-puesto-age"
+    pregunta: "Si apruebo la AGE, ¿el destino será en Aragón?"
+    respuesta: |
+      No necesariamente. Es una oferta de ámbito estatal (1.700 plazas en
+      total, sin desglose por comunidad autónoma ni provincia): el destino
+      concreto se asigna según el resultado del proceso selectivo y las
+      vacantes disponibles en cada momento, no se convoca "para Aragón"
+      específicamente. Conviene tenerlo en cuenta frente a las otras 3
+      oposiciones de este radar, que sí son procesos de ámbito autonómico o
+      local dentro de Aragón.
+    fuente:
+      estado: "confirmado"
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública"
+      fechaConsulta: "2026-09-14"
+
+  - id: "cada-cuanto-se-convoca-age"
+    pregunta: "¿Cada cuánto se convoca el Cuerpo General Auxiliar de la AGE?"
+    respuesta: |
+      Parcialmente verificado. La convocatoria actual (OEP 2025) es de
+      1.700 plazas, confirmada por BOE. Existen indicios de que la OEP
+      2021 autorizó 550 plazas y la OEP 2023 (acumulando 2021+2022)
+      autorizó 1.150, lo que apuntaría a un ritmo aproximadamente anual con
+      plazas acumuladas de varios años — pero esas dos cifras anteriores
+      proceden de síntesis de búsqueda, no de una lectura directa del BOE
+      correspondiente, así que no se dan por confirmadas al 100%.
+    fuente:
+      estado: "pendiente_confirmar"
+      nota: "Solo la cifra de la OEP 2025 (1.700 plazas) está confirmada por lectura directa del BOE. Las cifras de OEP 2021 (550) y OEP 2023 (1.150) proceden de síntesis de búsqueda no verificadas directamente."
