@@ -7,7 +7,7 @@ Nota: como es la primera spec que se implementa, las tareas 1-3 sientan también
 
 ## Base técnica del proyecto
 
-- [ ] 1. Inicializar el proyecto Next.js (App Router + TypeScript) en la raíz del repo.
+- [x] 1. Inicializar el proyecto Next.js (App Router + TypeScript) en la raíz del repo.
   - Detalle: `create-next-app` con TS y App Router. Verificar que `npm run dev` arranca con una página inicial. El esqueleto estático (`index.html`, `temario.html`, `faq.html`, `study.html`, `assets/`) se deja como referencia sin borrar todavía.
   - Satisface: base para todos los requisitos.
 - [ ] 2. Configurar Postgres (Neon) + Drizzle ORM.
