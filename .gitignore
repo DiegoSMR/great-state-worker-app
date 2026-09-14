@@ -37,6 +37,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# claude code — worktrees de sesiones paralelas (checkouts git completos, no ficheros de proyecto)
+.claude/worktrees/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

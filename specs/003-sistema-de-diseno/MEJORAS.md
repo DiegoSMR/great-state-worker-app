@@ -1,6 +1,6 @@
 # Mejoras propuestas: Sistema de diseño
 
-**Estado:** propuesta pendiente de aprobación  
+**Estado:** incorporada a `requirements.md` (revisión 2) y `notas-de-diseno.md` (secciones 9-13) — pendiente de aprobación final de Diego sobre las 4 decisiones abiertas listadas en `requirements.md`.
 **Última actualización:** 2026-09-14
 
 ## Objetivo de este documento
