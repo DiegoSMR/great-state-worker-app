@@ -108,3 +108,15 @@ export function getFaqComunes(): PreguntaFaqComun[] {
 export function getFaqEspecificas(oposicionId: string): PreguntaFaq[] {
   return getPerfilOposicion(oposicionId)?.faqEspecificas ?? [];
 }
+
+/**
+ * Ratio aspirantes/plaza de una convocatoria — null si plazas o aspirantes
+ * no están `estado: "confirmado"` (Requisito 5.2). Se calcula siempre aquí,
+ * nunca se guarda en el YAML, para que no pueda quedar desincronizada de sus
+ * dos operandos.
+ */
+export function getRatioParticipacion(c: ConvocatoriaParticipacion): number | null {
+  if (c.plazas.estado !== "confirmado" || c.aspirantes.estado !== "confirmado") return null;
+  if (c.plazas.valor === 0) return null;
+  return c.aspirantes.valor / c.plazas.valor;
+}

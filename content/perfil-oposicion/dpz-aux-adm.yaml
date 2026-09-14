@@ -63,7 +63,16 @@ retribuciones:
       estado: "pendiente_confirmar"
       nota: "No se encontró el complemento específico del puesto en fuente oficial verificable — mismo bloqueo de acceso a dpz.es (error de certificado SSL) que ha limitado buena parte de la investigación de esta oposición."
 
-participacion: []
+participacion:
+  - etiqueta: "Convocatoria 2026 (BOPZ nº68) — plazas acumuladas OEP 2023 (7) + OEP 2024 (10) + OEP 2025 (9)"
+    plazas:
+      estado: "confirmado"
+      valor: 26
+      fuente: "BOPZ nº68 (25/03/2026)"
+      fechaConsulta: "2026-09-14"
+    aspirantes:
+      estado: "pendiente_confirmar"
+      nota: "No se ha localizado en fuente oficial el número de aspirantes presentados, ni de esta convocatoria ni de anteriores — agravado por el bloqueo de acceso a dpz.es (error de certificado SSL) durante la investigación."
 
 faqEspecificas:
   - id: "es-oposicion-pura-o-concurso-dpz"

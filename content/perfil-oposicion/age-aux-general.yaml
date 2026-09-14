@@ -76,7 +76,32 @@ retribuciones:
       estado: "pendiente_confirmar"
       nota: "No encontrado en fuente oficial verificable para el puesto de Cuerpo General Auxiliar de la AGE."
 
-participacion: []
+participacion:
+  - etiqueta: "OEP 2025 (examen previsto 23/05/2026, fecha provisional)"
+    plazas:
+      estado: "confirmado"
+      valor: 1700
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025 (1.544 turno general + 156 reservadas a discapacidad ≥33%)"
+      fechaConsulta: "2026-09-14"
+    aspirantes:
+      estado: "pendiente_confirmar"
+      nota: "El examen todavía no se ha celebrado (previsto 23/05/2026) — no puede existir cifra de aspirantes presentados hasta entonces. No es un hueco de la investigación."
+
+  - etiqueta: "OEP 2023 (acumulada 2021+2022)"
+    plazas:
+      estado: "pendiente_confirmar"
+      nota: "Cifra de 1.150 plazas procedente de síntesis de búsqueda, no de lectura directa del BOE correspondiente — no se da por confirmada al 100%."
+    aspirantes:
+      estado: "pendiente_confirmar"
+      nota: "No se ha encontrado cifra agregada de aspirantes presentados — el INAP no centraliza este dato, remite a cada convocatoria individual."
+
+  - etiqueta: "OEP 2021"
+    plazas:
+      estado: "pendiente_confirmar"
+      nota: "Cifra de 550 plazas procedente de síntesis de búsqueda, no de lectura directa del BOE correspondiente — no se da por confirmada al 100%."
+    aspirantes:
+      estado: "pendiente_confirmar"
+      nota: "No se ha encontrado cifra agregada de aspirantes presentados — el INAP no centraliza este dato, remite a cada convocatoria individual."
 
 faqEspecificas:
   - id: "cuantos-ejercicios-tiene-age"

@@ -113,7 +113,34 @@ retribuciones:
       fuente: "zaragoza.es/sede/organizacion/retribuciones (https://www.zaragoza.es/sede/portal/organizacion/retribuciones) — tabla de estratos de complemento específico, estrato 00002 tomado solo como ejemplo de formato de la tabla"
       fechaConsulta: "2026-09-14"
 
-participacion: []
+participacion:
+  - etiqueta: "Convocatoria 2025 — turno libre ordinario"
+    plazas:
+      estado: "confirmado"
+      valor: 43
+      fuente: "BOP nº147 (30/06/2025); BOE nº257 (25/10/2025)"
+      fechaConsulta: "2026-09-14"
+    aspirantes:
+      estado: "pendiente_confirmar"
+      nota: "No se ha localizado en fuente oficial accesible el número de aspirantes presentados a esta convocatoria."
+
+  - etiqueta: "Convocatoria 2025 — ampliación (2 de las 4 plazas reservadas a discapacidad)"
+    plazas:
+      estado: "confirmado"
+      valor: 4
+      fuente: "BOP nº147 (30/06/2025); BOE nº257 (25/10/2025)"
+      fechaConsulta: "2026-09-14"
+    aspirantes:
+      estado: "pendiente_confirmar"
+      nota: "No se ha localizado en fuente oficial accesible el número de aspirantes presentados a esta convocatoria."
+
+  - etiqueta: "Convocatoria 2019 (referencia histórica, fuente secundaria no oficial)"
+    plazas:
+      estado: "pendiente_confirmar"
+      nota: "Una fuente secundaria no oficial apunta a que la convocatoria de 2019 también fue de 47 plazas, pero no se ha podido confirmar con una fuente primaria (BOP/BOE) — no se da por buena hasta verificarla directamente."
+    aspirantes:
+      estado: "pendiente_confirmar"
+      nota: "No se ha localizado en fuente oficial accesible el número de aspirantes presentados a esta convocatoria."
 
 faqEspecificas:
   - id: "cuantos-ejercicios-tiene-ayto-zgz"

@@ -4,7 +4,12 @@ import { notFound } from "next/navigation";
 import type { DatoOficial } from "@/lib/dato-oficial";
 import { extraerEnlaceFuente } from "@/lib/contenido";
 import { esNucleoComun, getOposicion, getResumenNucleoComun, getTemasDeOposicion } from "@/lib/temario";
-import { getFaqEspecificas, getPerfilOposicion, type FilaRetribucion } from "@/lib/perfil-oposicion";
+import {
+  getFaqEspecificas,
+  getPerfilOposicion,
+  getRatioParticipacion,
+  type FilaRetribucion,
+} from "@/lib/perfil-oposicion";
 import { Markdown } from "@/components/estudio/Markdown";
 import { DatoPendiente } from "@/components/estudio/DatoPendiente";
 import { FuenteInline } from "@/components/estudio/FuenteInline";
@@ -202,6 +207,67 @@ export default async function OposicionPage({
                             );
                           })}
                         </Fragment>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          )}
+
+          {perfil.participacion.length > 0 && (
+            <section aria-labelledby="participacion-oposicion">
+              <h2 id="participacion-oposicion" className="text-lg font-medium text-texto-primario">
+                Plazas y participación
+              </h2>
+              <div className="mt-3 overflow-x-auto rounded-md border border-borde">
+                <table className="w-full min-w-[480px] border-collapse text-sm">
+                  <thead>
+                    <tr>
+                      <th className="border-b border-borde px-3 py-2 text-left font-medium text-texto-secundario">
+                        Convocatoria
+                      </th>
+                      <th className="border-b border-borde px-3 py-2 text-left font-medium text-texto-secundario">
+                        Plazas
+                      </th>
+                      <th className="border-b border-borde px-3 py-2 text-left font-medium text-texto-secundario">
+                        Aspirantes
+                      </th>
+                      <th className="border-b border-borde px-3 py-2 text-left font-medium text-texto-secundario">
+                        Ratio
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {perfil.participacion.map((conv, i) => {
+                      const ratio = getRatioParticipacion(conv);
+                      return (
+                        <tr key={i} className="border-b border-borde last:border-b-0">
+                          <td className="px-3 py-2 align-top text-texto-primario">{conv.etiqueta}</td>
+                          <td className="px-3 py-2 align-top text-texto-primario">
+                            {conv.plazas.estado === "confirmado" ? (
+                              conv.plazas.valor
+                            ) : (
+                              <DatoPendiente nota={conv.plazas.nota} />
+                            )}
+                          </td>
+                          <td className="px-3 py-2 align-top text-texto-primario">
+                            {conv.aspirantes.estado === "confirmado" ? (
+                              conv.aspirantes.valor
+                            ) : (
+                              <DatoPendiente nota={conv.aspirantes.nota} />
+                            )}
+                          </td>
+                          <td className="px-3 py-2 align-top text-texto-primario">
+                            {ratio === null ? (
+                              <span aria-label="Ratio no disponible" className="text-texto-secundario">
+                                —
+                              </span>
+                            ) : (
+                              `${ratio.toFixed(1)}×`
+                            )}
+                          </td>
+                        </tr>
                       );
                     })}
                   </tbody>

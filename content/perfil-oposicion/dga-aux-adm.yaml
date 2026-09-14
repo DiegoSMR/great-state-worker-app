@@ -67,7 +67,16 @@ retribuciones:
       estado: "pendiente_confirmar"
       nota: "No se encontró tabla oficial con cifras exactas de complemento específico para el Subgrupo C2 en la Administración de la Comunidad Autónoma de Aragón. Mismo Acuerdo de 14/01/2026 citado en el sueldo base, sin cifras exactas accesibles."
 
-participacion: []
+participacion:
+  - etiqueta: "Convocatoria 25/0109 — plazas acumuladas OEP 2023+2024+2025 (1 reservada a víctimas de violencia de género)"
+    plazas:
+      estado: "confirmado"
+      valor: 28
+      fuente: "BOA nº247, 23/12/2025, csv BOA20251223012, Resolución de 19/12/2025 del Director General de la Función Pública"
+      fechaConsulta: "2026-09-14"
+    aspirantes:
+      estado: "pendiente_confirmar"
+      nota: "No se ha localizado en fuente oficial el número de aspirantes presentados, ni en esta convocatoria (25/0109) ni en las anteriores (18/19, 22/23), de las que tampoco se ha podido confirmar el número de plazas."
 
 faqEspecificas:
   - id: "cuantos-ejercicios-tiene-dga"
