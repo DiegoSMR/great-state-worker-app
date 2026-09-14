@@ -6,20 +6,15 @@ export default function EstudioPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Estudio</h1>
-        <Link href="/estudio/marcadores" className="text-sm text-neutral-600 hover:underline">
-          ★ Mis marcadores
-        </Link>
-      </div>
-      <p className="mt-2 text-neutral-600">
+      <h1 className="text-2xl font-semibold text-texto-primario">Estudio</h1>
+      <p className="mt-2 text-texto-secundario">
         Elige cómo quieres navegar el material.
       </p>
 
       <div className="mt-8 grid gap-8 sm:grid-cols-2">
         <section>
-          <h2 className="text-lg font-medium">Por oposición</h2>
-          <p className="mt-1 text-sm text-neutral-600">
+          <h2 className="text-lg font-medium text-texto-primario">Por oposición</h2>
+          <p className="mt-1 text-sm text-texto-secundario">
             El temario oficial completo de un proceso concreto, en su numeración.
           </p>
           <ul className="mt-4 space-y-2">
@@ -27,10 +22,10 @@ export default function EstudioPage() {
               <li key={o.id}>
                 <Link
                   href={`/estudio/oposicion/${o.id}`}
-                  className="block rounded-md border border-neutral-200 px-4 py-3 hover:border-neutral-400"
+                  className="block rounded-md border border-borde px-4 py-3 hover:border-texto-secundario"
                 >
-                  <span className="font-medium">{o.nombre}</span>
-                  <span className="block text-sm text-neutral-600">
+                  <span className="font-medium text-texto-primario">{o.nombre}</span>
+                  <span className="block text-sm text-texto-secundario">
                     {o.organismo} · {o.subgrupo}
                   </span>
                 </Link>
@@ -40,14 +35,14 @@ export default function EstudioPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-medium">Por tema</h2>
-          <p className="mt-1 text-sm text-neutral-600">
+          <h2 className="text-lg font-medium text-texto-primario">Por tema</h2>
+          <p className="mt-1 text-sm text-texto-secundario">
             El catálogo de conceptos, sin repetir lo que comparten varias
             oposiciones.
           </p>
           <Link
             href="/estudio/tema"
-            className="mt-4 block rounded-md border border-neutral-200 px-4 py-3 hover:border-neutral-400"
+            className="mt-4 block rounded-md border border-borde px-4 py-3 text-texto-primario hover:border-texto-secundario"
           >
             Ver catálogo de temas
           </Link>

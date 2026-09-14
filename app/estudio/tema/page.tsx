@@ -7,11 +7,8 @@ export default function CatalogoTemasPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
-      <Link href="/estudio" className="text-sm text-neutral-600 hover:underline">
-        ← Estudio
-      </Link>
-      <h1 className="mt-2 text-2xl font-semibold">Catálogo de temas</h1>
-      <p className="mt-1 text-neutral-600">
+      <h1 className="text-2xl font-semibold text-texto-primario">Catálogo de temas</h1>
+      <p className="mt-1 text-texto-secundario">
         {conceptos.length} conceptos, sin repetir lo que comparten varias
         oposiciones.
       </p>
@@ -21,7 +18,7 @@ export default function CatalogoTemasPage() {
           <li key={concepto.id}>
             <Link
               href={`/estudio/tema/${concepto.id}`}
-              className="flex items-center gap-3 rounded-md border border-neutral-200 px-4 py-3 hover:border-neutral-400"
+              className="flex items-center gap-3 rounded-md border border-borde px-4 py-3 text-texto-primario hover:border-texto-secundario"
             >
               <span className="flex-1">{concepto.titulo}</span>
               {esNucleoComun(concepto.id) && <NucleoComunBadge />}

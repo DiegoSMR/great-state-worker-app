@@ -16,11 +16,8 @@ export default async function OposicionPage({
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
-      <Link href="/estudio" className="text-sm text-neutral-600 hover:underline">
-        ← Estudio
-      </Link>
-      <h1 className="mt-2 text-2xl font-semibold">{oposicion.nombre}</h1>
-      <p className="mt-1 text-neutral-600">
+      <h1 className="text-2xl font-semibold text-texto-primario">{oposicion.nombre}</h1>
+      <p className="mt-1 text-texto-secundario">
         {oposicion.organismo} · {oposicion.subgrupo} · {temas.length} temas
       </p>
 
@@ -29,9 +26,9 @@ export default async function OposicionPage({
           <li key={`${tema.op}-${tema.num}`}>
             <Link
               href={`/estudio/tema/${tema.concepto}`}
-              className="flex items-baseline gap-3 rounded-md border border-neutral-200 px-4 py-3 hover:border-neutral-400"
+              className="flex items-baseline gap-3 rounded-md border border-borde px-4 py-3 text-texto-primario hover:border-texto-secundario"
             >
-              <span className="shrink-0 text-sm font-medium text-neutral-500">
+              <span className="shrink-0 text-sm font-medium text-texto-secundario">
                 Tema {tema.num}
               </span>
               <span className="flex-1">{tema.titulo}</span>

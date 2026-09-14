@@ -17,13 +17,10 @@ export default async function MarcadoresPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
-      <Link href="/estudio" className="text-sm text-neutral-600 hover:underline">
-        ← Estudio
-      </Link>
-      <h1 className="mt-2 text-2xl font-semibold">Mis marcadores</h1>
+      <h1 className="text-2xl font-semibold text-texto-primario">Mis marcadores</h1>
 
       {items.length === 0 ? (
-        <p className="mt-6 text-neutral-600">
+        <p className="mt-6 text-texto-secundario">
           Todavía no has marcado ningún tema. Márcalo desde su página para
           verlo aquí.
         </p>
@@ -32,9 +29,9 @@ export default async function MarcadoresPage() {
           {items.map((item) => (
             <li
               key={item.conceptoId}
-              className="flex items-center justify-between gap-3 rounded-md border border-neutral-200 px-4 py-3"
+              className="flex items-center justify-between gap-3 rounded-md border border-borde px-4 py-3"
             >
-              <Link href={`/estudio/tema/${item.conceptoId}`} className="flex-1">
+              <Link href={`/estudio/tema/${item.conceptoId}`} className="flex-1 text-texto-primario">
                 {item.concepto!.titulo}
               </Link>
               <BookmarkButton conceptoId={item.conceptoId} marcado={true} />

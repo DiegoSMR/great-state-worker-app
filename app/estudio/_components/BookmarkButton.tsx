@@ -13,8 +13,8 @@ export function BookmarkButton({
         type="submit"
         className={
           marcado
-            ? "rounded-md border border-amber-400 bg-amber-50 px-3 py-1.5 text-sm font-medium text-amber-800 hover:bg-amber-100"
-            : "rounded-md border border-neutral-300 px-3 py-1.5 text-sm font-medium text-neutral-700 hover:border-neutral-400"
+            ? "rounded-md border border-bookmark-texto/40 bg-bookmark-bg px-3 py-1.5 text-sm font-medium text-bookmark-texto hover:bg-bookmark-bg/80"
+            : "rounded-md border border-borde px-3 py-1.5 text-sm font-medium text-texto-secundario hover:border-texto-secundario hover:text-texto-primario"
         }
       >
         {marcado ? "★ Marcado" : "☆ Marcar"}
