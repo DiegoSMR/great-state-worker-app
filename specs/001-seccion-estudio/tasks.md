@@ -28,12 +28,12 @@ Nota: como es la primera spec que se implementa, las tareas 1-3 sientan también
 
 ## Requisito 2 — Contenido de estudio real por tema
 
-- [ ] 7. Loader de contenido de un concepto.
+- [x] 7. Loader de contenido de un concepto.
   - Detalle: `lib/contenido.ts` lee `content/estudio/<concepto-id>.md`, parsea el frontmatter `fuentes:` y las tres secciones (`## Texto oficial`, `## Material adaptado`, `## Resumen` con `### Esquema` y `### Resumen extenso`). Si el fichero no existe, debe devolver un estado "sin contenido" explícito, nunca lanzar un error sin capturar.
   - Satisface: Requisito 2, criterio 1 (estructura del dato) y criterio 3 (base del estado "pendiente").
-- [ ] 8. Página `/estudio/tema/[conceptoId]` — vista de un concepto con: título, oposiciones que lo piden con su numeración oficial, indicador de núcleo común (tarea 11), y las tres secciones de contenido claramente diferenciadas.
-  - Satisface: Requisito 2, criterio 1.
-- [ ] 9. Estado "contenido pendiente" en la vista de tema, para cuando el loader de la tarea 7 no encuentra fichero.
+- [x] 8. Página `/estudio/tema/[conceptoId]` — vista de un concepto con: título, oposiciones que lo piden con su numeración oficial, indicador de núcleo común (tarea 11), y las tres secciones de contenido claramente diferenciadas.
+  - Satisface: Requisito 2, criterio 1. (Indicador de núcleo común pendiente de la tarea 11/12, Requisito 3.)
+- [x] 9. Estado "contenido pendiente" en la vista de tema, para cuando el loader de la tarea 7 no encuentra fichero.
   - Detalle: mensaje explícito y visualmente distinto de un tema con contenido real — nunca una sección en blanco ni un error de render. Ver criterio de diseño del agente `disenador-maquetador`.
   - Satisface: Requisito 2, criterio 3.
 - [ ] 10. Redactar 2-3 conceptos reales de núcleo común en `content/estudio/` con los agentes `scrapeador-fuentes-primarias` + `preparador-opos`, para validar el formato de extremo a extremo antes de cerrar la spec.
