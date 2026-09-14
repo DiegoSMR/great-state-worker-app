@@ -10,7 +10,7 @@ Nota: como es la primera spec que se implementa, las tareas 1-3 sientan también
 - [x] 1. Inicializar el proyecto Next.js (App Router + TypeScript) en la raíz del repo.
   - Detalle: `create-next-app` con TS y App Router. Verificar que `npm run dev` arranca con una página inicial. El esqueleto estático (`index.html`, `temario.html`, `faq.html`, `study.html`, `assets/`) se deja como referencia sin borrar todavía.
   - Satisface: base para todos los requisitos.
-- [ ] 2. Configurar Postgres (Neon) + Drizzle ORM.
+- [x] 2. Configurar Postgres (Neon) + Drizzle ORM.
   - Detalle: instalar `drizzle-orm` + `drizzle-kit`, crear `db/schema.ts` con la tabla `usuarios` (una sola fila fija, ver `ARCHITECTURE.md`), variable de entorno `DATABASE_URL`, y comando de migración funcionando contra una base Neon real.
   - Satisface: base para Requisito 4.
 - [x] 3. Loader de `content/temario.yaml` en el servidor.
