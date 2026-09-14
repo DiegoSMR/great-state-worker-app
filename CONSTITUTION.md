@@ -38,6 +38,7 @@ El proyecto Neon de Diego está conectado a este repo de GitHub, con un workflow
 - **`disenador-maquetador`** — decisiones de UI/UX y maquetación, tablet-first.
 - **`investigador-convocatorias`** — datos factuales de convocatorias (fechas, plazas, plazos) y radar de procesos nuevos.
 - **`verificador-vigencia-normativa`** — comprueba si el texto oficial ya transcrito en `content/estudio/*.md` sigue vigente (reformas, derogaciones, renumeraciones) y reporta discrepancias a `preparador-opos`; no reescribe contenido él mismo.
+- **`lead-developer`** — implementa en código las specs aprobadas, mantiene `ARCHITECTURE.md` al día, coordina al resto de agentes traduciendo sus decisiones a implementación, y propone futuros evolutivos técnicos sin adelantarse a construirlos.
 
 ## Principios del producto
 
