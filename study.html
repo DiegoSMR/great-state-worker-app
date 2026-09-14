@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Estudio — OpoStudy</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2d;--panel2:#18233b;--text:#edf2ff;--muted:#9eabc5;--accent:#7c9cff;--accent2:#66e3c4;--border:#273451}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#090e1b,#10182b);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.5}.wrap{max-width:1180px;margin:auto;padding:0 24px}
+nav{height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}a{color:inherit;text-decoration:none}.logo{font-weight:800}.logo span{color:var(--accent)}.nav{display:flex;gap:20px;color:var(--muted);font-size:14px}
+header{padding:42px 0 28px}h1{font-size:42px;margin:0 0 8px}.sub{color:var(--muted);max-width:750px}
+.layout{display:grid;grid-template-columns:270px 1fr;gap:18px}.panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px}
+label{display:block;font-size:12px;color:var(--muted);margin:0 0 7px}.select{width:100%;padding:10px;background:#0e1627;color:var(--text);border:1px solid var(--border);border-radius:9px;margin-bottom:18px}
+.progress{height:8px;background:#26324b;border-radius:99px;overflow:hidden}.progress i{display:block;width:38%;height:100%;background:var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}.kpi{background:var(--panel);border:1px solid var(--border);padding:17px;border-radius:14px}.kpi b{font-size:25px;display:block}.kpi span{font-size:12px;color:var(--muted)}
+.lesson{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:25px}.crumb{font-size:12px;color:var(--accent2);margin-bottom:8px}.lesson h2{margin:0 0 12px;font-size:28px}.lesson p{color:#c8d2e7}.lesson h3{margin-top:28px}.callout{padding:15px;background:var(--panel2);border-left:3px solid var(--accent);border-radius:8px;margin:20px 0}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.concept{padding:16px;border:1px solid var(--border);border-radius:12px;background:#0f1729}.concept b{display:block;margin-bottom:5px}.concept span{font-size:13px;color:var(--muted)}
+.actions{display:flex;justify-content:space-between;gap:10px;margin-top:28px}.btn{padding:11px 16px;border:1px solid var(--border);border-radius:9px;background:var(--panel2);color:var(--text);font-weight:700;cursor:pointer}.btn.primary{background:var(--accent);color:#08101f;border-color:var(--accent)}
+.hidden{display:none}@media(max-width:800px){.layout{grid-template-columns:1fr}.kpis,.cards{grid-template-columns:1fr}.nav{gap:8px}}
+</style>
+</head>
+<body><div class="wrap">
+<nav><a class="logo" href="index.html">Opo<span>Study</span></a><div class="nav"><a href="index.html">Inicio</a><a href="study.html">Estudio</a><a href="faq.html">FAQ</a></div></nav>
+<header><h1>Zona de estudio</h1><p class="sub">Aquí empieza la parte importante: seleccionar qué quieres aprender y entrar directamente en el contenido. El examen vendrá después.</p></header>
+
+<div class="layout">
+<aside class="panel">
+<label>OPOSICIÓN</label>
+<select class="select" id="opo"><option>Auxiliar Administrativo — Zaragoza</option><option>Auxiliar Administrativo — DGA</option><option>Auxiliar Administrativo — AGE</option><option>TAI — Estado</option><option>Informática — DGA</option></select>
+<label>ÁREA</label>
+<select class="select" id="area"><option>Constitución</option><option>Procedimiento administrativo</option><option>Empleo público</option><option>Ofimática</option><option>Bases de datos</option><option>Programación</option></select>
+<label>PROGRESO DEL TEMA</label>
+<div class="progress"><i></i></div><p style="font-size:12px;color:var(--muted)">38% completado</p>
+<hr style="border-color:var(--border);border-width:1px 0 0;margin:22px 0">
+<p style="font-size:13px;color:var(--muted)">Filtros futuros: nivel, convocatoria, bloque, dificultad, estado de aprendizaje y temas comunes.</p>
+</aside>
+
+<main>
+<div class="kpis">
+<div class="kpi"><b>12</b><span>conceptos disponibles</span></div>
+<div class="kpi"><b>4</b><span>pendientes de repaso</span></div>
+<div class="kpi"><b>38%</b><span>tema actual</span></div>
+</div>
+
+<article class="lesson" id="lesson">
+<div class="crumb">ADMINISTRACIÓN · CONSTITUCIÓN</div>
+<h2>La Constitución Española de 1978</h2>
+<p>Esta es una <strong>maqueta de la vista de aprendizaje</strong>. La aplicación real sustituirá este contenido de ejemplo por una lección completa construida a partir del contenido oficial y estructurada para facilitar el aprendizaje.</p>
+
+<div class="callout"><strong>Objetivo de la sesión:</strong> comprender el concepto antes de intentar memorizar preguntas de examen.</div>
+
+<h3>Conceptos que deberías dominar</h3>
+<div class="cards">
+<div class="concept"><b>Contexto y estructura</b><span>Comprender cómo se organiza el texto constitucional.</span></div>
+<div class="concept"><b>Principios constitucionales</b><span>Identificar los principios y elementos fundamentales.</span></div>
+<div class="concept"><b>Derechos y deberes</b><span>Relacionar los derechos con su regulación.</span></div>
+<div class="concept"><b>Organización del Estado</b><span>Entender la estructura institucional que corresponda.</span></div>
+</div>
+
+<div class="actions"><button class="btn" onclick="prev()">← Anterior</button><button class="btn primary" onclick="next()">He terminado →</button></div>
+</article>
+
+<article class="lesson hidden" id="done">
+<div class="crumb">SESIÓN COMPLETADA</div><h2>Buen trabajo.</h2><p>Has marcado esta lección como estudiada. En una versión posterior, aquí entrarían el repaso espaciado, las flashcards y una comprobación breve de comprensión.</p>
+<button class="btn primary" onclick="back()">Volver a la lección</button>
+</article>
+</main>
+</div>
+</div>
+<script>
+function next(){document.querySelector('#lesson').classList.add('hidden');document.querySelector('#done').classList.remove('hidden')}
+function back(){document.querySelector('#done').classList.add('hidden');document.querySelector('#lesson').classList.remove('hidden')}
+function prev(){alert('En la app real: volver al concepto/lección anterior.')}
+</script>
+</body></html>

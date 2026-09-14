@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OpoStudy — Máquina de aprendizaje</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2d;--panel2:#18233b;--text:#edf2ff;--muted:#9eabc5;--accent:#7c9cff;--accent2:#66e3c4;--border:#273451}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:linear-gradient(145deg,#090e1b,#10182b 55%,#0c1525);color:var(--text);line-height:1.5}
+a{color:inherit;text-decoration:none}.wrap{max-width:1180px;margin:auto;padding:0 24px}
+nav{height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.logo{font-weight:800;letter-spacing:.3px}.logo span{color:var(--accent)}
+.navlinks{display:flex;gap:22px;color:var(--muted);font-size:14px}.navlinks a:hover{color:white}
+.hero{padding:76px 0 55px;display:grid;grid-template-columns:1.35fr .65fr;gap:40px;align-items:center}
+.badge{display:inline-flex;padding:6px 10px;border:1px solid #314365;border-radius:999px;color:#b8c6e7;font-size:12px;background:#111a2d}
+h1{font-size:clamp(40px,6vw,68px);line-height:1.02;margin:16px 0}.hero p{font-size:18px;color:var(--muted);max-width:700px}
+.ctas{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}.btn{padding:11px 16px;border-radius:10px;border:1px solid var(--border);background:var(--panel2);font-weight:700}.btn.primary{background:var(--accent);color:#08101f;border-color:var(--accent)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat{padding:20px;background:rgba(18,26,45,.8);border:1px solid var(--border);border-radius:16px}.stat b{font-size:30px;display:block}.stat small{color:var(--muted)}
+section{padding:30px 0 65px}h2{font-size:30px;margin:0 0 10px} .lead{color:var(--muted);max-width:760px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:25px}.card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:22px}.card h3{margin-top:0}.card p{color:var(--muted)}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}.filter{background:var(--panel);color:var(--text);border:1px solid var(--border);border-radius:9px;padding:9px 12px}
+.topic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.topic{padding:17px;background:var(--panel);border:1px solid var(--border);border-radius:13px}.topic .tag{font-size:11px;color:var(--accent2)}.topic p{margin:5px 0 0}
+.timeline{display:grid;gap:10px}.event{display:grid;grid-template-columns:145px 1fr;gap:20px;padding:16px;border:1px solid var(--border);border-radius:12px;background:var(--panel)}.event time{font-weight:700}.event span{color:var(--muted)}
+footer{padding:30px 0 50px;border-top:1px solid var(--border);color:var(--muted);font-size:13px}
+@media(max-width:800px){.hero{grid-template-columns:1fr}.cards,.topic-grid{grid-template-columns:1fr}.navlinks{gap:10px}.event{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="logo" href="index.html">Opo<span>Study</span></a>
+  <div class="navlinks"><a href="study.html">Estudio</a><a href="#aprender">Aprender</a><a href="#temario">Temario</a><a href="#calendario">Calendario</a><a href="faq.html">FAQ</a></div>
+</nav>
+
+<header class="hero">
+  <div>
+    <span class="badge">PROTOTIPO · great-state-worker-app</span>
+    <h1>Una máquina para aprender oposiciones.</h1>
+    <p>Un único catálogo de conocimiento, filtrable por oposición, área y nivel. Primero aprender; después practicar, examinarse y medir el progreso.</p>
+    <div class="ctas"><a class="btn primary" href="study.html">Empezar a estudiar</a><a class="btn" href="faq.html">Ver cómo funciona</a></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>7</b><small>oposiciones objetivo</small></div>
+    <div class="stat"><b>2</b><small>familias: Administración + Informática</small></div>
+    <div class="stat"><b>∞</b><small>combinaciones de filtros</small></div>
+    <div class="stat"><b>1</b><small>base de conocimiento</small></div>
+  </div>
+</header>
+
+<section id="aprender">
+<h2>Primero: aprender</h2><p class="lead">La aplicación no empieza siendo un simulador de examen. El núcleo es el contenido: lecciones, conceptos y material de estudio reutilizable entre oposiciones.</p>
+<div class="cards">
+ <div class="card"><h3>📚 Temario dinámico</h3><p>Los conceptos viven en un catálogo común. Una misma materia puede aparecer en varias oposiciones sin duplicar contenido.</p></div>
+ <div class="card"><h3>🧠 Repaso</h3><p>Futura capa de flashcards y repetición espaciada apoyada en el mismo contenido que estudias.</p></div>
+ <div class="card"><h3>📝 Examen después</h3><p>Tests y simulacros se añaden encima del conocimiento, no sustituyen al sistema de aprendizaje.</p></div>
+</div>
+</section>
+
+<section id="temario">
+<h2>Explora el temario</h2><p class="lead">Este prototipo simula el concepto clave: filtrar un pool único de temas.</p>
+<div class="filters">
+<select class="filter" id="opo"><option value="all">Todas las oposiciones</option><option>Administración</option><option>Informática</option></select>
+<select class="filter" id="area"><option value="all">Todas las áreas</option><option>Constitución</option><option>Procedimiento administrativo</option><option>Empleo público</option><option>Ofimática</option><option>Bases de datos</option><option>Programación</option><option>Redes y seguridad</option></select>
+</div>
+<div class="topic-grid" id="topics"></div>
+</section>
+
+<section id="calendario">
+<h2>Calendario y radar</h2><p class="lead">El sistema contempla un seguimiento de convocatorias. En este prototipo no se inventan fechas que todavía no estén verificadas.</p>
+<div class="timeline">
+ <div class="event"><time>Mensual</time><div><b>Radar de convocatorias</b><br><span>Revisión automática de nuevas convocatorias y oportunidades.</span></div></div>
+ <div class="event"><time>14/09/2026</time><div><b>Estado del prototipo</b><br><span>Fecha de esta maqueta. Las fechas concretas de cada convocatoria quedan pendientes de datos oficiales.</span></div></div>
+ <div class="event"><time>Próximamente</time><div><b>Planificador de estudio</b><br><span>Integrará temas, repasos y progreso personal.</span></div></div>
+</div>
+</section>
+
+<footer>OpoStudy · prototipo estático · Pensado para evolucionar hacia una app de estudio personal y, más adelante, multiusuario.</footer>
+</div>
+<script>
+const topics=[
+ {t:"Constitución Española",o:"Administración",a:"Constitución"},
+ {t:"Procedimiento Administrativo Común",o:"Administración",a:"Procedimiento administrativo"},
+ {t:"Estatuto Básico del Empleado Público",o:"Administración",a:"Empleo público"},
+ {t:"Estatuto de Autonomía de Aragón",o:"Administración",a:"Constitución"},
+ {t:"Igualdad y violencia de género",o:"Administración",a:"Empleo público"},
+ {t:"Prevención de Riesgos Laborales",o:"Administración",a:"Empleo público"},
+ {t:"Protección de datos",o:"Administración",a:"Empleo público"},
+ {t:"Ofimática básica",o:"Administración",a:"Ofimática"},
+ {t:"Bases de datos y SQL",o:"Informática",a:"Bases de datos"},
+ {t:"Programación orientada a objetos",o:"Informática",a:"Programación"},
+ {t:"Arquitectura cliente-servidor",o:"Informática",a:"Programación"},
+ {t:"Desarrollo web",o:"Informática",a:"Programación"},
+ {t:"Redes",o:"Informática",a:"Redes y seguridad"},
+ {t:"Seguridad informática",o:"Informática",a:"Redes y seguridad"}
+];
+const box=document.querySelector("#topics"), opo=document.querySelector("#opo"), area=document.querySelector("#area");
+function render(){let o=opo.value,a=area.value;box.innerHTML=topics.filter(x=>(o==="all"||x.o===o)&&(a==="all"||x.a===a)).map(x=>`<article class="topic"><div class="tag">${x.o} · ${x.a}</div><p>${x.t}</p></article>`).join("")||"<p>No hay resultados con estos filtros.</p>"}
+opo.onchange=area.onchange=render; render();
+</script>
+</body></html>
