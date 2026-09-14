@@ -860,3 +860,50 @@ Roadmap definitivo
 ```
 
 Solo después de esa revisión debería empezarse a convertir cada bloque en `requirements.md → design.md → tasks.md`.
+
+---
+
+# 18. Consideraciones arquitectónicas a revisar antes de implementar (añadido 2026-09-14)
+
+Diego aportó una segunda pasada sobre este documento centrada en riesgos de modelo de datos que conviene tener presentes antes de escribir `requirements.md` de las fases 004+ — no implican que deban resolverse ya, sino que cada spec futura debería revisarlos explícitamente antes de cerrar su diseño.
+
+## 18.1. Histórico frente a estado actual
+
+No debería reducirse el aprendizaje a un booleano (`concepto.estudiado = true`). Debe estudiarse conservar eventos (`concepto estudiado`, `flashcard respondida`, `pregunta acertada/fallada`, `sesión realizada`, `repaso realizado`) — recuperar histórico que nunca se almacenó puede ser imposible más adelante. Relevante sobre todo para `004-progreso-estudio` y `007-sesiones-estudio`.
+
+## 18.2. Exposición, estudio, recuerdo y dominio
+
+Evitar asumir `He leído = He estudiado = Lo recuerdo = Lo domino`. `003-sistema-de-diseno` ya distingue explícitamente progreso de lectura (posición) de progreso de aprendizaje (ver Requisito 10 de esa spec) — esta distinción debe mantenerse y profundizarse en `004-progreso-estudio`: el modelo mínimo debería poder representar exposición → estudio → recuerdo activo → práctica → dominio estimado sin comprometerse de entrada a un algoritmo concreto de estimación.
+
+## 18.3. Provenance y trazabilidad
+
+Todo contenido derivado debería poder responder "¿de dónde sale esta información?" (fuente oficial / elaboración propia / adaptación / generación asistida por IA). Para contenido normativo, conservar norma, artículo, fuente oficial, versión y fecha de verificación cuando proceda — `003-sistema-de-diseno` ya cubre la superficie de UI de esto (Requisito 11, trazabilidad normativa vía `fuentes:`), pero el modelo de provenance más amplio (distinguir oficial/propio/adaptado/generado por IA) queda pendiente para cuando se diseñe generación de contenido asistida por IA a mayor escala.
+
+## 18.4. Versionado del contenido
+
+Debe estudiarse cómo manejar cambios normativos sin sobrescribir silenciosamente el pasado — un modelo mínimo tipo `concepto → versión actual / versiones anteriores / cambios relevantes`. No implementar hasta que `verificador-vigencia-normativa` necesite realmente conservar histórico de cambios, no solo el estado binario "en revisión" actual.
+
+## 18.5. Actividad como infraestructura transversal
+
+Debe estudiarse si una representación común de actividad (eventos) puede alimentar dashboard, estadísticas, historial, recomendaciones y progreso a la vez, en vez de que cada spec futura (`007-sesiones-estudio`, `008-dashboard`, `014-estadisticas`, `015-recomendaciones`) invente su propio registro de eventos incompatible con las demás. Vale la pena resolver esto como decisión arquitectónica explícita antes de aprobar el `requirements.md` de la primera de esas specs que se aborde.
+
+## 18.6. Búsqueda como capacidad transversal
+
+Aunque la búsqueda avanzada es una fase tardía del roadmap (§9), las primeras specs de contenido deberían dejar los datos en una forma que facilite indexar y localizar conceptos, temas, artículos, normas, términos, flashcards, preguntas, notas y fuentes — no bloquear una futura búsqueda por decisiones tempranas de modelado.
+
+---
+
+# 19. Checklist para evaluar nuevas funcionalidades (añadido 2026-09-14)
+
+Antes de aprobar cualquier funcionalidad nueva (spec 004 en adelante), conviene pasar este filtro explícito:
+
+1. ¿Mejora directamente el aprendizaje?
+2. ¿Reduce fricción?
+3. ¿Utiliza o produce datos útiles para otras funcionalidades? (ver §12, "cada funcionalidad debe alimentar el sistema")
+4. ¿Encaja con el modelo de conceptos (§3), o crea un silo independiente?
+5. ¿Tiene dependencias todavía inexistentes?
+6. ¿Genera complejidad innecesaria para el problema real de Diego (plaza en Aragón, no "aprobar cualquier cosa")?
+7. ¿Puede implementarse después sin bloquear nada de lo que se construye ahora?
+8. ¿Es una necesidad real o simplemente una feature atractiva?
+
+Y, de forma más granular al diseñar el `requirements.md` de cada fase, revisar contra las consideraciones de la §18 las que apliquen (histórico vs. estado actual, distinción exposición/estudio/recuerdo/dominio, provenance, versionado, actividad transversal, búsqueda transversal).
