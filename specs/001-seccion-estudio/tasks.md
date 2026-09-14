@@ -49,15 +49,15 @@ Nota: como es la primera spec que se implementa, las tareas 1-3 sientan también
 
 ## Requisito 4 — Sistema de bookmarks
 
-- [ ] 13. Tabla `bookmark(usuario_id, concepto_id, creado_en)` en `db/schema.ts`, clave primaria compuesta, + migración aplicada.
+- [x] 13. Tabla `bookmark(usuario_id, concepto_id, creado_en)` en `db/schema.ts`, clave primaria compuesta, + migración aplicada.
   - Satisface: Requisito 4 (modelo de datos).
-- [ ] 14. Server Action `toggleBookmark(conceptoId)` — upsert si no existe, delete si ya existe.
+- [x] 14. Server Action `toggleBookmark(conceptoId)` — upsert si no existe, delete si ya existe.
   - Satisface: Requisito 4, criterio 1.
-- [ ] 15. Botón de marcar/desmarcar en `/estudio/tema/[conceptoId]`, conectado a la tarea 14, sin recargar la página.
+- [x] 15. Botón de marcar/desmarcar en `/estudio/tema/[conceptoId]`, conectado a la tarea 14, sin recargar la página.
   - Satisface: Requisito 4, criterio 1.
-- [ ] 16. Página `/estudio/marcadores` — lista todos los bookmarks del usuario con acceso directo a cada tema.
+- [x] 16. Página `/estudio/marcadores` — lista todos los bookmarks del usuario con acceso directo a cada tema.
   - Satisface: Requisito 4, criterio 2.
-- [ ] 17. Desmarcar un tema desde `/estudio/marcadores` lo quita de la lista inmediatamente.
+- [x] 17. Desmarcar un tema desde `/estudio/marcadores` lo quita de la lista inmediatamente.
   - Satisface: Requisito 4, criterio 3.
 
 ## Cierre de la spec

@@ -5,6 +5,8 @@ import remarkGfm from "remark-gfm";
 import { esNucleoComun, getConcepto, getOposicionesDeConcepto } from "@/lib/temario";
 import { getContenidoConcepto } from "@/lib/contenido";
 import { NucleoComunBadge } from "../../_components/NucleoComunBadge";
+import { BookmarkButton } from "../../_components/BookmarkButton";
+import { isBookmarked } from "../../actions";
 
 export default async function ConceptoPage({
   params,
@@ -18,6 +20,7 @@ export default async function ConceptoPage({
   const oposicionesDelConcepto = getOposicionesDeConcepto(conceptoId);
   const contenido = getContenidoConcepto(conceptoId);
   const nucleoComun = esNucleoComun(conceptoId);
+  const marcado = await isBookmarked(conceptoId);
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
@@ -25,8 +28,9 @@ export default async function ConceptoPage({
         ← Catálogo de temas
       </Link>
       <div className="mt-2 flex flex-wrap items-center gap-3">
-        <h1 className="text-2xl font-semibold">{concepto.titulo}</h1>
+        <h1 className="flex-1 text-2xl font-semibold">{concepto.titulo}</h1>
         {nucleoComun && <NucleoComunBadge />}
+        <BookmarkButton conceptoId={conceptoId} marcado={marcado} />
       </div>
       {nucleoComun && (
         <p className="mt-1 text-sm text-neutral-600">

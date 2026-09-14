@@ -6,7 +6,12 @@ export default function EstudioPage() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-2xl font-semibold">Estudio</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">Estudio</h1>
+        <Link href="/estudio/marcadores" className="text-sm text-neutral-600 hover:underline">
+          ★ Mis marcadores
+        </Link>
+      </div>
       <p className="mt-2 text-neutral-600">
         Elige cómo quieres navegar el material.
       </p>

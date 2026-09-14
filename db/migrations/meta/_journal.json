@@ -8,6 +8,13 @@
       "when": 1789369726080,
       "tag": "0000_smooth_kitty_pryde",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789371423186,
+      "tag": "0001_loose_photon",
+      "breakpoints": true
     }
   ]
 }
