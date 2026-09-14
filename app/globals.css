@@ -1,27 +1,208 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/*
+ * Sistema de diseño (specs/003-sistema-de-diseno). Principio transversal:
+ * ningún color se escribe suelto en un componente — todo pasa por uno de
+ * estos tokens nombrados. Ver notas-de-diseno.md sección 1 para los ratios
+ * de contraste WCAG verificados de cada par.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Tokens base — valores de tema claro (también el default sin data-theme). */
+  --bg-primario: #ffffff;
+  --bg-secundario: #f6f5f2;
+  --borde: #ddd9d0;
+  --texto-primario: #23211d;
+  --texto-secundario: #5f5c53;
+
+  /* Estados especiales — cada uno con su propio par, deliberadamente
+     distintos entre sí (Requisito 5.3, 6.4, 7). */
+  --nucleo-bg: #fdecc8;
+  --nucleo-texto: #7a4a00;
+  --bookmark-bg: #efe6fb;
+  --bookmark-texto: #5b3a9e;
+  --revision-bg: #e2edfb;
+  --revision-texto: #1e4f8c;
+
+  /* Tamaño de letra del contenido de lectura — redefinido por
+     [data-tamano-letra] más abajo (Requisito 8). */
+  --tamano-base: 1.0625rem;
+
+  /* @tailwindcss/typography lee estas variables para el plugin `prose` —
+     apuntarlas a nuestros tokens evita necesitar `prose-invert`/`dark:`
+     (que dependerían de prefers-color-scheme, no de nuestra fuente de
+     verdad real: el atributo data-theme). */
+  --tw-prose-body: var(--texto-primario);
+  --tw-prose-headings: var(--texto-primario);
+  --tw-prose-lead: var(--texto-secundario);
+  --tw-prose-links: var(--texto-primario);
+  --tw-prose-bold: var(--texto-primario);
+  --tw-prose-counters: var(--texto-secundario);
+  --tw-prose-bullets: var(--borde);
+  --tw-prose-hr: var(--borde);
+  --tw-prose-quotes: var(--texto-primario);
+  --tw-prose-quote-borders: var(--borde);
+  --tw-prose-captions: var(--texto-secundario);
+  --tw-prose-code: var(--texto-primario);
+  --tw-prose-pre-code: var(--texto-primario);
+  --tw-prose-pre-bg: var(--bg-secundario);
+  --tw-prose-th-borders: var(--borde);
+  --tw-prose-td-borders: var(--borde);
+}
+
+/* Elección explícita de tema (Requisito 3) — mayor especificidad que el
+   prefers-color-scheme de más abajo, así que gana en cuanto existe. */
+:root[data-theme="claro"] {
+  --bg-primario: #ffffff;
+  --bg-secundario: #f6f5f2;
+  --borde: #ddd9d0;
+  --texto-primario: #23211d;
+  --texto-secundario: #5f5c53;
+  --nucleo-bg: #fdecc8;
+  --nucleo-texto: #7a4a00;
+  --bookmark-bg: #efe6fb;
+  --bookmark-texto: #5b3a9e;
+  --revision-bg: #e2edfb;
+  --revision-texto: #1e4f8c;
+}
+
+:root[data-theme="oscuro"] {
+  --bg-primario: #1b1b19;
+  --bg-secundario: #242320;
+  --borde: #3a3833;
+  --texto-primario: #ece9e1;
+  --texto-secundario: #b3afa3;
+  --nucleo-bg: #4a3410;
+  --nucleo-texto: #f5c877;
+  --bookmark-bg: #3a2a54;
+  --bookmark-texto: #c9b3f0;
+  --revision-bg: #193353;
+  --revision-texto: #8fbdf2;
+}
+
+/* Primera visita, sin cookie todavía (Requisito 3.1): se respeta la
+   preferencia del sistema operativo solo mientras no exista una elección
+   explícita — en cuanto se escribe data-theme, este bloque deja de aplicar
+   por especificidad de atributo. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg-primario: #1b1b19;
+    --bg-secundario: #242320;
+    --borde: #3a3833;
+    --texto-primario: #ece9e1;
+    --texto-secundario: #b3afa3;
+    --nucleo-bg: #4a3410;
+    --nucleo-texto: #f5c877;
+    --bookmark-bg: #3a2a54;
+    --bookmark-texto: #c9b3f0;
+    --revision-bg: #193353;
+    --revision-texto: #8fbdf2;
+  }
+}
+
+/* Tamaño de letra (Requisito 8) — el ancho de columna está en `ch`, así que
+   sube/baja el tamaño sin cambiar caracteres por línea (notas-de-diseno §5). */
+:root[data-tamano-letra="pequeno"] {
+  --tamano-base: 0.9375rem;
+}
+:root[data-tamano-letra="grande"] {
+  --tamano-base: 1.1875rem;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-bg-primario: var(--bg-primario);
+  --color-bg-secundario: var(--bg-secundario);
+  --color-borde: var(--borde);
+  --color-texto-primario: var(--texto-primario);
+  --color-texto-secundario: var(--texto-secundario);
+  --color-nucleo-bg: var(--nucleo-bg);
+  --color-nucleo-texto: var(--nucleo-texto);
+  --color-bookmark-bg: var(--bookmark-bg);
+  --color-bookmark-texto: var(--bookmark-texto);
+  --color-revision-bg: var(--revision-bg);
+  --color-revision-texto: var(--revision-texto);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  background: var(--bg-primario);
+  color: var(--texto-primario);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+::selection {
+  background: var(--bookmark-bg);
+  color: var(--bookmark-texto);
+}
+
+/* Ancho de columna de lectura (notas-de-diseno §2) — sustituye a max-w-3xl. */
+.medida-lectura {
+  max-width: 65ch;
+}
+.medida-lectura-oficial {
+  max-width: 72ch;
+}
+.contenido-lectura {
+  font-size: var(--tamano-base);
+  line-height: 1.65;
+}
+
+/* <dialog> nativo para el overlay de navegación móvil y el panel de
+   preferencias — foco atrapado y cierre con Escape gratis del navegador
+   (Requisito 12.6). */
+dialog.panel-lateral {
+  position: fixed;
+  inset: 0 auto 0 0;
+  margin: 0;
+  height: 100%;
+  max-height: 100%;
+  width: 20rem;
+  max-width: 85vw;
+  border: 0;
+  border-right: 1px solid var(--borde);
+  background: var(--bg-primario);
+  color: var(--texto-primario);
+  padding: 0;
+}
+dialog.panel-centrado {
+  /* Centrado explícito: el preflight de Tailwind pone `margin: 0` global,
+     lo que anula el `margin: auto` nativo con el que el navegador centra
+     un <dialog> abierto con showModal(). */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  border: 1px solid var(--borde);
+  border-radius: 0.75rem;
+  background: var(--bg-primario);
+  color: var(--texto-primario);
+  padding: 0;
+  max-width: min(28rem, 90vw);
+  max-height: 85vh;
+  overflow-y: auto;
+}
+dialog.panel-lateral::backdrop,
+dialog.panel-centrado::backdrop {
+  background: rgb(0 0 0 / 0.4);
+}
+
+:focus-visible {
+  outline: 2px solid var(--texto-primario);
+  outline-offset: 2px;
+}
+
+/* Requisito 12.5 — con prefers-reduced-motion, cambios instantáneos. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
