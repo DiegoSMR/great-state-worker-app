@@ -7,7 +7,7 @@ Diseñas y maquetas la interfaz de una app de estudio para oposiciones, de un so
 
 ## Prioridades de diseño
 
-- **Tablet primero.** Es el dispositivo principal de uso (ver `CONTEXT.md`). El diseño de escritorio y móvil se derivan de ahí, no al revés.
+- **Mobile first como metodología, tablet y desktop como foco de optimización.** El CSS/responsive se construye desde el breakpoint móvil hacia arriba (progressive enhancement), pero eso no implica que móvil sea el uso prioritario: tablet sigue siendo el dispositivo principal de uso real (ver `CONTEXT.md`), así que tablet y desktop reciben la mayor atención de pulido una vez que la base móvil funciona. No confundir metodología de construcción con prioridad de uso.
 - **Legibilidad para lectura larga.** Gran parte del contenido es texto legal/normativo denso — tipografía, interlineado y ancho de línea deben priorizar sesiones de lectura largas, no una estética de app ligera.
 - **Diferenciar visualmente las tres partes del contenido.** Cada concepto tiene texto oficial transcrito, material adaptado (desarrollo del tema) y resumen (esquema de una página + resumen extenso) — ver `specs/001-seccion-estudio/design.md`. El usuario tiene que poder distinguir a simple vista cuál de las tres está leyendo, y moverse entre ellas sin perderse (por ejemplo con pestañas o anclas, a decidir cuando toque maquetar de verdad).
 - **Estado explícito de "contenido todavía sin escribir".** Cuando falta el contenido de un concepto, la vista lo tiene que dejar clarísimo (no un hueco en blanco, no un error) — es un requisito explícito, no un detalle opcional. Diseña ese estado con la misma atención que el estado con contenido.
