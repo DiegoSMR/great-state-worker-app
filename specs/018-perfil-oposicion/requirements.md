@@ -1,11 +1,11 @@
 # Requirements: Perfil de oposición
 
 Fase: 1 — Requirements. Estado: borrador, pendiente de aprobación de Diego.
-Última actualización: 2026-09-14
+Última actualización: 2026-09-15
 
 ## Resumen
 
-Antes de entrar en el temario, el usuario quiere una vista de conjunto de cada oposición: qué es, quién puede presentarse, cómo es el proceso, qué cubre el temario comparado con las otras oposiciones en alcance, cuánto paga el puesto y cuánta competencia hay. Hoy la página de oposición (`app/estudio/oposicion/[oposicionId]/page.tsx`) es solo un listado de temas — este requisito añade una introducción por oposición con FAQ, comparativa de temario, datos retributivos y de participación.
+Antes de entrar en el temario, el usuario quiere una vista de conjunto de cada oposición: qué es, quién puede presentarse, cómo es el proceso, qué cubre el temario comparado con las otras oposiciones en alcance, cuánto paga el puesto y cuánta competencia hay. Hoy la página de oposición (`app/estudio/oposicion/[oposicionId]/page.tsx`) es solo un listado de temas — este requisito añade una introducción por oposición con FAQ, comparativa de temario, datos retributivos y de participación. Las FAQ, además de aparecer dentro de la introducción de cada oposición, tienen también su propia sección navegable (Requisito 2.3) que las agrupa todas.
 
 Se apoya en el agente `investigador-convocatorias` para los datos factuales y reutiliza los datos ya modelados por `016-convocatorias` (plazas, fechas, estado de la convocatoria activa) en vez de duplicarlos — este requisito cubre lo que es estable entre convocatorias (retribución del puesto, estructura del temario, preguntas frecuentes), no lo que cambia con cada convocatoria concreta.
 
@@ -25,6 +25,8 @@ Se apoya en el agente `investigador-convocatorias` para los datos factuales y re
 **Criterios de aceptación:**
 1. CUANDO el usuario consulta la introducción de una oposición ENTONCES el sistema DEBERÁ mostrar una lista de preguntas frecuentes específicas de esa oposición (p. ej. cómo es el proceso selectivo, cuántos ejercicios tiene y de qué tipo, si hay fase de concurso además de oposición, si hay bolsa de trabajo derivada, cada cuánto suele convocarse).
 2. CUANDO una respuesta de la FAQ depende de un dato oficial (número de ejercicios, tipo de prueba, sistema de puntuación) ENTONCES el sistema DEBERÁ basarla en las bases de la convocatoria o normativa citada, nunca en descripciones de academias (principio 3 de `CONSTITUTION.md`).
+3. CUANDO el usuario quiere consultar las FAQ sin entrar primero en una oposición concreta ENTONCES el sistema DEBERÁ ofrecer una sección de FAQs propia y navegable (nueva entrada en `lib/nav-items.ts`, no solo un bloque enterrado dentro de la página de cada oposición), que agrupe las preguntas de las 4 oposiciones en alcance y permita filtrar/saltar por oposición.
+4. CUANDO una pregunta de la FAQ es común a varias oposiciones (p. ej. "¿qué es el turno libre?", "¿qué es una bolsa de trabajo?") ENTONCES el sistema DEBERÁ mostrarla una sola vez en la sección general de FAQs en vez de duplicarla por oposición (mismo principio de "una fuente de verdad" que el núcleo común de temario, `001-seccion-estudio`).
 
 ## Requisito 3: Comparativa de temario entre oposiciones en alcance
 
