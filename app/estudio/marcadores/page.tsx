@@ -3,6 +3,11 @@ import { getConcepto } from "@/lib/temario";
 import { getBookmarks } from "../actions";
 import { BookmarkButton } from "../_components/BookmarkButton";
 
+// Refleja el estado de bookmarks del usuario en cada visita — no se genera
+// como página estática en build (evita depender de la base de datos durante
+// el build y sirve siempre el estado real).
+export const dynamic = "force-dynamic";
+
 export default async function MarcadoresPage() {
   const marcadores = await getBookmarks();
   const items = marcadores
