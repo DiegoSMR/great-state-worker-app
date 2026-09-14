@@ -65,3 +65,30 @@ La sección donde Diego accede a todo el material de estudio necesario para prep
 
 - **Origen del contenido real por concepto:** manual, tema a tema — Diego y Claude escriben/adaptan el contenido concepto a concepto a partir de fuentes primarias, sin pipeline de generación asistida en esta fase. Ver `design.md` para el formato de almacenamiento elegido.
 - **Granularidad del bookmark:** solo tema completo (no sub-secciones) en v1. Modelo de datos simple: una relación usuario-tema.
+
+## Verificación final (Fase 5, 2026-09-14)
+
+Repaso criterio a criterio contra la implementación real en la rama `001-seccion-estudio`, verificado con el dev server (`npm run dev`) y contra el proyecto Neon real de Diego.
+
+**Requisito 1 — Navegación por oposición o por tema**
+1. ✅ `/estudio` ofrece los dos modos ("Por oposición" con las 4 oposiciones listadas, "Por tema" con enlace al catálogo).
+2. ✅ `/estudio/oposicion/[oposicionId]` muestra solo los temas de esa oposición, ordenados por `num` oficial (comprobado con Ayuntamiento de Zaragoza y Diputación de Zaragoza).
+3. ✅ `/estudio/tema` muestra 40 conceptos únicos en el alcance v1 (sin repetir procedimiento-administrativo-comun ni otros compartidos, pese a que internamente tienen varias filas de relación).
+
+**Requisito 2 — Contenido de estudio real por tema**
+1. ✅ La vista de concepto muestra título, oposiciones con numeración oficial, badge de núcleo común, y las tres secciones diferenciadas (Texto oficial / Material adaptado / Resumen con Esquema + Resumen extenso) — verificado con los 3 conceptos reales redactados.
+2. ✅ Los 3 conceptos redactados (`estatuto-autonomia-aragon`, `prevencion-riesgos-laborales`, `igualdad-violencia-genero`) están construidos exclusivamente a partir de texto consolidado de boe.es, citado con ley/artículo/fecha de consulta, más redacción original — ninguno reproduce material de academias.
+3. ✅ Un concepto sin fichero en `content/estudio/` (p. ej. `haciendas-locales`) muestra el estado explícito "Contenido pendiente de redactar", no una página en blanco ni un error.
+
+**Requisito 3 — Identificación del núcleo común**
+1. ✅ `esNucleoComun()` marca visualmente (badge "Núcleo común") los conceptos pedidos por 2+ oposiciones, tanto en la vista de concepto (con el número de oposiciones que lo comparten) como en los listados por oposición y por tema. Verificado con `prevencion-riesgos-laborales` (3 oposiciones) y ausencia del badge en conceptos específicos de una sola oposición.
+
+**Requisito 4 — Sistema de bookmarks**
+1. ✅ Botón marcar/desmarcar en la vista de concepto vía Server Action (`toggleBookmark`), sin navegar fuera de la vista.
+2. ✅ `/estudio/marcadores` (200 OK) lista los bookmarks del usuario con enlace directo a cada tema, con estado vacío explícito cuando no hay ninguno.
+3. ✅ Desmarcar reutiliza el mismo Server Action con `revalidatePath` sobre `/estudio/marcadores`, quitando el ítem de la lista al instante.
+   - Ciclo insert/delete verificado directamente contra Neon real (FK a `usuarios` y clave primaria compuesta `usuario_id, concepto_id` sin errores).
+
+**Fuera de alcance:** respetado — no se ha tocado SALUD Aragón, Informática, tests, flashcards, login ni PWA.
+
+**Conclusión:** los 4 requisitos y sus criterios de aceptación se cumplen. La spec `001-seccion-estudio` queda implementada para su v1, pendiente solo de que Diego la revise en el navegador y de ampliar `content/estudio/` con más conceptos de forma incremental (fuera del alcance de esta spec, ver Tarea 10 de `tasks.md` y la propuesta de tarea recursiva).

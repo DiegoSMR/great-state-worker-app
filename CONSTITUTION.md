@@ -21,9 +21,13 @@ Nunca se salta una fase para ir más rápido. `specs/_TEMPLATE/` tiene las plant
 
 - Existe una rama `development` de forma continua — no se borra nunca. Es la rama de integración; `main` se actualiza desde ahí cuando corresponda.
 - Cada spec nueva se implementa en su propia rama, creada desde `development` (no desde `main`) al empezar la Fase 4 (implementación) — nunca antes de tener `tasks.md` aprobado. Nombre de rama = carpeta de la spec (`NNN-nombre-de-la-feature`).
-- Al cerrar la spec (Fase 5 completa), esa rama se fusiona en `development` y se borra.
+- Al cerrar la spec (Fase 5 completa), esa rama se fusiona en `development` **abriendo un Pull Request real en GitHub** (no `git merge` local) y se borra al fusionarse. Esto aprovecha la integración de Neon con GitHub (rama de base de datos efímera por PR, ver más abajo) y deja un diff revisable aunque Diego trabaje solo con Claude. Abrir el PR y fusionarlo sigue necesitando confirmación explícita de Diego cada vez (convención global sobre push/PRs).
 - Durante la implementación, cada Requisito de `requirements.md` que se completa (todas sus tareas de `tasks.md` hechas) es su propio commit — no un commit gigante al final ni uno por tarea suelta. Las tareas de base técnica que no pertenecen a un requisito concreto también van en su propio commit al completarse.
 - Esto sustituye, solo en este repo, a la sección "Una rama por feature" del `CLAUDE.md` global (que fusiona contra la rama por defecto): aquí la rama por defecto de trabajo es `development`, no `main`.
+
+## Base de datos: Neon + GitHub
+
+El proyecto Neon de Diego está conectado a este repo de GitHub, con un workflow (`.github/workflows/`, pendiente de añadir al repo) que crea una rama de base de datos Neon efímera por cada Pull Request (migraciones incluidas) y la borra al cerrarse — encaja con el flujo de PR hacia `development` de arriba. El `DATABASE_URL` de desarrollo local vive en `.env` (nunca commiteado, ver `.env.example`).
 
 ## Agentes especializados
 
@@ -33,6 +37,7 @@ Nunca se salta una fase para ir más rápido. `specs/_TEMPLATE/` tiene las plant
 - **`scrapeador-fuentes-primarias`** — localiza y transcribe texto oficial (BOE/BOA, leyes, EBEP) para que `preparador-opos` lo use como base. Nunca toca material de academias — ver principio 3 más abajo.
 - **`disenador-maquetador`** — decisiones de UI/UX y maquetación, tablet-first.
 - **`investigador-convocatorias`** — datos factuales de convocatorias (fechas, plazas, plazos) y radar de procesos nuevos.
+- **`verificador-vigencia-normativa`** — comprueba si el texto oficial ya transcrito en `content/estudio/*.md` sigue vigente (reformas, derogaciones, renumeraciones) y reporta discrepancias a `preparador-opos`; no reescribe contenido él mismo.
 
 ## Principios del producto
 
