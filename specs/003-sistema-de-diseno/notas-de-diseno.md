@@ -11,6 +11,15 @@
 1. **Sustitución completa de la paleta de color (§1)** por "Academic Blue"/"Focused Night", a partir de un documento de referencia que Diego aportó fuera del repo. Los 5 tokens base y los 3 pares de estado existentes cambian de valor (mismos nombres de token, mismos usos); se añaden 3 tokens de estado nuevos (`ejemplo`, `excepcion`, `atencion`) pensados para el punto 2. Contraste WCAG AA reverificado de cero para todos los pares, no reutilizado de la v1. Se decide **no** introducir tokens de acento para h1/h2/enlaces (`Primary`/`Primary dark`/`Secondary` del documento de Diego) porque dos de los tres no cumplen 4.5:1 contra el `bg-primario` elegido — ver justificación completa al final de §1.
 2. **Especificación de texto enriquecido para el contenido de estudio (§14, nueva)**: subrayado (`<u>`), resaltado con fondo (`<mark class="ink-...">`, 6 variantes reutilizando tokens de §1) y la decisión de no incluir una variante de solo color de texto. Requiere que `lead-developer` añada soporte de HTML embebido (`rehype-raw` o equivalente) a `components/estudio/Markdown.tsx`, que hoy no lo tiene — anotado como premisa técnica al principio de §14, no implementado en esta revisión.
 
+## Registro de cambios de esta revisión (2026-09-14, tercera pasada — modo manuscrito y tema "papel")
+
+A partir de una imagen de referencia (apuntes de cuaderno con rotuladores) y de una exploración visual iterada con Diego en un mockup, se añade una tercera capacidad — igual que las dos anteriores, dentro del alcance ya aprobado (Requisito 3.4 y 8.4 ya exigían que tema y perfil de lectura fueran extensibles precisamente para casos como este, así que esto no reabre `requirements.md`):
+
+3. **Modo de texto "Manuscrito" (§15, nueva) — nuevo campo `lectura.estiloTexto`**: además de `tamanoLetra`, el perfil de lectura gana `estiloTexto: "digital" | "manuscrito"` (default `"digital"`, sin cambios visuales respecto a hoy) y, solo relevante cuando `estiloTexto === "manuscrito"`, `intensidadManuscrito: "ligera" | "media" | "intensa"` (default `"media"`). En digital nada cambia. En manuscrito, títulos y cuerpo de texto pasan a tipografías de mano (`Caveat` para encabezados, `Kalam` para cuerpo — cargadas con `next/font/google`, nunca por `<link>` en runtime), con tamaño/interlineado del cuerpo ajustados un poco al alza respecto al modo digital (una tipografía de mano necesita más aire para seguir siendo legible) y esa necesidad de aire escala con la intensidad. **El control de intensidad solo se muestra (pop-in) cuando se elige "Manuscrito"** — no tiene sentido con "Digital" seleccionado.
+4. **Tercer tema "Papel" (§16, nueva) — el selector de tema (Requisito 3) gana una tercera opción**: `tema` pasa de `"claro" | "oscuro"` a `"claro" | "oscuro" | "papel"` — una fila más en el mismo selector ya diseñado como lista extensible, tal como pedía el Requisito 3.4 explícitamente para este caso. "Papel" es un fondo cálido tipo cuaderno con un patrón muy sutil de líneas horizontales — no es una alternativa al modo manuscrito (son ejes independientes: se puede tener texto digital sobre papel, o texto manuscrito sobre fondo claro).
+
+Ver §15 y §16 para el detalle técnico de valores y verificación de contraste.
+
 ---
 
 ## 1. Paleta de tokens de color
@@ -309,3 +318,109 @@ recordar el orden del art. 15. **Importante:** <mark class="ink-importante">el c
 seguridad nunca recae sobre el trabajador</mark> — <u>esta frase se pregunta prácticamente en cada
 convocatoria</u>.
 ```
+
+---
+
+## 15. Modo de texto "Manuscrito"
+
+Encargo de Diego (2026-09-14), validado antes con un mockup visual interactivo. Vive en el panel de preferencias, sección "Lectura", junto al tamaño de letra (§5) — es otro eje del mismo `readingSettings` extensible que ya exigía el Requisito 8.4.
+
+### Modelo de datos
+
+```ts
+lectura: {
+  tamanoLetra: "pequeno" | "mediano" | "grande";
+  estiloTexto: "digital" | "manuscrito";           // nuevo, default "digital"
+  intensidadManuscrito: "ligera" | "media" | "intensa"; // nuevo, default "media"
+}
+```
+
+`intensidadManuscrito` solo es relevante (y solo se muestra en el panel) cuando `estiloTexto === "manuscrito"` — con `"digital"` seleccionado, el control de intensidad no se renderiza (pop-in condicional, no un control siempre visible pero deshabilitado).
+
+### Qué cambia en cada modo
+
+- **Digital** (default): sin cambios respecto al sistema ya construido — tipografía de UI en toda la app, tokens de §1 y §2 tal cual.
+- **Manuscrito**: los encabezados (h1-h3, incluidos los de `--tw-prose-headings` dentro del contenido Markdown) pasan a `Caveat` (peso 700 para h1, 600 para h2/h3), con un ligero acento de color reutilizando `--acento-titulo`/`--acento-resumen` (dos tokens nuevos, ver más abajo). El cuerpo de texto (`--tw-prose-body`, párrafos de `Markdown.tsx`) pasa a `Kalam`. Ambas se cargan con `next/font/google` (mismo patrón que Geist, nunca `<link>` a Google Fonts en runtime — eso solo vale para el mockup en Claude Artifacts).
+- **Por qué el cuerpo sube de tamaño/interlineado en manuscrito:** una tipografía de mano necesita más aire para seguir siendo cómoda en sesiones largas — verificado visualmente en el mockup. Los tres niveles de intensidad controlan cuánto:
+
+| Intensidad | Tamaño título | Tamaño cuerpo | Interlineado cuerpo |
+|---|---|---|---|
+| Ligera | 2.1rem | 17.5px | 1.8 |
+| Media (default) | 2.8rem | 18px | 1.85 |
+| Intensa | 3.4rem | 18.5px | 1.9 |
+
+(Valores de partida tomados del mockup validado por Diego; `lead-developer` puede ajustarlos ligeramente al integrarlos si el resultado real en pantalla lo pide, sin que haga falta otra ronda de aprobación por un ajuste tan fino.)
+
+- **Contraste:** `Caveat`/`Kalam` en manuscrito siguen usando los mismos tokens de color de texto (`--texto-primario`, `--acento-titulo`, `--acento-resumen`) ya verificados en ambos temas (Requisito 1) — el cambio de tipografía no cambia ningún color, así que no hace falta reverificar contraste, solo confirmar visualmente que el trazo más fino de una fuente manuscrita no compromete la lectura (si hiciera falta, aumentar peso/tamaño antes que tocar el color).
+
+### Tokens nuevos para el modo manuscrito
+
+| Token | Light / Papel | Dark | Uso |
+|---|---|---|---|
+| `--acento-titulo` | `#B0526F` | `#D590A5` | Color de encabezados h1 en modo manuscrito |
+| `--acento-resumen` | `#5C7A52` | `#9FCA91` | Color de encabezados h2/h3 en modo manuscrito |
+
+**Resultado de la verificación (`lead-developer`, implementación):**
+
+- **Papel hereda los valores de claro tal cual** (mismo criterio que el resto de §16: son colores de texto, no de fondo, y el fondo de papel es lo bastante próximo al de claro como para no necesitar un tercer valor).
+- **Dark se deriva** manteniendo el mismo matiz (H) que el valor de claro y ajustando saturación/luminosidad para leerse como texto sobre fondo oscuro (no como fondo, que habría sido "oscurecer" — aquí el uso es al revés: es un color de encabezado, hay que aclararlo, no oscurecerlo): `#B0526F` → HSL(341°, 37%, 51%) → `#D590A5` HSL(341°, 45%, 70%); `#5C7A52` → HSL(105°, 20%, 40%) → `#9FCA91` HSL(105°, 35%, 68%).
+- **Ratios verificados** (fórmula WCAG real):
+
+| Combinación | Ratio | ¿Cumple? |
+|---|---|---|
+| `acento-titulo` claro / `bg-primario` claro | 4.69:1 | Sí (incluso para texto normal) |
+| `acento-titulo` claro / `bg-secundario` claro | 4.45:1 | Large text sí (≥3:1); texto normal no (queda a 0.05 de 4.5) |
+| `acento-titulo` papel / `bg-primario` papel | 4.62:1 | Sí |
+| `acento-titulo` papel / `bg-secundario` papel | 4.16:1 | Large text sí; texto normal no |
+| `acento-titulo` dark / `bg-primario` dark | 7.11:1 | Sí (con margen amplio) |
+| `acento-titulo` dark / `bg-secundario` dark | 6.18:1 | Sí (con margen amplio) |
+| `acento-resumen` claro / `bg-primario` claro | 4.61:1 | Sí |
+| `acento-resumen` claro / `bg-secundario` claro | 4.37:1 | Large text sí; texto normal no |
+| `acento-resumen` papel / `bg-primario` papel | 4.54:1 | Sí |
+| `acento-resumen` papel / `bg-secundario` papel | 4.09:1 | Large text sí; texto normal no |
+| `acento-resumen` dark / `bg-primario` dark | 9.63:1 | Sí (con margen amplio) |
+| `acento-resumen` dark / `bg-secundario` dark | 8.37:1 | Sí (con margen amplio) |
+
+Los cuatro casos que no llegan a 4.5:1 son exactamente el escenario que la propia spec ya preveía ("los títulos son texto grande, así que ≥3:1 basta") — h1/h2/h3 en modo manuscrito siempre se renderizan muy por encima de 24px (la intensidad más baja ya usa 2.1rem para h1 y 1.5rem/1.85rem para h3/h2), así que el umbral aplicable es 3:1 y los cuatro lo superan con margen (4.09–4.45:1). No ha hecho falta ajustar ningún valor de claro/papel para esto; el par dark se calculó desde cero (la spec no daba un valor, solo el método).
+
+---
+
+## 16. Tercer tema "Papel"
+
+Encargo de Diego (2026-09-14): el selector de tema (Requisito 3, §4) gana una tercera opción, `"papel"`, junto a `"claro"`/`"oscuro"` — exactamente el caso para el que el Requisito 3.4 exigía un modelo de tema no binario desde el principio.
+
+### Qué es y qué no es
+
+"Papel" es un **tema de fondo**, independiente del modo de texto (§15) — los dos ejes se combinan libremente: texto digital sobre papel, texto manuscrito sobre fondo claro, etc. No es "modo manuscrito con otro nombre".
+
+### Valores propuestos
+
+Parte de la misma familia cálida que ya usa "Academic Blue" (claro), pero con un tono de papel más marcado y el patrón de líneas de cuaderno:
+
+| Token | Valor | Nota |
+|---|---|---|
+| `bg-primario` | `#FBF8F0` | Más cálido que el `#FAFAF7` de claro — diferenciable a simple vista |
+| `bg-secundario` | `#F2ECDD` | Paneles/tarjetas sobre el papel |
+| `borde` | `#DED2B8` | |
+| `texto-primario` | `#303840` | Igual que claro — no hace falta reinventar el texto principal |
+| `texto-secundario` | `#64717A` | Igual que claro |
+
+Los pares de estado (`nucleo`, `bookmark`, `revision`, `ejemplo`, `excepcion`, `atencion`) se heredan tal cual de claro — son los mismos colores semánticos, el papel solo cambia el fondo general. `lead-developer` debe reverificar el contraste texto/fondo de cada uno contra el `bg-primario`/`bg-secundario` de papel (probablemente pase sin cambios al ser tonos muy próximos a claro, pero confirmarlo, no asumirlo).
+
+**Resultado de la verificación:** los 6 pares de estado no necesitan reverificación real porque su contraste es autocontenido (texto propio sobre fondo propio, p. ej. `nucleo-texto` sobre `nucleo-bg`) — ninguno de los dos lados es `bg-primario`/`bg-secundario`, así que el cambio de tema no los afecta en absoluto; siguen siendo exactamente los ratios ya verificados en §1 (8.08–9.40:1 en claro). Sí se ha verificado, en cambio, el par base `texto-secundario`/`bg-secundario` (usado en metadatos, badges de oposición, etc., no es uno de los "6 pares" pero sí usa `bg-secundario`): en claro daba 4.55:1 (§1, "margen ajustado"); contra el `bg-secundario` de papel (`#F2ECDD`, algo menos luminoso que el `#F2F4F5` de claro) el ratio baja a **4.26:1 — por debajo del mínimo AA de 4.5:1 para texto normal** (aunque bastante por encima del 3:1 de large text). **Resuelto (2026-09-14):** en vez de tocar `bg-secundario` de papel (ya validado visualmente en el mockup), se oscurece `texto-secundario` solo dentro de `:root[data-theme="papel"]`, de `#64717A` a `#5A6870` — 4.88:1 sobre `bg-secundario` y 5.42:1 sobre `bg-primario`, ambos con margen sobre el mínimo. Mismo criterio que ya se aplicó en toda la spec: ante un fondo fijado, se ajusta el texto, nunca al revés.
+
+### El patrón de líneas de cuaderno
+
+Un `background-image` muy sutil (`repeating-linear-gradient` horizontal, opacidad ≤0.10, espaciado igual al interlineado del cuerpo activo) aplicado solo al contenedor de contenido de lectura cuando `data-theme="papel"` — nunca a toda la página (nav, paneles) para no ensuciar visualmente el chrome de la app. Ver el mockup para el efecto exacto; `lead-developer` tiene margen para ajustar la opacidad/espaciado al verlo en pantalla real.
+
+### Modelo de datos
+
+Sin cambios de forma — `tema` ya era un string libre por el Requisito 3.4, solo se añade el valor `"papel"` a las opciones válidas de `lib/preferencias.ts` y al selector de `PreferenciasPanel`.
+
+### Hallazgo incidental durante la implementación: `--tw-prose-*` no llegaba a aplicarse dentro de `.prose`
+
+No es parte de §15 ni §16 — se descubrió durante el recorrido visual de verificación de ambas (probando `data-theme="oscuro"`) y se corrigió en el mismo `app/globals.css` por ser la misma superficie de código. Documentado aquí porque es un hallazgo de implementación, no una decisión de diseño nueva.
+
+El bloque `--tw-prose-body`/`--tw-prose-headings`/`--tw-prose-quotes`/etc. que `app/globals.css` ya definía en `:root` (apuntando a los tokens de §1, para que `@tailwindcss/typography` los usara) **nunca llegaba a aplicarse en la práctica**: el propio plugin redeclara ese mismo bloque de variables directamente sobre el elemento `.prose`, con su paleta clara por defecto (`--tw-prose-quotes:#101828`, etc.). Una declaración puesta directamente sobre un elemento gana siempre a un valor heredado de un ancestro (aquí, `:root`) — esto no depende de capas de cascada, es cómo funciona la herencia CSS con o sin `@layer`. Consecuencia real, visible en el recorrido de verificación: en `data-theme="oscuro"`, las citas (`<blockquote>`, el patrón `> texto` que ya usa `content/estudio/constitucion-espanola.md`) y en general todo el texto de `.prose` se pintaban con la paleta clara por defecto del plugin, prácticamente ilegible sobre fondo oscuro (~1:1 de contraste en el peor caso, muy por debajo del Requisito 1). No era un problema introducido por esta revisión — ya existía desde que se adoptó la paleta Academic Blue/Focused Night (probablemente desde la v1), simplemente no se había notado porque en tema claro los grises por defecto del plugin y los tokens propios son visualmente parecidos.
+
+**Corrección aplicada:** redeclarar el mismo bloque de `--tw-prose-*` directamente sobre el selector `.prose` en `app/globals.css` (mismo patrón ya usado por `.prose u`/`.prose mark.ink-*` para ganarle a las reglas del plugin). Verificado tras el cambio: el color de `<blockquote>`/`<p>` dentro de `.prose` en oscuro pasa de `#101828` (ilegible) a `#e8edf2` (`--texto-primario` oscuro, el valor correcto). `npm run build`/`npm run lint` siguen limpios.
