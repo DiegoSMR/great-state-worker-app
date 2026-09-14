@@ -135,6 +135,17 @@ body {
   color: var(--bookmark-texto);
 }
 
+/* Scroll suave para las anclas de navegación local (Requisito 4.2) — el
+   `data-scroll-behavior="smooth"` en <html> (app/layout.tsx) es la señal que
+   pide Next.js para no desactivarlo durante sus propias transiciones de
+   ruta; sin esta declaración real de `scroll-behavior`, ese atributo no
+   tiene ningún efecto y el salto entre secciones es instantáneo. El bloque
+   de prefers-reduced-motion de más abajo lo vuelve a `auto` cuando aplica
+   (Requisito 12.5). */
+html {
+  scroll-behavior: smooth;
+}
+
 /* Ancho de columna de lectura (notas-de-diseno §2) — sustituye a max-w-3xl. */
 .medida-lectura {
   max-width: 65ch;

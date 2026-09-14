@@ -65,9 +65,9 @@ export function NavHamburguesa({
               type="button"
               onClick={() => setAbierto(false)}
               aria-label="Cerrar menú"
-              className="rounded-md p-1.5 text-texto-secundario hover:bg-bg-secundario hover:text-texto-primario"
+              className="rounded-md p-2 text-texto-secundario hover:bg-bg-secundario hover:text-texto-primario"
             >
-              <IconoCerrar aria-hidden />
+              <IconoCerrar aria-hidden width="1.3em" height="1.3em" />
             </button>
           </div>
 
