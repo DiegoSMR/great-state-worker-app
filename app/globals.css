@@ -185,7 +185,12 @@
   --bg-secundario: #f2ecdd;
   --borde: #ded2b8;
   --texto-primario: #303840;
-  --texto-secundario: #64717a;
+  /* Oscurecido respecto al #64717a de "claro": ese valor da solo 4.26:1
+     sobre el --bg-secundario #f2ecdd de papel (por debajo del mínimo AA de
+     4.5:1 para texto normal, Requisito 1.1) — el papel es ligeramente menos
+     luminoso que el bg-secundario de claro. #5a6870 da 4.88:1 sobre
+     bg-secundario y 5.42:1 sobre bg-primario, con margen suficiente. */
+  --texto-secundario: #5a6870;
 }
 
 /* Primera visita, sin cookie todavía (Requisito 3.1): se respeta la
