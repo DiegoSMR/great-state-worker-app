@@ -2,7 +2,7 @@
 
 Documento vivo. Recoge la arquitectura técnica recomendada para la versión definitiva de la app (no el esqueleto estático de prueba), y por qué se ha elegido así.
 
-Última actualización: 2026-09-14
+Última actualización: 2026-09-15
 
 ## Resumen
 
@@ -115,3 +115,13 @@ Aplicación directa de los dos puntos de extensibilidad que ya exigían `require
 - **`rehype-sanitize`**, con un esquema propio (`esquemaTextoEnriquecido` en el propio componente) que parte del `defaultSchema` de la librería (ya cubre los elementos normales de markdown/GFM) y añade `u` y `mark`, restringiendo el atributo `class` de `mark` a las 6 clases `ink-*` de §14. No es una medida de seguridad (`content/estudio/` solo lo escriben nuestros propios agentes, sin superficie de XSS real) — es para que un typo de un agente (una clase mal escrita, una etiqueta fuera de la lista) no cuele HTML/clases arbitrarias en silencio; con el esquema, lo que no está en la lista cerrada simplemente no se renderiza con esas propiedades.
 
 Los 6 pares de color que usan las clases `ink-*` reutilizan los tokens ya existentes de la paleta (`--nucleo-*`, `--bookmark-*`, `--revision-*`) más los 3 nuevos de §1 (`--ejemplo-*`, `--excepcion-*`, `--atencion-*`) — ningún color nuevo se introduce solo para esto.
+
+## Decidido: trazabilidad por dato individual (`specs/018-perfil-oposicion`)
+
+`content/estudio/*.md` (frontmatter `fuentes:`) y `Oposicion.fuente` de `content/temario.yaml` atribuyen una sola fuente a **todo un fichero o fila** — válido para un documento largo con una procedencia, pero insuficiente para un perfil de oposición, que necesita muchos datos sueltos y cortos (requisitos de acceso, retribuciones, participación, FAQ) cada uno con su propio estado/fuente/fecha, y donde una fracción alta va a quedar sin verificar desde el primer día (no como excepción, como norma — ver `specs/018-perfil-oposicion/investigacion-datos.md`).
+
+- **`lib/dato-oficial.ts`**: tipo genérico `DatoOficial<T>` (`{ estado: "confirmado"; valor: T; fuente: string; fechaConsulta: string } | { estado: "pendiente_confirmar"; nota?: string }`) y `Atribucion` (igual pero sin `valor` propio, para atribuir fuente a contenido que ya existe por sí mismo, como la respuesta de una FAQ). Pensado como patrón reutilizable desde el principio, no solo para esta spec — es el candidato natural para `specs/016-convocatorias` cuando se aborde, que necesita el mismo criterio "pendiente de confirmar, nunca inventado". El criterio se cumple a nivel de tipo, no solo de UI: es imposible construir un dato con `valor` sin `fuente`/`fechaConsulta`, porque el tipo unión no lo permite.
+- **`content/perfil-oposicion/<oposicionId>.yaml`** (uno por oposición) + **`content/perfil-oposicion/faq-comunes.yaml`** (preguntas transversales, deduplicadas por construcción — viven en un fichero aparte en vez de un campo `alcance` por pregunta, para que sea estructuralmente imposible copiar una pregunta común dentro de las específicas de una oposición): mismo patrón de lectura y caché en memoria que `content/temario.yaml`/`content/estudio/*.md` (`lib/perfil-oposicion.ts`, `readFileSync` + `parse` de `yaml`, sin librería nueva). `getPerfilOposicion()` devuelve `null` sin lanzar excepción si el fichero de una oposición no existe todavía — mismo criterio defensivo que `getContenidoConcepto()` — porque es esperable que `preparador-opos` redacte antes unas oposiciones que otras (ver más abajo, DPZ).
+- La comparativa de temario (`getResumenNucleoComun`, `getComparativaTemario` en `lib/temario.ts`) no introduce ningún fichero de datos nuevo — se deriva por completo de la tabla de relación ya existente en `content/temario.yaml`.
+
+Detalle completo del esquema (`PerfilOposicion`, `FilaRetribucion`, `ConvocatoriaParticipacion`, `PreguntaFaq`) y las decisiones de UI (`DatoPendiente`, tabla retributiva agrupada, sección `/estudio/faqs`, vista `/estudio/comparativa-temario`) en `specs/018-perfil-oposicion/design.md`. Verificación de contenido real y estado de huecos por oposición en `specs/018-perfil-oposicion/tasks.md` — DPZ queda con la mayoría de sus datos `pendiente_confirmar` por un bloqueo de acceso a `dpz.es` (error de certificado SSL), no por un límite del propio diseño.
