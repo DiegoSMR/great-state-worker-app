@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getOposicion, getTemasDeOposicion } from "@/lib/temario";
+import { esNucleoComun, getOposicion, getTemasDeOposicion } from "@/lib/temario";
+import { NucleoComunBadge } from "../../_components/NucleoComunBadge";
 
 export default async function OposicionPage({
   params,
@@ -33,7 +34,8 @@ export default async function OposicionPage({
               <span className="shrink-0 text-sm font-medium text-neutral-500">
                 Tema {tema.num}
               </span>
-              <span>{tema.titulo}</span>
+              <span className="flex-1">{tema.titulo}</span>
+              {esNucleoComun(tema.concepto) && <NucleoComunBadge />}
             </Link>
           </li>
         ))}

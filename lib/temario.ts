@@ -102,3 +102,14 @@ export function getOposicionesDeConcepto(conceptoId: string): {
       tituloOficial: t.titulo,
     }));
 }
+
+/**
+ * Un concepto es "núcleo común" si lo piden 2 o más oposiciones distintas
+ * en alcance — calculado, no almacenado (ver design.md de la spec 001).
+ */
+export function esNucleoComun(conceptoId: string): boolean {
+  const oposicionesDistintas = new Set(
+    getOposicionesDeConcepto(conceptoId).map((r) => r.oposicion.id)
+  );
+  return oposicionesDistintas.size >= 2;
+}

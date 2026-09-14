@@ -2,8 +2,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { getConcepto, getOposicionesDeConcepto } from "@/lib/temario";
+import { esNucleoComun, getConcepto, getOposicionesDeConcepto } from "@/lib/temario";
 import { getContenidoConcepto } from "@/lib/contenido";
+import { NucleoComunBadge } from "../../_components/NucleoComunBadge";
 
 export default async function ConceptoPage({
   params,
@@ -16,13 +17,23 @@ export default async function ConceptoPage({
 
   const oposicionesDelConcepto = getOposicionesDeConcepto(conceptoId);
   const contenido = getContenidoConcepto(conceptoId);
+  const nucleoComun = esNucleoComun(conceptoId);
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
       <Link href="/estudio/tema" className="text-sm text-neutral-600 hover:underline">
         ← Catálogo de temas
       </Link>
-      <h1 className="mt-2 text-2xl font-semibold">{concepto.titulo}</h1>
+      <div className="mt-2 flex flex-wrap items-center gap-3">
+        <h1 className="text-2xl font-semibold">{concepto.titulo}</h1>
+        {nucleoComun && <NucleoComunBadge />}
+      </div>
+      {nucleoComun && (
+        <p className="mt-1 text-sm text-neutral-600">
+          Compartido por {oposicionesDelConcepto.length} oposiciones — rentabiliza
+          especialmente bien el tiempo de estudio.
+        </p>
+      )}
 
       <ul className="mt-3 flex flex-wrap gap-2 text-sm text-neutral-600">
         {oposicionesDelConcepto.map((r) => (

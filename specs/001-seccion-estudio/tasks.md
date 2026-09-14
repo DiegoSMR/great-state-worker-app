@@ -42,9 +42,9 @@ Nota: como es la primera spec que se implementa, las tareas 1-3 sientan también
 
 ## Requisito 3 — Identificación del núcleo común
 
-- [ ] 11. Helper `esNucleoComun(conceptoId)` — true si 2 o más oposiciones en alcance piden ese concepto (calculado sobre el resultado de la tarea 3, no almacenado).
+- [x] 11. Helper `esNucleoComun(conceptoId)` — true si 2 o más oposiciones en alcance piden ese concepto (calculado sobre el resultado de la tarea 3, no almacenado).
   - Satisface: Requisito 3, criterio 1.
-- [ ] 12. Indicador visual de núcleo común (con qué oposiciones se comparte) en la vista de tema y en los listados de las tareas 5 y 6.
+- [x] 12. Indicador visual de núcleo común (con qué oposiciones se comparte) en la vista de tema y en los listados de las tareas 5 y 6.
   - Satisface: Requisito 3, criterio 1.
 
 ## Requisito 4 — Sistema de bookmarks

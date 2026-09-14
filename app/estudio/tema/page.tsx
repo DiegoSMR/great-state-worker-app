@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { getConceptosEnAlcance } from "@/lib/temario";
+import { esNucleoComun, getConceptosEnAlcance } from "@/lib/temario";
+import { NucleoComunBadge } from "../_components/NucleoComunBadge";
 
 export default function CatalogoTemasPage() {
   const conceptos = getConceptosEnAlcance();
@@ -20,9 +21,10 @@ export default function CatalogoTemasPage() {
           <li key={concepto.id}>
             <Link
               href={`/estudio/tema/${concepto.id}`}
-              className="block rounded-md border border-neutral-200 px-4 py-3 hover:border-neutral-400"
+              className="flex items-center gap-3 rounded-md border border-neutral-200 px-4 py-3 hover:border-neutral-400"
             >
-              {concepto.titulo}
+              <span className="flex-1">{concepto.titulo}</span>
+              {esNucleoComun(concepto.id) && <NucleoComunBadge />}
             </Link>
           </li>
         ))}
