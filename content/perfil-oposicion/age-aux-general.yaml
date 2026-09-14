@@ -54,7 +54,28 @@ introduccion:
     estado: "pendiente_confirmar"
     nota: "No encontradas en fuente oficial accesible. Es esperado: la investigación confirma que este dato falta en las 4 oposiciones del radar, no es un hueco propio de esta."
 
-retribuciones: []
+retribuciones:
+  - concepto: "Sueldo base"
+    grupo: "base"
+    anio: 2026
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "Una fuente secundaria (no verificada directamente) cita un sueldo base de aproximadamente 749,58 €/mes para el Subgrupo C2 en 2026, según el Real Decreto-ley 14/2025, de 2 de diciembre — pero no se pudo confirmar directamente por fallo de acceso (timeout) al PDF oficial de la Secretaría de Estado de Presupuestos y Gastos (https://www.sepg.pap.hacienda.gob.es/sitios/sepg/es-ES/CostesPersonal/EstadisticasInformes/Documents/A%C3%91O%202025/Retribuciones%20del%20personal%20funcionario.%20Real%20Decreto-ley%2014%202025,%20de%202%20de%20diciembre.pdf). Esta cifra se recoge solo como referencia de una fuente secundaria, no como dato confirmado."
+
+  - concepto: "Complemento de destino"
+    grupo: "base"
+    anio: 2026
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "No encontrado en fuente oficial verificable para el puesto de Cuerpo General Auxiliar de la AGE."
+
+  - concepto: "Complemento específico"
+    grupo: "complemento_especifico"
+    anio: 2026
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "No encontrado en fuente oficial verificable para el puesto de Cuerpo General Auxiliar de la AGE."
+
 participacion: []
 
 faqEspecificas:

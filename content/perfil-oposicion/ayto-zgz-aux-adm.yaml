@@ -42,7 +42,77 @@ introduccion:
     estado: "pendiente_confirmar"
     nota: "No encontradas en fuente oficial accesible. Es esperado: la investigación de investigacion-datos.md confirma que este dato falta en las 4 oposiciones del radar, no es un hueco propio de esta."
 
-retribuciones: []
+retribuciones:
+  - concepto: "Sueldo base"
+    grupo: "base"
+    anio: 2025
+    dato:
+      estado: "confirmado"
+      valor: "738,50 €/mes"
+      fuente: "zaragoza.es/sede/organizacion/retribuciones (https://www.zaragoza.es/sede/portal/organizacion/retribuciones)"
+      fechaConsulta: "2026-09-14"
+
+  - concepto: "Paga extra"
+    grupo: "base"
+    anio: 2025
+    dato:
+      estado: "confirmado"
+      valor: "731,77 €"
+      fuente: "zaragoza.es/sede/organizacion/retribuciones (https://www.zaragoza.es/sede/portal/organizacion/retribuciones)"
+      fechaConsulta: "2026-09-14"
+
+  - concepto: "Total bruto anual"
+    grupo: "base"
+    anio: 2025
+    dato:
+      estado: "confirmado"
+      valor: "10.325,54 €/año"
+      fuente: "zaragoza.es/sede/organizacion/retribuciones (https://www.zaragoza.es/sede/portal/organizacion/retribuciones)"
+      fechaConsulta: "2026-09-14"
+
+  - concepto: "Complemento de destino (nivel 22)"
+    grupo: "base"
+    anio: 2025
+    dato:
+      estado: "confirmado"
+      valor: "628,31 €/mes (8.796,34 €/año)"
+      fuente: "zaragoza.es/sede/organizacion/retribuciones (https://www.zaragoza.es/sede/portal/organizacion/retribuciones)"
+      fechaConsulta: "2026-09-14"
+
+  - concepto: "Sueldo base"
+    grupo: "base"
+    anio: 2026
+    dato:
+      estado: "confirmado"
+      valor: "749,58 €/mes"
+      fuente: "zaragoza.es/sede/organizacion/retribuciones (https://www.zaragoza.es/sede/portal/organizacion/retribuciones)"
+      fechaConsulta: "2026-09-14"
+
+  - concepto: "Complemento de destino (nivel 22)"
+    grupo: "base"
+    anio: 2026
+    dato:
+      estado: "confirmado"
+      valor: "637,73 €/mes (8.928,22 €/año)"
+      fuente: "zaragoza.es/sede/organizacion/retribuciones (https://www.zaragoza.es/sede/portal/organizacion/retribuciones)"
+      fechaConsulta: "2026-09-14"
+
+  - concepto: "Complemento específico del puesto de Auxiliar Administrativo"
+    grupo: "complemento_especifico"
+    anio: 2026
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "La tabla oficial de complementos específicos del Ayuntamiento tiene varios estratos, y no se ha podido confirmar cuál corresponde exactamente al puesto de Auxiliar Administrativo. No se usa la cifra publicada por la academia Cierzo Formación (nivel 15, estrato 03012, 1.081,99 €) por ser fuente no oficial y contradictoria con el resto de datos verificados."
+
+  - concepto: "Complemento específico — ejemplo estrato 00002 (no necesariamente el que aplica a Auxiliar Administrativo)"
+    grupo: "complemento_especifico"
+    anio: 2026
+    dato:
+      estado: "confirmado"
+      valor: "1.006,64 €/mes"
+      fuente: "zaragoza.es/sede/organizacion/retribuciones (https://www.zaragoza.es/sede/portal/organizacion/retribuciones) — tabla de estratos de complemento específico, estrato 00002 tomado solo como ejemplo de formato de la tabla"
+      fechaConsulta: "2026-09-14"
+
 participacion: []
 
 faqEspecificas:

@@ -45,7 +45,28 @@ introduccion:
     estado: "pendiente_confirmar"
     nota: "No detalladas en la convocatoria — el propio texto del BOA remite al temario en vez de describir funciones. Es esperado: la investigación confirma que este dato falta en las 4 oposiciones del radar, no es un hueco propio de esta."
 
-retribuciones: []
+retribuciones:
+  - concepto: "Sueldo base"
+    grupo: "base"
+    anio: 2025
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "No se encontró tabla oficial con cifras exactas de sueldo para el Subgrupo C2 en la Administración de la Comunidad Autónoma de Aragón. Se confirmó la existencia de un Acuerdo de 14/01/2026 del Gobierno de Aragón que actualiza las retribuciones de administración general (incremento del 2,5% en 2025 según el Decreto-Ley 8/2025, citado por fuentes secundarias), pero no se accedió al documento con las cifras exactas."
+
+  - concepto: "Complemento de destino"
+    grupo: "base"
+    anio: 2025
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "No se encontró tabla oficial con cifras exactas de complemento de destino para el Subgrupo C2 en la Administración de la Comunidad Autónoma de Aragón. Mismo Acuerdo de 14/01/2026 citado en el sueldo base, sin cifras exactas accesibles."
+
+  - concepto: "Complemento específico"
+    grupo: "complemento_especifico"
+    anio: 2025
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "No se encontró tabla oficial con cifras exactas de complemento específico para el Subgrupo C2 en la Administración de la Comunidad Autónoma de Aragón. Mismo Acuerdo de 14/01/2026 citado en el sueldo base, sin cifras exactas accesibles."
+
 participacion: []
 
 faqEspecificas:

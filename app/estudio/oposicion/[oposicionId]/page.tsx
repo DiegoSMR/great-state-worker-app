@@ -1,8 +1,10 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { DatoOficial } from "@/lib/dato-oficial";
+import { extraerEnlaceFuente } from "@/lib/contenido";
 import { esNucleoComun, getOposicion, getResumenNucleoComun, getTemasDeOposicion } from "@/lib/temario";
-import { getFaqEspecificas, getPerfilOposicion } from "@/lib/perfil-oposicion";
+import { getFaqEspecificas, getPerfilOposicion, type FilaRetribucion } from "@/lib/perfil-oposicion";
 import { Markdown } from "@/components/estudio/Markdown";
 import { DatoPendiente } from "@/components/estudio/DatoPendiente";
 import { FuenteInline } from "@/components/estudio/FuenteInline";
@@ -28,6 +30,11 @@ function CampoDato({ etiqueta, dato }: { etiqueta: string; dato: DatoOficial<str
     </div>
   );
 }
+
+const ETIQUETA_GRUPO_RETRIBUCION: Record<FilaRetribucion["grupo"], string> = {
+  base: "Retribución base",
+  complemento_especifico: "Complemento específico",
+};
 
 export default async function OposicionPage({
   params,
@@ -84,8 +91,8 @@ export default async function OposicionPage({
       </section>
 
       {perfil && (
-        <div className="mt-8 space-y-8 [&>section]:max-w-[70ch]">
-          <section aria-labelledby="requisitos-acceso">
+        <div className="mt-8 space-y-8">
+          <section aria-labelledby="requisitos-acceso" className="max-w-[70ch]">
             <h2 id="requisitos-acceso" className="text-lg font-medium text-texto-primario">
               Requisitos de acceso
             </h2>
@@ -99,7 +106,7 @@ export default async function OposicionPage({
             </dl>
           </section>
 
-          <section aria-labelledby="funciones-puesto">
+          <section aria-labelledby="funciones-puesto" className="max-w-[70ch]">
             <h2 id="funciones-puesto" className="text-lg font-medium text-texto-primario">
               Funciones del puesto
             </h2>
@@ -118,8 +125,93 @@ export default async function OposicionPage({
             </div>
           </section>
 
+          {perfil.retribuciones.length > 0 && (
+            <section aria-labelledby="retribucion-puesto">
+              <h2 id="retribucion-puesto" className="text-lg font-medium text-texto-primario">
+                Retribución del puesto
+              </h2>
+              <div className="mt-3 overflow-x-auto rounded-md border border-borde">
+                <table className="w-full min-w-[480px] border-collapse text-sm">
+                  <thead>
+                    <tr>
+                      <th className="border-b border-borde px-3 py-2 text-left font-medium text-texto-secundario">
+                        Concepto
+                      </th>
+                      <th className="border-b border-borde px-3 py-2 text-left font-medium text-texto-secundario">
+                        Importe
+                      </th>
+                      <th className="border-b border-borde px-3 py-2 text-left font-medium text-texto-secundario">
+                        Año
+                      </th>
+                      <th className="border-b border-borde px-3 py-2 text-left font-medium text-texto-secundario">
+                        Fuente
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(["base", "complemento_especifico"] as const).map((grupo) => {
+                      const filas = perfil.retribuciones.filter((f) => f.grupo === grupo);
+                      if (filas.length === 0) return null;
+                      return (
+                        <Fragment key={grupo}>
+                          <tr>
+                            <th
+                              colSpan={4}
+                              className="border-b border-borde bg-bg-secundario px-3 py-1.5 text-left text-xs font-medium text-texto-secundario"
+                            >
+                              {ETIQUETA_GRUPO_RETRIBUCION[grupo]}
+                            </th>
+                          </tr>
+                          {filas.map((fila, i) => {
+                            const enlace =
+                              fila.dato.estado === "confirmado" ? extraerEnlaceFuente(fila.dato.fuente) : null;
+                            return (
+                              <tr key={`${grupo}-${i}`} className="border-b border-borde last:border-b-0">
+                                <td className="px-3 py-2 align-top text-texto-primario">{fila.concepto}</td>
+                                <td className="px-3 py-2 align-top text-texto-primario">
+                                  {fila.dato.estado === "confirmado" ? (
+                                    fila.dato.valor
+                                  ) : (
+                                    <DatoPendiente nota={fila.dato.nota} />
+                                  )}
+                                </td>
+                                <td className="px-3 py-2 align-top text-texto-primario">{fila.anio}</td>
+                                <td className="max-w-[16rem] px-3 py-2 align-top text-texto-secundario">
+                                  {fila.dato.estado === "confirmado" ? (
+                                    <>
+                                      {enlace ? (
+                                        <a
+                                          href={enlace}
+                                          target="_blank"
+                                          rel="noreferrer noopener"
+                                          title={fila.dato.fuente}
+                                          className="underline underline-offset-2 hover:text-texto-primario"
+                                        >
+                                          {fila.dato.fuente}
+                                        </a>
+                                      ) : (
+                                        fila.dato.fuente
+                                      )}
+                                      <span className="block text-xs">{fila.dato.fechaConsulta}</span>
+                                    </>
+                                  ) : (
+                                    "—"
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </Fragment>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          )}
+
           {faqs.length > 0 && (
-            <section aria-labelledby="faq-oposicion">
+            <section aria-labelledby="faq-oposicion" className="max-w-[70ch]">
               <h2 id="faq-oposicion" className="text-lg font-medium text-texto-primario">
                 Preguntas frecuentes
               </h2>

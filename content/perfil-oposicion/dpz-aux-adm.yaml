@@ -48,7 +48,21 @@ introduccion:
     estado: "pendiente_confirmar"
     nota: "No encontradas en fuente oficial accesible. Es esperado: la investigación confirma que este dato falta en las 4 oposiciones del radar, no es un hueco propio de esta. Agravado además por el bloqueo de acceso a dpz.es."
 
-retribuciones: []
+retribuciones:
+  - concepto: "Sueldo base"
+    grupo: "base"
+    anio: 2026
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "No se encontró tabla retributiva propia del puesto en fuente oficial verificable — dpz.es dio error de certificado SSL en todas las herramientas de acceso disponibles durante la investigación, y el HTML descargado por curl no contenía el texto (carga dinámica). Pendiente de consultar dpz.es con un navegador normal, no herramienta automatizada."
+
+  - concepto: "Complemento específico"
+    grupo: "complemento_especifico"
+    anio: 2026
+    dato:
+      estado: "pendiente_confirmar"
+      nota: "No se encontró el complemento específico del puesto en fuente oficial verificable — mismo bloqueo de acceso a dpz.es (error de certificado SSL) que ha limitado buena parte de la investigación de esta oposición."
+
 participacion: []
 
 faqEspecificas:
