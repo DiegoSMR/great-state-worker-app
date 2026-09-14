@@ -1,35 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { DatoOficial } from "@/lib/dato-oficial";
-import { extraerEnlaceFuente } from "@/lib/contenido";
 import { esNucleoComun, getOposicion, getTemasDeOposicion } from "@/lib/temario";
-import { getPerfilOposicion } from "@/lib/perfil-oposicion";
+import { getFaqEspecificas, getPerfilOposicion } from "@/lib/perfil-oposicion";
 import { Markdown } from "@/components/estudio/Markdown";
 import { DatoPendiente } from "@/components/estudio/DatoPendiente";
+import { FuenteInline } from "@/components/estudio/FuenteInline";
+import { PreguntaFaqDetails } from "@/components/estudio/PreguntaFaqDetails";
 import { NucleoComunBadge } from "../../_components/NucleoComunBadge";
-
-/** Fuente + fecha de un DatoOficial confirmado, como nota corta bajo el valor. */
-function FuenteInline({ fuente, fechaConsulta }: { fuente: string; fechaConsulta: string }) {
-  const enlace = extraerEnlaceFuente(fuente);
-  return (
-    <span className="mt-0.5 block text-xs text-texto-secundario">
-      Fuente:{" "}
-      {enlace ? (
-        <a
-          href={enlace}
-          target="_blank"
-          rel="noreferrer noopener"
-          className="underline underline-offset-2 hover:text-texto-primario"
-        >
-          {fuente}
-        </a>
-      ) : (
-        fuente
-      )}{" "}
-      ({fechaConsulta})
-    </span>
-  );
-}
 
 /** Campo de un <dl> respaldado por un DatoOficial<string> — valor+fuente si está
  * confirmado, DatoPendiente si no. */
@@ -62,6 +40,7 @@ export default async function OposicionPage({
 
   const temas = getTemasDeOposicion(oposicionId);
   const perfil = getPerfilOposicion(oposicionId);
+  const faqs = getFaqEspecificas(oposicionId);
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
@@ -109,6 +88,27 @@ export default async function OposicionPage({
               )}
             </div>
           </section>
+
+          {faqs.length > 0 && (
+            <section aria-labelledby="faq-oposicion">
+              <h2 id="faq-oposicion" className="text-lg font-medium text-texto-primario">
+                Preguntas frecuentes
+              </h2>
+              <div className="mt-3 space-y-2">
+                {faqs.map((faq) => (
+                  <PreguntaFaqDetails key={faq.id} item={faq} />
+                ))}
+              </div>
+              <p className="mt-3 text-sm text-texto-secundario">
+                <Link
+                  href="/estudio/faqs#faq-comunes"
+                  className="underline underline-offset-2 hover:text-texto-primario"
+                >
+                  Ver también las preguntas comunes a varias oposiciones →
+                </Link>
+              </p>
+            </section>
+          )}
         </div>
       )}
 

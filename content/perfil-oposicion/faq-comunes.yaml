@@ -1,0 +1,207 @@
+# Preguntas frecuentes comunes a las oposiciones de Administración del radar
+# de Diego (Ayuntamiento de Zaragoza, Diputación de Zaragoza, Gobierno de
+# Aragón, AGE). Cada pregunta se escribe UNA SOLA VEZ aquí — nunca se
+# duplica dentro de `faqEspecificas` de ningún
+# content/perfil-oposicion/<oposicionId>.yaml (Requisito 2.4,
+# specs/018-perfil-oposicion/design.md, decisión "FAQ comunes en fichero
+# propio, deduplicadas por construcción").
+#
+# Redactadas desde cero por preparador-opos (principio 3 de CONSTITUTION.md:
+# nunca contenido de academias). La mayoría son explicaciones generales de
+# conceptos de la función pública española y no dependen de un dato oficial
+# puntual — por eso no llevan `fuente` (el campo es opcional en el tipo
+# PreguntaFaq, precisamente para este caso; ver design.md).
+
+- id: "que-es-turno-libre"
+  pregunta: "¿Qué es el turno libre?"
+  respuesta: |
+    El turno libre es la vía de acceso a la función pública abierta a
+    cualquier persona que cumpla los requisitos generales de la
+    convocatoria, sin exigir una condición previa de haber trabajado ya en
+    la Administración. Es el turno por el que se presenta la inmensa
+    mayoría de los aspirantes "de fuera" de la Administración.
+
+    Se distingue de otros turnos que conviven en la misma convocatoria pero
+    con plazas y requisitos propios: el turno de **promoción interna**
+    (reservado a personal funcionario ya en activo de un grupo inferior que
+    quiere ascender) y el cupo de **reserva para personas con discapacidad**
+    (un porcentaje mínimo de plazas, según la disposición adicional del
+    EBEP, con adaptaciones del proceso si se solicitan). Cuando una
+    convocatoria reparte sus plazas en "turno libre ordinario" + "plazas de
+    ampliación reservadas a discapacidad", como ocurre en varias de las
+    oposiciones de este radar, esas plazas de ampliación no son un proceso
+    distinto — son parte de la misma convocatoria con un cupo diferenciado.
+  oposiciones: ["ayto-zgz-aux-adm", "dpz-aux-adm", "dga-aux-adm", "age-aux-general"]
+
+- id: "que-es-bolsa-trabajo-lista-espera"
+  pregunta: "¿Qué es una bolsa de trabajo o lista de espera de interinos?"
+  respuesta: |
+    Es una lista ordenada de aspirantes que, aunque no hayan obtenido plaza
+    fija en el proceso selectivo, sí superaron una parte suficiente de él (o
+    se presentaron y quedaron dentro de un número determinado en la lista
+    de aprobados/notas). La Administración recurre a esa lista, por orden
+    de puntuación, para cubrir necesidades temporales — bajas, vacantes
+    mientras no se convoca plaza fija, refuerzos puntuales — mediante
+    nombramientos de personal funcionario interino.
+
+    No todas las convocatorias generan bolsa de forma automática ni con el
+    mismo nombre: algunas la llaman explícitamente "bolsa de trabajo",
+    otras "lista de espera" y otras remiten a un artículo propio de sus
+    bases sin usar ninguna de las dos etiquetas — conviene mirar el proceso
+    selectivo concreto de cada oposición en vez de asumir que todas
+    funcionan igual.
+  oposiciones: ["ayto-zgz-aux-adm", "dpz-aux-adm", "dga-aux-adm", "age-aux-general"]
+
+- id: "diferencia-oposicion-libre-concurso-oposicion"
+  pregunta: "¿Qué diferencia hay entre oposición libre y concurso-oposición?"
+  respuesta: |
+    En la **oposición** (a veces llamada "oposición libre" o "oposición
+    pura") la plaza se decide únicamente por la puntuación obtenida en los
+    ejercicios del proceso selectivo — exámenes tipo test, prácticos, o
+    ambos. No cuenta nada de lo que el aspirante haya hecho antes (títulos
+    adicionales, experiencia, cursos).
+
+    En el **concurso-oposición** se suman dos fases: la de oposición (los
+    ejercicios, igual que arriba) y una fase de **concurso de méritos**, en
+    la que se puntúan aparte cosas como la experiencia previa en la
+    Administración, formación complementaria o titulaciones adicionales a
+    la exigida. La fase de méritos no suele ser eliminatoria por sí sola y
+    su peso relativo sobre la nota final está limitado por convocatoria.
+
+    Todas las oposiciones de este radar convocadas hasta ahora son de
+    oposición pura (sin fase de méritos) — no hay que dar por hecho que la
+    experiencia profesional puntúe salvo que las bases de una convocatoria
+    concreta lo digan expresamente.
+  oposiciones: ["ayto-zgz-aux-adm", "dpz-aux-adm", "dga-aux-adm", "age-aux-general"]
+
+- id: "que-es-la-oep"
+  pregunta: "¿Qué es la OEP (Oferta de Empleo Público)?"
+  respuesta: |
+    La Oferta de Empleo Público es el documento anual con el que cada
+    Administración (el Estado, una comunidad autónoma, una diputación, un
+    ayuntamiento) declara cuántas plazas vacantes de personal funcionario o
+    laboral va a cubrir mediante procesos selectivos, y a qué cuerpos o
+    escalas corresponden. Aprobar una OEP no es lo mismo que convocar la
+    oposición: la OEP fija el número de plazas autorizadas, y la
+    convocatoria posterior (con sus bases, plazos y ejercicios) es el
+    proceso concreto para cubrirlas.
+
+    Es habitual que una misma convocatoria acumule plazas de varias OEP de
+    años distintos (por ejemplo, plazas ya autorizadas en la OEP de un año
+    que no se llegaron a convocar, sumadas a las de un año posterior) —
+    varias de las oposiciones de este radar funcionan así, así que ver "OEP
+    2023 + OEP 2024 + OEP 2025" en una misma convocatoria es normal, no un
+    error.
+  oposiciones: ["ayto-zgz-aux-adm", "dpz-aux-adm", "dga-aux-adm", "age-aux-general"]
+
+- id: "que-determina-la-periodicidad-de-las-convocatorias"
+  pregunta: "¿Cada cuánto se convocan este tipo de oposiciones?"
+  respuesta: |
+    No hay una periodicidad fija por ley — depende de cuándo cada
+    Administración apruebe una OEP con plazas para ese cuerpo o escala y,
+    después, cuándo publique la convocatoria correspondiente. En la
+    práctica varía mucho según el organismo: algunos convocan con cierta
+    regularidad (anual o cada dos años), otros acumulan plazas de varias
+    OEP y convocan de forma más espaciada, y el ritmo puede cambiar de una
+    legislatura a otra según la política de reposición de efectivos.
+
+    Por eso, salvo que exista un dato histórico verificado de convocatorias
+    anteriores del mismo cuerpo, no conviene asumir que "la próxima será en
+    tantos años" — cada oposición de este radar tiene su propia pregunta
+    específica sobre lo que se sabe (o no) de su periodicidad histórica.
+  oposiciones: ["ayto-zgz-aux-adm", "dpz-aux-adm", "dga-aux-adm", "age-aux-general"]
+
+- id: "como-interpretar-la-ratio-aspirantes-plaza"
+  pregunta: "¿Qué es la ratio aspirantes/plaza y qué me dice sobre la dificultad real?"
+  respuesta: |
+    Es el número de personas presentadas al proceso dividido entre el
+    número de plazas convocadas — por ejemplo, una ratio de 20 significa
+    que, de media, se presentaron 20 aspirantes por cada plaza disponible.
+    Es un indicador útil de cuánta competencia hay, pero conviene leerlo
+    con matices: no distingue cuánta gente se presentó realmente preparada
+    de cuánta se apuntó "por probar" sin estudiar en serio, y una ratio
+    alta en un proceso con muchas plazas puede ser, en la práctica, menos
+    exigente que una ratio más baja en un proceso con pocas plazas y un
+    temario muy largo.
+
+    Este dato solo se puede publicar cuando el organismo hace pública la
+    cifra de aspirantes presentados — algo que, según la investigación
+    hecha para este perfil, ninguna de las 4 oposiciones de este radar
+    publica todavía de forma accesible (ver la ficha de participación de
+    cada oposición).
+  oposiciones: ["ayto-zgz-aux-adm", "dpz-aux-adm", "dga-aux-adm", "age-aux-general"]
+
+- id: "puedo-presentarme-a-varias-de-estas-oposiciones-a-la-vez"
+  pregunta: "¿Puedo presentarme a varias de estas oposiciones a la vez?"
+  respuesta: |
+    Sí. No hay ninguna incompatibilidad legal entre presentarse a procesos
+    selectivos de Administraciones distintas (Ayuntamiento de Zaragoza,
+    Diputación de Zaragoza, Gobierno de Aragón y Administración General del
+    Estado son organismos independientes entre sí), ni entre presentarse a
+    varias convocatorias del mismo grupo aunque coincidan en el tiempo,
+    salvo que dos exámenes caigan exactamente el mismo día y hora — en ese
+    caso solo se puede acudir a uno físicamente.
+
+    De hecho, presentarse a varias a la vez suele ser la estrategia más
+    razonable cuando el temario se solapa mucho entre ellas (núcleo
+    común), porque el tiempo de estudio invertido en la parte compartida
+    rinde para varios procesos a la vez en lugar de uno solo.
+  oposiciones: ["ayto-zgz-aux-adm", "dpz-aux-adm", "dga-aux-adm", "age-aux-general"]
+
+- id: "que-significa-que-un-ejercicio-sea-eliminatorio"
+  pregunta: "¿Qué significa que un ejercicio sea \"eliminatorio\"?"
+  respuesta: |
+    Que hay que alcanzar una puntuación mínima en ese ejercicio para poder
+    seguir en el proceso — quien no la alcanza queda fuera
+    independientemente de cómo le vaya (o le hubiera ido) en los ejercicios
+    siguientes. Es el modelo habitual cuando un proceso tiene más de una
+    prueba: primero se corrige el primer ejercicio y solo se corrige el
+    segundo a quienes lo superaron, en vez de corregir todo a la vez y
+    sumar puntos sin más.
+
+    Esto tiene una consecuencia práctica para preparar el examen: no
+    compensa "reservar tiempo de estudio" para la segunda prueba a costa de
+    arriesgar el mínimo de la primera, porque un mal resultado en un
+    ejercicio eliminatorio anula la nota de los demás por buena que sea.
+  oposiciones: ["ayto-zgz-aux-adm", "dpz-aux-adm", "dga-aux-adm", "age-aux-general"]
+
+- id: "que-es-la-penalizacion-por-error-en-examenes-tipo-test"
+  pregunta: "¿Qué es la penalización por error en los exámenes tipo test?"
+  respuesta: |
+    Es una fórmula de corrección pensada para desincentivar contestar al
+    azar: cada respuesta incorrecta resta una fracción de punto (una cifra
+    habitual es restar un tercio de acierto por cada error, aunque la
+    fracción exacta la fija cada convocatoria), mientras que las preguntas
+    dejadas en blanco no penalizan nada. El resultado es que contestar una
+    pregunta de la que no se tiene ninguna idea, al azar entre varias
+    opciones, tiene de media un efecto neutro o ligeramente negativo sobre
+    la nota — pero descartar antes una o más opciones claramente erróneas
+    sí puede compensar.
+
+    La cifra exacta de penalización (y si hay reglas particulares, como
+    preguntas de reserva que solo sustituyen a una anulada) varía por
+    convocatoria — se detalla en la pregunta específica de cada oposición
+    cuando el dato está confirmado.
+  oposiciones: ["ayto-zgz-aux-adm", "dpz-aux-adm", "dga-aux-adm", "age-aux-general"]
+
+- id: "diferencia-complemento-destino-especifico"
+  pregunta: "¿Qué diferencia hay entre el complemento de destino y el complemento específico?"
+  respuesta: |
+    Ambos se suman al sueldo base para formar la nómina, pero responden a
+    cosas distintas. El **complemento de destino** depende del nivel
+    asignado al puesto dentro de una escala general (los "niveles" van del
+    1 al 30) y es, en la práctica, bastante uniforme entre puestos del
+    mismo grupo/subgrupo y nivel, sea cual sea la Administración. El
+    **complemento específico** retribuye las características concretas de
+    un puesto de trabajo determinado — dificultad técnica, responsabilidad,
+    dedicación, penosidad — y lo fija cada Administración de forma propia
+    para cada puesto o "estrato" de puestos, por lo que puede variar mucho
+    de un organismo a otro aunque el grupo/subgrupo sea el mismo.
+
+    Por eso es habitual encontrar la retribución base (sueldo + complemento
+    de destino) publicada en tablas generales fáciles de localizar, y en
+    cambio el complemento específico de un puesto concreto mucho más
+    difícil de confirmar con una fuente oficial pública — es justo lo que
+    ha pasado al documentar la retribución de las oposiciones de este
+    radar.
+  oposiciones: ["ayto-zgz-aux-adm", "dpz-aux-adm", "dga-aux-adm", "age-aux-general"]

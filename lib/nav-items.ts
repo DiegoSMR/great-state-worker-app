@@ -1,4 +1,4 @@
-export type NavIconoId = "libro" | "marcador";
+export type NavIconoId = "libro" | "marcador" | "pregunta";
 
 export type NavItem = {
   href: string;
@@ -15,6 +15,7 @@ export type NavItem = {
 export const NAV_ITEMS: NavItem[] = [
   { href: "/estudio", etiqueta: "Estudio", icono: "libro" },
   { href: "/estudio/marcadores", etiqueta: "Marcadores", icono: "marcador" },
+  { href: "/estudio/faqs", etiqueta: "FAQs", icono: "pregunta" },
 ];
 
 /**

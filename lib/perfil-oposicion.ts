@@ -55,7 +55,12 @@ export type PerfilOposicion = {
   faqEspecificas: PreguntaFaq[];
 };
 
+/** Una pregunta común a varias oposiciones — mismo tipo que PreguntaFaq más el
+ * subconjunto de oposiciones al que aplica (normalmente las 4 en alcance). */
+export type PreguntaFaqComun = PreguntaFaq & { oposiciones: string[] };
+
 const cachePerfiles = new Map<string, PerfilOposicion | null>();
+let cacheFaqComunes: PreguntaFaqComun[] | null = null;
 
 function rutaPerfil(oposicionId: string): string {
   return path.join(process.cwd(), "content", "perfil-oposicion", `${oposicionId}.yaml`);
@@ -82,4 +87,24 @@ export function getPerfilOposicion(oposicionId: string): PerfilOposicion | null 
   const perfil = parse(raw) as PerfilOposicion;
   cachePerfiles.set(oposicionId, perfil);
   return perfil;
+}
+
+/** FAQ transversales a varias oposiciones (content/perfil-oposicion/faq-comunes.yaml). */
+export function getFaqComunes(): PreguntaFaqComun[] {
+  if (cacheFaqComunes) return cacheFaqComunes;
+
+  const filePath = path.join(process.cwd(), "content", "perfil-oposicion", "faq-comunes.yaml");
+  if (!existsSync(filePath)) {
+    cacheFaqComunes = [];
+    return cacheFaqComunes;
+  }
+
+  const raw = readFileSync(filePath, "utf-8");
+  cacheFaqComunes = (parse(raw) as PreguntaFaqComun[]) ?? [];
+  return cacheFaqComunes;
+}
+
+/** FAQ propias de una oposición — nunca incluye las de getFaqComunes() (Requisito 2.4). */
+export function getFaqEspecificas(oposicionId: string): PreguntaFaq[] {
+  return getPerfilOposicion(oposicionId)?.faqEspecificas ?? [];
 }

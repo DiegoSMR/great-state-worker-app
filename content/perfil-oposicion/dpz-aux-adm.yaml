@@ -50,4 +50,53 @@ introduccion:
 
 retribuciones: []
 participacion: []
-faqEspecificas: []
+
+faqEspecificas:
+  - id: "es-oposicion-pura-o-concurso-dpz"
+    pregunta: "¿El proceso de la Diputación de Zaragoza es oposición pura o concurso-oposición?"
+    respuesta: |
+      Es oposición pura: "solo oposición, sin méritos", según las propias
+      bases. No hay fase de concurso, así que la experiencia previa o la
+      formación complementaria no puntúan — la plaza se decide únicamente
+      por el resultado de los ejercicios.
+    fuente:
+      estado: "confirmado"
+      fuente: "BOPZ nº68, 25/03/2026 (bases de la convocatoria)"
+      fechaConsulta: "2026-09-14"
+
+  - id: "cuantos-ejercicios-tiene-dpz"
+    pregunta: "¿Cuántos ejercicios tiene el proceso selectivo de la Diputación de Zaragoza y de qué tipo?"
+    respuesta: |
+      No confirmado con fuente oficial. Una síntesis de búsqueda no oficial
+      menciona un test de 100 preguntas más un ejercicio práctico, pero no
+      se ha podido verificar directamente en las bases (BOPZ nº68) por el
+      bloqueo de acceso a dpz.es durante la investigación — no se da esa
+      cifra por buena hasta confirmarla en fuente primaria.
+    fuente:
+      estado: "pendiente_confirmar"
+      nota: "Bloqueo de certificado SSL en dpz.es impidió leer las bases completas; la cifra de 100 preguntas + práctico viene de una síntesis no oficial, sin confirmar."
+
+  - id: "genera-bolsa-dpz"
+    pregunta: "¿Esta oposición genera bolsa de trabajo?"
+    respuesta: |
+      No confirmado. No se ha podido verificar en fuente oficial si el
+      proceso genera bolsa de trabajo o lista de espera de interinos, por
+      el mismo bloqueo de acceso a dpz.es que ha limitado buena parte de la
+      investigación de esta oposición.
+    fuente:
+      estado: "pendiente_confirmar"
+      nota: "Bloqueo de certificado SSL en dpz.es impidió leer las bases completas."
+
+  - id: "por-que-hay-tan-poca-informacion-confirmada-dpz"
+    pregunta: "¿Por qué hay tan poca información confirmada sobre esta oposición?"
+    respuesta: |
+      Por un problema técnico de acceso, no porque falte investigación: el
+      sitio dpz.es dio un error de certificado SSL con todas las
+      herramientas de acceso automatizado disponibles, y la descarga
+      alternativa por HTML tampoco devolvió el texto de las bases completas
+      (la página carga el contenido de forma dinámica). Los datos que sí
+      aparecen en este perfil (plazas, sistema de oposición pura, plazo de
+      inscripción, requisitos de nacionalidad) proceden de extractos del
+      BOE y del BOPZ nº68 a los que sí se pudo acceder. El resto queda
+      pendiente hasta poder consultar dpz.es con un navegador normal en vez
+      de herramientas automatizadas.

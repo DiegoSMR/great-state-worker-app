@@ -44,4 +44,60 @@ introduccion:
 
 retribuciones: []
 participacion: []
-faqEspecificas: []
+
+faqEspecificas:
+  - id: "cuantos-ejercicios-tiene-ayto-zgz"
+    pregunta: "¿Cuántos ejercicios tiene el proceso selectivo del Ayuntamiento de Zaragoza?"
+    respuesta: |
+      Dos ejercicios eliminatorios, ambos el mismo día:
+
+      1. **Primer ejercicio (test):** 50 preguntas, con un tiempo máximo de
+         55 minutos.
+      2. **Segundo ejercicio (práctico):** dos supuestos teórico-prácticos,
+         con 10 preguntas cada uno.
+
+      El sistema exacto de puntuación de cada ejercicio (cuántos puntos
+      vale cada acierto, si hay penalización por error y de cuánto) no está
+      confirmado todavía — ver la pregunta siguiente.
+    fuente:
+      estado: "confirmado"
+      fuente: "Resumen de bases de la convocatoria vía zaragoza.es/oferta (id=1681, https://www.zaragoza.es/oferta/ofertaDetalle.jsp?id=1681)"
+      fechaConsulta: "2026-09-14"
+
+  - id: "como-se-puntua-ayto-zgz"
+    pregunta: "¿Cómo se puntúa cada ejercicio en el Ayuntamiento de Zaragoza?"
+    respuesta: |
+      No confirmado. Se conoce la estructura de los dos ejercicios (ver
+      pregunta anterior), pero no el sistema exacto de puntuación — si hay
+      penalización por error, cuál es el mínimo para aprobar cada
+      ejercicio, cómo se pondera cada supuesto del ejercicio práctico. El
+      PDF completo de las bases (411 KB) no fue accesible por scraping
+      automático durante la investigación; hace falta consultarlo
+      directamente para confirmar este dato.
+    fuente:
+      estado: "pendiente_confirmar"
+      nota: "PDF de bases (411 KB) no accesible por scraping automático — pendiente de consulta directa."
+
+  - id: "genera-bolsa-ayto-zgz"
+    pregunta: "¿Esta oposición genera bolsa de trabajo?"
+    respuesta: |
+      No confirmado. No se ha localizado en fuente oficial accesible si el
+      proceso genera una bolsa de trabajo o lista de espera de interinos
+      tras su resolución. El PDF completo de las bases no fue accesible
+      durante la investigación — es probable que la respuesta esté ahí.
+    fuente:
+      estado: "pendiente_confirmar"
+      nota: "PDF de bases (411 KB) no accesible por scraping automático — pendiente de consulta directa."
+
+  - id: "cada-cuanto-se-convoca-ayto-zgz"
+    pregunta: "¿Cada cuánto se convoca esta oposición en el Ayuntamiento de Zaragoza?"
+    respuesta: |
+      No verificado con fuente oficial. Una fuente secundaria (no oficial)
+      apunta a que la convocatoria de 2019 también fue de 47 plazas, lo que
+      sugeriría cierta similitud entre convocatorias, pero al no ser una
+      fuente primaria no se puede confirmar una periodicidad concreta. La
+      convocatoria vigente (BOP nº147, 30/06/2025; BOE nº257, 25/10/2025)
+      es la única confirmada con fuente oficial hasta ahora.
+    fuente:
+      estado: "pendiente_confirmar"
+      nota: "Solo una fuente secundaria no oficial sugiere la cifra de la convocatoria de 2019, sin confirmar con fuente primaria."

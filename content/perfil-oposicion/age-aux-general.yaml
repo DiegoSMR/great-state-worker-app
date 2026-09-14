@@ -56,4 +56,78 @@ introduccion:
 
 retribuciones: []
 participacion: []
-faqEspecificas: []
+
+faqEspecificas:
+  - id: "cuantos-ejercicios-tiene-age"
+    pregunta: "¿Cuántos ejercicios tiene el proceso selectivo de la AGE (Cuerpo General Auxiliar)?"
+    respuesta: |
+      Un único ejercicio, pero dividido en dos partes obligatorias y
+      eliminatorias que se realizan en el mismo acto, con 90 minutos en
+      total:
+
+      1. **Parte 1:** hasta 60 preguntas (30 del Bloque I de temario más 30
+         de pruebas psicotécnicas). Se puntúa de 0 a 50 puntos, con un
+         mínimo de 25 para superarla.
+      2. **Parte 2:** hasta 50 preguntas del Bloque II de temario. Se
+         puntúa de 0 a 50 puntos, con un mínimo de 25 para superarla.
+
+      Al ser un único ejercicio (no dos ejercicios distintos en días
+      separados), ambas partes se responden en la misma sesión.
+    fuente:
+      estado: "confirmado"
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública"
+      fechaConsulta: "2026-09-14"
+
+  - id: "como-se-puntua-age"
+    pregunta: "¿Cómo se puntúan los errores en el examen de la AGE?"
+    respuesta: |
+      Cada error resta un tercio de punto (penalización de -1/3 por
+      pregunta fallada), sobre las dos partes del ejercicio. Además de esta
+      penalización, hay que superar el mínimo de 25 puntos exigido en cada
+      una de las dos partes por separado (ver la pregunta sobre la
+      estructura del ejercicio).
+    fuente:
+      estado: "confirmado"
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública"
+      fechaConsulta: "2026-09-14"
+
+  - id: "genera-bolsa-age"
+    pregunta: "¿Esta oposición genera bolsa de trabajo?"
+    respuesta: |
+      Sí. Tras el proceso selectivo se forman listas de personal interino
+      (bolsa de trabajo) gestionadas por la Comisión Permanente de
+      Selección, a las que recurre la Administración para cubrir vacantes
+      temporales del Cuerpo General Auxiliar.
+    fuente:
+      estado: "confirmado"
+      fuente: "INAP — procesos selectivos de cuerpos y escalas generales, Cuerpo General Auxiliar de la Administración del Estado (https://sede.inap.gob.es/es/procedimientos-y-servicios/seleccion/procesos-selectivos-de-cuerpos-y-escalas-generales/cuerpo-general-auxiliar-de-la-administracion-del-estado-ingreso-libre-convocatoria-2025)"
+      fechaConsulta: "2026-09-14"
+
+  - id: "donde-se-destina-el-puesto-age"
+    pregunta: "Si apruebo la AGE, ¿el destino será en Aragón?"
+    respuesta: |
+      No necesariamente. Es una oferta de ámbito estatal (1.700 plazas en
+      total, sin desglose por comunidad autónoma ni provincia): el destino
+      concreto se asigna según el resultado del proceso selectivo y las
+      vacantes disponibles en cada momento, no se convoca "para Aragón"
+      específicamente. Conviene tenerlo en cuenta frente a las otras 3
+      oposiciones de este radar, que sí son procesos de ámbito autonómico o
+      local dentro de Aragón.
+    fuente:
+      estado: "confirmado"
+      fuente: "BOE-A-2025-26262, BOE nº306, 22/12/2025, Resolución de 18/12/2025 de la Secretaría de Estado de Función Pública"
+      fechaConsulta: "2026-09-14"
+
+  - id: "cada-cuanto-se-convoca-age"
+    pregunta: "¿Cada cuánto se convoca el Cuerpo General Auxiliar de la AGE?"
+    respuesta: |
+      Parcialmente verificado. La convocatoria actual (OEP 2025) es de
+      1.700 plazas, confirmada por BOE. Existen indicios de que la OEP
+      2021 autorizó 550 plazas y la OEP 2023 (acumulando 2021+2022)
+      autorizó 1.150, lo que apuntaría a un ritmo aproximadamente anual con
+      plazas acumuladas de varios años — pero esas dos cifras anteriores
+      proceden de síntesis de búsqueda, no de una lectura directa del BOE
+      correspondiente, así que no se dan por confirmadas al 100%.
+    fuente:
+      estado: "pendiente_confirmar"
+      nota: "Solo la cifra de la OEP 2025 (1.700 plazas) está confirmada por lectura directa del BOE. Las cifras de OEP 2021 (550) y OEP 2023 (1.150) proceden de síntesis de búsqueda no verificadas directamente."

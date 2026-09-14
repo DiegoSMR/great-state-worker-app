@@ -4,9 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS, esNavItemActivo } from "@/lib/nav-items";
 import { usePreferencias } from "@/components/preferencias/PreferenciasProvider";
-import { IconoApariencia, IconoConcentracion, IconoLibro, IconoMarcador } from "./iconos";
+import { IconoApariencia, IconoConcentracion, IconoLibro, IconoMarcador, IconoPregunta } from "./iconos";
 
-const ICONOS = { libro: IconoLibro, marcador: IconoMarcador };
+const ICONOS = { libro: IconoLibro, marcador: IconoMarcador, pregunta: IconoPregunta };
 
 /** Densidad "expanded": rail fijo expandido, icono + etiqueta de texto (escritorio por defecto). */
 export function NavVisible({
