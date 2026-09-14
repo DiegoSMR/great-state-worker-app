@@ -13,7 +13,7 @@ Nota: como es la primera spec que se implementa, las tareas 1-3 sientan también
 - [ ] 2. Configurar Postgres (Neon) + Drizzle ORM.
   - Detalle: instalar `drizzle-orm` + `drizzle-kit`, crear `db/schema.ts` con la tabla `usuarios` (una sola fila fija, ver `ARCHITECTURE.md`), variable de entorno `DATABASE_URL`, y comando de migración funcionando contra una base Neon real.
   - Satisface: base para Requisito 4.
-- [ ] 3. Loader de `content/temario.yaml` en el servidor.
+- [x] 3. Loader de `content/temario.yaml` en el servidor.
   - Detalle: `lib/temario.ts` con funciones: temas de una oposición ordenados por numeración oficial, catálogo de conceptos sin duplicados, y filas de relación de un concepto concreto (qué oposiciones lo piden y con qué numeración). Cubrir con algún caso de prueba manual usando datos reales del YAML.
   - Satisface: base para Requisitos 1, 2 y 3.
 
