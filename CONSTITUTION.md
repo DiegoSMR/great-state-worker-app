@@ -33,6 +33,8 @@ Nunca se salta una fase para ir más rápido. `specs/_TEMPLATE/` tiene las plant
 - **`scrapeador-fuentes-primarias`** — localiza y transcribe texto oficial (BOE/BOA, leyes, EBEP) para que `preparador-opos` lo use como base. Nunca toca material de academias — ver principio 3 más abajo.
 - **`disenador-maquetador`** — decisiones de UI/UX y maquetación, tablet-first.
 - **`investigador-convocatorias`** — datos factuales de convocatorias (fechas, plazas, plazos) y radar de procesos nuevos.
+- **`verificador-vigencia-normativa`** — comprueba si el texto oficial ya transcrito en `content/estudio/*.md` sigue vigente (reformas, derogaciones, renumeraciones) y reporta discrepancias a `preparador-opos`; no reescribe contenido él mismo.
+- **`verificador-vigencia-normativa`** — mantenimiento: comprueba si el texto oficial ya transcrito en `content/estudio/` sigue vigente (las leyes se reforman), y reporta discrepancias a `preparador-opos`. No reescribe contenido él mismo.
 
 ## Principios del producto
 

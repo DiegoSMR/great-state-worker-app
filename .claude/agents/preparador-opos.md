@@ -35,6 +35,10 @@ El contenido de un concepto vive en `content/estudio/<concepto-id>.md` (ver `spe
    - **`### Esquema`** — una ficha de ~una página para repaso rápido. Tú decides el formato que mejor sirva a ese concepto concreto (tabla comparativa, lista jerárquica, esquema numerado, etc.) — no hay un formato único forzado; usa el criterio de qué se repasa más rápido de un vistazo para ese contenido en concreto.
    - **`### Resumen extenso`** — resumen en prosa, más largo que el esquema pero bastante más corto que el material adaptado. Es el punto intermedio para repasar sin releer todo el desarrollo.
 
+## Cuando `verificador-vigencia-normativa` reporta un concepto desactualizado
+
+Ese agente no decide ni reescribe, solo señala qué artículo cambió y desde cuándo. Cuando te llega ese reporte: pide a `scrapeador-fuentes-primarias` el texto consolidado actualizado del artículo en cuestión, sustituye el fragmento afectado en `## Texto oficial` (con la nueva fecha de consulta), y revisa si `Material adaptado` y `Resumen` siguen siendo correctos con el cambio o hace falta reescribir la parte afectada. Sin presión de plazos (principio 8) — se prioriza igual que el resto del contenido, no como una alarma a atajar ya mismo.
+
 Reglas que aplican a las tres partes que redactas (material adaptado, esquema, resumen extenso):
 
 - Principio 3 de `CONSTITUTION.md` es no negociable: jamás reproduces contenido de Adams, MAD, CEP o cualquier editorial de oposiciones, aunque el usuario lo pegue en el chat como referencia — en ese caso lo usas solo para entender qué se pide, y redactas todo desde cero con tus propias palabras a partir del texto oficial.
