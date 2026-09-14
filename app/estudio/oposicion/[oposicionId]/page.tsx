@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { DatoOficial } from "@/lib/dato-oficial";
-import { esNucleoComun, getOposicion, getTemasDeOposicion } from "@/lib/temario";
+import { esNucleoComun, getOposicion, getResumenNucleoComun, getTemasDeOposicion } from "@/lib/temario";
 import { getFaqEspecificas, getPerfilOposicion } from "@/lib/perfil-oposicion";
 import { Markdown } from "@/components/estudio/Markdown";
 import { DatoPendiente } from "@/components/estudio/DatoPendiente";
@@ -41,6 +41,7 @@ export default async function OposicionPage({
   const temas = getTemasDeOposicion(oposicionId);
   const perfil = getPerfilOposicion(oposicionId);
   const faqs = getFaqEspecificas(oposicionId);
+  const resumenNucleoComun = getResumenNucleoComun(oposicionId);
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
@@ -53,6 +54,34 @@ export default async function OposicionPage({
           Ir directamente al temario ↓
         </a>
       </p>
+
+      <section
+        aria-labelledby="nucleo-comun-resumen"
+        className="mt-6 max-w-[70ch] rounded-md border border-borde bg-bg-secundario px-4 py-3"
+      >
+        <p id="nucleo-comun-resumen" className="text-sm text-texto-primario">
+          <span className="mr-2 inline-block align-middle">
+            <NucleoComunBadge />
+          </span>
+          {resumenNucleoComun.nucleoComun} de {resumenNucleoComun.totalTemas} temas son núcleo común
+          {resumenNucleoComun.compartidoCon.length > 0 && (
+            <>
+              {" "}
+              — compartido con{" "}
+              {resumenNucleoComun.compartidoCon
+                .map((c) => `${c.oposicion.nombre} (${c.conceptosComunes})`)
+                .join(", ")}
+            </>
+          )}
+          .
+        </p>
+        <Link
+          href="/estudio/comparativa-temario"
+          className="mt-1.5 inline-block text-sm text-texto-secundario underline underline-offset-2 hover:text-texto-primario"
+        >
+          Ver comparativa de temario →
+        </Link>
+      </section>
 
       {perfil && (
         <div className="mt-8 space-y-8 [&>section]:max-w-[70ch]">
