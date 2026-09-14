@@ -193,6 +193,57 @@ html {
   line-height: 1.65;
 }
 
+/* Texto enriquecido embebido en el contenido de estudio (notas-de-diseno
+   §14). Scoped a `.prose` (el wrapper de Markdown.tsx) porque `<u>` y
+   `.ink-*` son convenciones de autoría de content/estudio/*.md, no un
+   estilo genérico de toda la app. */
+.prose u {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+  /* texto-secundario, no currentColor: el subrayado de énfasis debe
+     distinguirse de un hipotético enlace en línea futuro (§14). */
+  text-decoration-color: var(--texto-secundario);
+}
+
+.prose mark.ink-importante,
+.prose mark.ink-ejemplo,
+.prose mark.ink-excepcion,
+.prose mark.ink-mnemonico,
+.prose mark.ink-atencion,
+.prose mark.ink-info {
+  border-radius: 0.15em;
+  padding-inline: 0.2em;
+  /* Un resaltado que se parte en dos líneas conserva el mismo redondeo
+     en ambos fragmentos en vez de un único rectángulo duro. */
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.prose mark.ink-importante {
+  background: var(--nucleo-bg);
+  color: var(--nucleo-texto);
+}
+.prose mark.ink-ejemplo {
+  background: var(--ejemplo-bg);
+  color: var(--ejemplo-texto);
+}
+.prose mark.ink-excepcion {
+  background: var(--excepcion-bg);
+  color: var(--excepcion-texto);
+}
+.prose mark.ink-mnemonico {
+  background: var(--bookmark-bg);
+  color: var(--bookmark-texto);
+}
+.prose mark.ink-atencion {
+  background: var(--atencion-bg);
+  color: var(--atencion-texto);
+}
+.prose mark.ink-info {
+  background: var(--revision-bg);
+  color: var(--revision-texto);
+}
+
 /* <dialog> nativo para el overlay de navegación móvil y el panel de
    preferencias — foco atrapado y cierre con Escape gratis del navegador
    (Requisito 12.6). */

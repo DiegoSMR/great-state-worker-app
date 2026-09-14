@@ -97,3 +97,12 @@ Tema, densidad de navegación y tamaño de letra son **preferencias de dispositi
 - **Camino de migración a multiusuario real:** cuando exista login (NextAuth/Auth.js), se añadiría una tabla `preferencia_interfaz(usuario_id, tema, nav_densidad, tamano_letra, actualizado_en)` con PK `usuario_id` — mismo patrón que `bookmark` (`usuario_id` desde el primer día). La cookie no desaparecería necesariamente: seguiría sirviendo de default para visitantes no autenticados, pero la fuente de verdad pasaría a la tabla. `lib/preferencias.ts` (`parsearPreferencias`/`guardarPreferencias`) es la única frontera entre el tipo `Preferencias` y su mecanismo de persistencia, así que ese cambio no debería tocar ningún componente de UI.
 
 Detalle completo de las 13 decisiones de esta spec (tokens de color, `NavShell` y sus tres variantes de densidad, tabs+scrollspy, estados especiales, accesibilidad) en `specs/003-sistema-de-diseno/design.md`.
+
+## Decidido: texto enriquecido embebido en el contenido de estudio (`notas-de-diseno.md` §14)
+
+`components/estudio/Markdown.tsx` renderizaba con `react-markdown` + `remark-gfm` sin soporte de HTML embebido — `<u>`/`<mark class="ink-...">` escritos a mano en `content/estudio/*.md` se limpiaban antes de llegar al DOM. Se añaden dos dependencias al pipeline:
+
+- **`rehype-raw`**: convierte el HTML crudo embebido en el markdown en nodos reales del árbol, en vez de descartarlo.
+- **`rehype-sanitize`**, con un esquema propio (`esquemaTextoEnriquecido` en el propio componente) que parte del `defaultSchema` de la librería (ya cubre los elementos normales de markdown/GFM) y añade `u` y `mark`, restringiendo el atributo `class` de `mark` a las 6 clases `ink-*` de §14. No es una medida de seguridad (`content/estudio/` solo lo escriben nuestros propios agentes, sin superficie de XSS real) — es para que un typo de un agente (una clase mal escrita, una etiqueta fuera de la lista) no cuele HTML/clases arbitrarias en silencio; con el esquema, lo que no está en la lista cerrada simplemente no se renderiza con esas propiedades.
+
+Los 6 pares de color que usan las clases `ink-*` reutilizan los tokens ya existentes de la paleta (`--nucleo-*`, `--bookmark-*`, `--revision-*`) más los 3 nuevos de §1 (`--ejemplo-*`, `--excepcion-*`, `--atencion-*`) — ningún color nuevo se introduce solo para esto.
