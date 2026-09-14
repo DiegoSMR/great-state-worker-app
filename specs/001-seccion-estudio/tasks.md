@@ -19,11 +19,11 @@ Nota: como es la primera spec que se implementa, las tareas 1-3 sientan también
 
 ## Requisito 1 — Navegación por oposición o por tema
 
-- [ ] 4. Página `/estudio` con selector "por oposición" / "por tema".
+- [x] 4. Página `/estudio` con selector "por oposición" / "por tema".
   - Satisface: Requisito 1, criterio 1.
-- [ ] 5. Página `/estudio/oposicion/[oposicionId]` — lista los temas de esa oposición en su numeración oficial, usando el loader de la tarea 3.
+- [x] 5. Página `/estudio/oposicion/[oposicionId]` — lista los temas de esa oposición en su numeración oficial, usando el loader de la tarea 3.
   - Satisface: Requisito 1, criterio 2.
-- [ ] 6. Página `/estudio/tema` (listado transversal por concepto) — catálogo de conceptos sin repetir los compartidos entre oposiciones.
+- [x] 6. Página `/estudio/tema` (listado transversal por concepto) — catálogo de conceptos sin repetir los compartidos entre oposiciones.
   - Satisface: Requisito 1, criterio 3.
 
 ## Requisito 2 — Contenido de estudio real por tema
