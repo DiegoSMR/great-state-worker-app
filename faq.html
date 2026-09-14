@@ -1,59 +1,192 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FAQ — OpoStudy</title>
-<style>
-:root{--bg:#0b1020;--panel:#121a2d;--text:#edf2ff;--muted:#9eabc5;--accent:#7c9cff;--border:#273451}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#090e1b,#10182b);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.55}.wrap{max-width:1050px;margin:auto;padding:0 24px}
-nav{height:72px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border)}a{color:inherit;text-decoration:none}.logo{font-weight:800}.logo span{color:var(--accent)}nav a:last-child{color:#b9c6e4}
-header{padding:60px 0 30px}h1{font-size:48px;margin:0 0 10px}header p{color:var(--muted);max-width:760px}.faq{display:grid;gap:12px;margin:25px 0 60px}
-details{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px 20px}summary{cursor:pointer;font-weight:750;font-size:17px}details p{color:var(--muted);max-width:900px}
-h2{margin-top:50px}.table-wrap{overflow:auto;background:var(--panel);border:1px solid var(--border);border-radius:14px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{text-align:left;padding:13px;border-bottom:1px solid var(--border)}th{color:#bfcbea;font-size:13px}td{color:#dce4f5}.ok{color:#77e2c3}.pending{color:#ffd27d}
-.timeline{display:grid;gap:10px;margin-bottom:60px}.event{padding:16px;background:var(--panel);border:1px solid var(--border);border-radius:12px}.event b{display:block}.event span{color:var(--muted)}
-.note{padding:18px;border-left:3px solid var(--accent);background:#111a2d;color:#c9d4ea;border-radius:8px}
-footer{padding:35px 0 55px;color:var(--muted);font-size:13px;border-top:1px solid var(--border)}
-</style></head><body><div class="wrap">
-<nav><a class="logo" href="index.html">Opo<span>Study</span></a><span><a href="study.html" style="margin-right:18px">Estudio</a><a href="index.html">← Volver al inicio</a></span></nav>
-<header><h1>Preguntas frecuentes</h1><p>La idea detrás de la aplicación: convertir varios temarios de oposiciones en una única máquina de aprendizaje, con filtros y contenido reutilizable.</p></header>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAQ — Great State Worker App</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
 
-<section class="faq">
-<details open><summary>¿Qué oposiciones contempla el proyecto?</summary><p>La primera línea es Auxiliar Administrativo (C2): Ayuntamiento de Zaragoza, Diputación de Zaragoza, Gobierno de Aragón, Servicio Aragonés de Salud y Auxiliar Administrativo del Estado. La segunda línea son oposiciones de informática C1: Técnico Auxiliar de Informática del Estado y el equivalente del Gobierno de Aragón. Además existe un radar abierto para procesos similares en Aragón o con buen destino.</p></details>
-<details><summary>¿Por qué no guardar un temario separado para cada oposición?</summary><p>Porque se repite mucho contenido. La aplicación tendrá un pool de conceptos y relaciones con las convocatorias. Así, Constitución o Procedimiento Administrativo pueden estudiarse una sola vez y después filtrarse según la oposición que interese.</p></details>
-<details><summary>¿Qué pasa si una oposición divide una materia en varios temas?</summary><p>El concepto de contenido no tiene que coincidir obligatoriamente con el número oficial del tema. Una relación puede indicar que un mismo concepto aparece en varios números oficiales de una oposición, manteniendo la fidelidad con la convocatoria sin duplicar la lección.</p></details>
-<details><summary>¿Qué significa “máquina para aprender”?</summary><p>La prioridad inicial es tener el material necesario para comprender y dominar cada concepto: contenido estructurado, lecciones y posteriormente flashcards y repasos. Los tests serán una segunda capa para comprobar el aprendizaje.</p></details>
-<details><summary>¿Será solo para una persona?</summary><p>Inicialmente sí. La infraestructura y el modelo de datos se plantean, sin embargo, sin cerrar la puerta a convertirlo en multiusuario en el futuro.</p></details>
-<details><summary>¿Necesita funcionar sin conexión?</summary><p>No es un requisito inicial. La app puede asumir conexión normal.</p></details>
-<details><summary>¿Habrá tests?</summary><p>Sí, pero después de construir bien la base de aprendizaje. La visión es usar tests y simulacros como herramientas de estudio y evaluación, no como el centro del producto desde el principio.</p></details>
-<details><summary>¿Cómo funcionará el filtrado?</summary><p>Se podrá combinar oposición, familia, nivel, área, materia y otros metadatos. Por ejemplo: “todo lo común a las oposiciones administrativas” o “bases de datos que aparezcan en las oposiciones de informática”.</p></details>
-</section>
+<header class="site">
+  <div class="wrap">
+    <div class="brand">Great State <span>Worker</span> App</div>
+    <nav class="site-nav">
+      <a href="index.html">Inicio</a>
+      <a href="temario.html">Temario</a>
+      <a href="faq.html" class="active">FAQ</a>
+      <a href="https://github.com/DiegoSMR/great-state-worker-app" target="_blank" rel="noopener">Repositorio ↗</a>
+    </nav>
+  </div>
+</header>
 
-<h2>Comparativa de las líneas de oposición</h2>
-<div class="table-wrap"><table>
-<thead><tr><th>Línea</th><th>Nivel</th><th>Procesos objetivo</th><th>Prioridad</th><th>Solape</th></tr></thead>
-<tbody>
-<tr><td>Auxiliar Administrativo</td><td>C2</td><td>Zaragoza · DPZ · DGA · SALUD · AGE</td><td class="ok">Principal</td><td>Alto en materias generales</td></tr>
-<tr><td>Informática</td><td>C1</td><td>TAI Estado · Informática DGA</td><td>Segunda vía</td><td>Alto en bloque técnico</td></tr>
-<tr><td>Radar abierto</td><td>C1/C2</td><td>Aragón + destinos bien conectados</td><td>Exploración</td><td>Por determinar</td></tr>
-</tbody></table></div>
+<main>
+  <div class="wrap">
+    <h1>Preguntas frecuentes</h1>
+    <p class="lede">Por qué este proyecto está planteado así, cómo está organizado, y qué falta todavía por confirmar.</p>
 
-<h2>Solapes que justifican el modelo</h2>
-<div class="table-wrap"><table>
-<thead><tr><th>Área</th><th>Administración</th><th>Informática</th><th>Uso en la app</th></tr></thead>
-<tbody>
-<tr><td>Constitución</td><td>Muy transversal</td><td>Parte de organización pública</td><td>Contenido reutilizable + filtros</td></tr>
-<tr><td>Procedimiento administrativo</td><td>Muy transversal</td><td>Según proceso</td><td>Una base de contenido</td></tr>
-<tr><td>Empleo público</td><td>Muy transversal</td><td>Relacionado</td><td>Etiquetas por oposición</td></tr>
-<tr><td>Ofimática</td><td>Recurrente</td><td>Según proceso</td><td>Lecciones + práctica</td></tr>
-<tr><td>Bases de datos / SQL</td><td>—</td><td>Muy transversal</td><td>Compartir entre procesos técnicos</td></tr>
-<tr><td>Programación / web</td><td>—</td><td>Muy transversal</td><td>Contenido técnico reutilizable</td></tr>
-</tbody></table></div>
+    <div class="faq-item">
+      <h3>¿Qué es este proyecto?</h3>
+      <p>
+        Un plan a largo plazo para conseguir una plaza de funcionario en Aragón (o en un destino con
+        muy buena conexión con Zaragoza, tipo Madrid o Barcelona vía AVE), preparando varias
+        oposiciones a la vez en lugar de apostarlo todo a una sola. No hay prisa de plazos: es un
+        proyecto paralelo mientras se mantiene el trabajo actual.
+      </p>
+    </div>
 
-<h2>Fechas y seguimiento</h2>
-<div class="timeline">
-<div class="event"><b>Revisión mensual</b><span>Ya existe un aviso mensual para comprobar si aparecen nuevas convocatorias.</span></div>
-<div class="event"><b>14/09/2026 · prototipo</b><span>Fecha de esta maqueta. No se muestran fechas de convocatoria inventadas.</span></div>
-<div class="event"><b>Fechas oficiales de convocatoria</b><span class="pending">Pendientes de cargar/verificar en la base de datos de convocatorias.</span></div>
-</div>
+    <div class="faq-item">
+      <h3>¿Por qué varias oposiciones a la vez?</h3>
+      <p>
+        Porque el temario de Auxiliar Administrativo (C2) es prácticamente el mismo en varios
+        procesos distintos. Preparar ese temario una vez da opción a presentarse simultáneamente al
+        Ayuntamiento de Zaragoza, la Diputación de Zaragoza, el Gobierno de Aragón, el Servicio
+        Aragonés de Salud y la Administración General del Estado — multiplicando las oportunidades
+        reales de conseguir plaza sin multiplicar el esfuerzo de estudio.
+      </p>
+    </div>
 
-<div class="note"><b>Importante:</b> esta maqueta utiliza únicamente la información disponible en el contexto proporcionado. El siguiente paso lógico es alimentar el catálogo con las convocatorias y temarios oficiales, incluyendo fechas, plazas, requisitos y enlaces de cada proceso.</div>
-<footer>OpoStudy · FAQ del prototipo · La información de convocatorias debe contrastarse con fuentes oficiales antes de usarla para tomar decisiones.</footer>
-</div></body></html>
+    <div class="faq-item">
+      <h3>¿Y por qué también informática, si el foco es Administración?</h3>
+      <p>
+        Por el perfil técnico (FP de Desarrollo de Aplicaciones Web + años de experiencia
+        profesional en informática): las oposiciones de informática C1 (Técnico Auxiliar de
+        Informática del Estado y su equivalente en el Gobierno de Aragón) pagan notablemente mejor
+        que Auxiliar Administrativo. Es una vía en paralelo, no un sustituto — Administración se
+        sigue priorizando salvo que una oposición de informática concreta resulte claramente más
+        ventajosa.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <h3>¿Cómo está organizado el temario?</h3>
+      <p>
+        No como un documento por oposición. Hay un catálogo de <strong>conceptos</strong> (las
+        unidades reales de contenido a estudiar) y una tabla de relación que dice, para cada
+        oposición, qué número de tema oficial tiene cada concepto y en qué bloque cae. El temario de
+        una oposición es el resultado de <em>filtrar</em> esa tabla, no un documento aparte — así el
+        mismo contenido no se estudia ni se escribe dos veces solo porque dos oposiciones lo pidan
+        con nombres distintos. Ver la página <a href="temario.html">Temario</a> para explorarlo con filtros reales.
+      </p>
+    </div>
+
+    <div class="faq-item">
+      <h3>¿Qué es el "núcleo común"?</h3>
+      <p>
+        Los conceptos que piden dos o más oposiciones a la vez. En el grupo de Administración hay un
+        núcleo de unos 6 conceptos presentes en 4 o 5 de los 5 procesos: Constitución Española,
+        Procedimiento Administrativo Común, Estatuto Básico del Empleado Público, Estatuto de
+        Autonomía de Aragón, igualdad/violencia de género y Prevención de Riesgos Laborales. Es lo
+        más rentable de estudiar primero, porque desbloquea progreso en varias oposiciones a la vez.
+        En Informática, buena parte del bloque técnico (bases de datos, programación orientada a
+        objetos, redes, seguridad) se comparte entre TAI y Ejecutivos de Informática DGA.
+      </p>
+    </div>
+
+    <h2>Comparativa de oposiciones objetivo</h2>
+    <p class="muted">Generada a partir del mismo catálogo de datos que la página de Temario.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Oposición</th><th>Organismo</th><th>Grupo</th><th>Nivel</th><th>Temas en catálogo</th></tr>
+        </thead>
+        <tbody id="op-comparison"></tbody>
+      </table>
+    </div>
+
+    <h2>Conceptos más compartidos (núcleo común)</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Concepto</th><th>Grupo</th><th>Oposiciones que lo piden</th></tr>
+        </thead>
+        <tbody id="core-concepts"></tbody>
+      </table>
+    </div>
+
+    <h2>Fechas y datos de convocatoria conocidos</h2>
+    <p class="muted">
+      Esto todavía no es una investigación completa de calendario de convocatorias — solo lo que ha
+      aparecido de forma incidental al buscar los temarios. Antes de planificar por fechas conviene
+      una investigación específica de plazas, ratios y calendario (pendiente).
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Oposición</th><th>Referencia conocida</th><th>Plazas</th><th>Certeza</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Ejecutivos de Informática (DGA)</td><td>OEP 2024/2025 (vigente); OEP 2022 anterior</td><td>2 plazas en OEP 2022</td><td>Confirmado en aragon.es</td></tr>
+          <tr><td>Auxiliar Administrativo (DPZ)</td><td>Convocatoria reciente mencionada por academias de preparación</td><td>~26 plazas</td><td>Por confirmar en el BOP/convocatoria oficial</td></tr>
+          <tr><td>Técnico Auxiliar de Informática (TAI, AGE)</td><td>—</td><td>~1.030 plazas (dato de contexto del proyecto)</td><td>Por confirmar en la convocatoria vigente</td></tr>
+          <tr><td>Ayuntamiento de Zaragoza / DGA Auxiliar / SALUD / AGE Auxiliar</td><td colspan="3" class="muted">Sin fecha ni plazas confirmadas todavía — pendiente de investigación específica</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>¿Qué queda pendiente?</h2>
+    <ul class="muted">
+      <li>Confirmar el temario detallado de SALUD Aragón (temas 11-47 solo se conocen agrupados por bloque).</li>
+      <li>Confirmar las materias generales de Ejecutivos de Informática DGA (temas 1-15).</li>
+      <li>Investigación específica de plazas, ratios de aprobados y calendario de convocatorias para cada proceso.</li>
+      <li>Contrastar todos los temarios con la convocatoria vigente antes de darlos por definitivos.</li>
+      <li>Diseño del contenido de estudio en sí (lecciones, flashcards) — de momento solo existe el catálogo de qué hay que estudiar.</li>
+    </ul>
+
+    <div class="note warn">
+      Última actualización de este sitio y de los datos: <strong>14 de septiembre de 2026</strong>.
+      El temario se investigó y organizó por primera vez el 13-14 de septiembre de 2026.
+    </div>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    Datos generados a partir de <code>content/temario.yaml</code> · Última actualización: 14 de septiembre de 2026
+  </div>
+</footer>
+
+<script src="assets/temario-data.js"></script>
+<script>
+(function () {
+  const T = window.TEMARIO;
+  const conceptMap = Object.fromEntries(T.conceptos.map(c => [c.id, c]));
+  const opMap = Object.fromEntries(T.oposiciones.map(o => [o.id, o]));
+
+  // comparativa de oposiciones
+  const countByOp = {};
+  T.temario.forEach(r => { countByOp[r.op] = (countByOp[r.op] || 0) + 1; });
+  document.getElementById('op-comparison').innerHTML = T.oposiciones.map(o => `
+    <tr>
+      <td>${o.nombre}</td>
+      <td>${o.organismo}</td>
+      <td><span class="pill ${o.grupo}">${o.grupo === 'administracion' ? 'Administración' : 'Informática'}</span></td>
+      <td>${o.subgrupo}</td>
+      <td>${countByOp[o.id] || 0}${o.nota ? ' *' : ''}</td>
+    </tr>
+  `).join('');
+
+  // conceptos núcleo común
+  const conceptOps = {};
+  T.temario.forEach(r => {
+    if (!conceptOps[r.concepto]) conceptOps[r.concepto] = new Set();
+    conceptOps[r.concepto].add(r.op);
+  });
+  const core = Object.entries(conceptOps)
+    .filter(([, set]) => set.size >= 2)
+    .sort((a, b) => b[1].size - a[1].size);
+
+  document.getElementById('core-concepts').innerHTML = core.map(([id, set]) => {
+    const c = conceptMap[id];
+    const names = Array.from(set).map(opId => opMap[opId].nombre + ' (' + opMap[opId].organismo.split(' ')[0] + ')').join(', ');
+    return `<tr>
+      <td>${c.titulo}</td>
+      <td><span class="pill ${c.grupo}">${c.grupo === 'administracion' ? 'Admin.' : 'Informática'}</span></td>
+      <td>${names}</td>
+    </tr>`;
+  }).join('');
+})();
+</script>
+
+</body>
+</html>
