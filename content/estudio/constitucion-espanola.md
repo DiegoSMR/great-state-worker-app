@@ -43,7 +43,12 @@ fuentes:
 
 **Artículo 20.1 y 20.4** (Sección 1ª — libertad de expresión e información)
 
-> 1. Se reconocen y protegen los derechos: a) A expresar y difundir libremente los pensamientos, ideas y opiniones mediante la palabra, el escrito o cualquier otro medio de reproducción. b) A la producción y creación literaria, artística, científica y técnica. c) A la libertad de cátedra. d) A comunicar o recibir libremente información veraz por cualquier medio de difusión.
+> 1. Se reconocen y protegen los derechos:
+>
+> a) A expresar y difundir libremente los pensamientos, ideas y opiniones mediante la palabra, el escrito o cualquier otro medio de reproducción.
+> b) A la producción y creación literaria, artística, científica y técnica.
+> c) A la libertad de cátedra.
+> d) A comunicar o recibir libremente información veraz por cualquier medio de difusión.
 >
 > 4. Estas libertades tienen su límite en el respeto a los derechos reconocidos en este Título, en los preceptos de las leyes que lo desarrollen y, especialmente, en el derecho al honor, a la intimidad, a la propia imagen y a la protección de la juventud y de la infancia.
 

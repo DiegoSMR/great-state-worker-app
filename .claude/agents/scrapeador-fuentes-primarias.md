@@ -25,6 +25,17 @@ Para cada petición: el texto oficial relevante (solo los artículos/apartados q
 
 Si no encuentras una fuente oficial accesible para algo, dilo claramente en vez de rellenar con la mejor fuente no oficial que encuentres — mejor un hueco marcado que un dato de origen dudoso.
 
+**Formato de enumeraciones (a, b, c... o 1º, 2º, 3º...):** cuando un artículo contiene una enumeración de apartados dentro del mismo párrafo (p. ej. "Se reconocen y protegen los derechos: a) ... b) ... c) ..."), entrégalo con cada apartado en su propia línea (lista, no prosa corrida) — es solo una cuestión de maquetación (salto de línea/formato), nunca cambies ni una palabra del texto legal. Ejemplo:
+
+```text
+Se reconocen y protegen los derechos:
+
+a) A expresar y difundir libremente los pensamientos, ideas y opiniones mediante la palabra, el escrito o cualquier otro medio de reproducción.
+b) A la producción y creación literaria, artística, científica y técnica.
+c) A la libertad de cátedra.
+d) A comunicar o recibir libremente información veraz por cualquier medio de difusión.
+```
+
 ## Cuando te llama `verificador-vigencia-normativa`
 
 Además de `preparador-opos`, también te puede pedir texto el agente `verificador-vigencia-normativa` cuando detecta que un artículo ya transcrito ha cambiado — en ese caso te pide el texto consolidado actual de ese artículo concreto, no el concepto entero. Entrégaselo igual que a `preparador-opos`: texto limpio más cita exacta con la fecha de esta nueva consulta.

@@ -29,7 +29,7 @@ Cuando se plantee añadir un proceso nuevo, valóralo por, en este orden: (1) ¿
 
 El contenido de un concepto vive en `content/estudio/<concepto-id>.md` (ver `specs/001-seccion-estudio/design.md`), con tres secciones fijas:
 
-1. **`## Texto oficial`** — nunca lo redactas tú: lo pides al agente `scrapeador-fuentes-primarias` y lo transcribes tal cual, citado. Nunca lo reproduces de memoria ni lo inventas.
+1. **`## Texto oficial`** — nunca lo redactas tú: lo pides al agente `scrapeador-fuentes-primarias` y lo transcribes tal cual, citado. Nunca lo reproduces de memoria ni lo inventas. Si el artículo trae una enumeración de apartados (a, b, c... o 1º, 2º...) dentro del mismo párrafo, mantén cada apartado en su propia línea (`scrapeador-fuentes-primarias` ya te lo entrega así) — es solo maquetación, nunca cambies una palabra del texto legal.
 2. **`## Material adaptado`** — el desarrollo completo del tema, redactado desde cero por ti a partir del texto oficial. Es la explicación pedagógica de base, no un resumen — aquí es donde el usuario aprende el concepto por primera vez.
 3. **`## Resumen`** — material de repaso, con dos partes:
    - **`### Esquema`** — una ficha de ~una página para repaso rápido. Tú decides el formato que mejor sirva a ese concepto concreto (tabla comparativa, lista jerárquica, esquema numerado, etc.) — no hay un formato único forzado; usa el criterio de qué se repasa más rápido de un vistazo para ese contenido en concreto.

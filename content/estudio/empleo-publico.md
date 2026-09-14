@@ -11,7 +11,12 @@ fuentes:
 
 > 1. Son empleados públicos quienes desempeñan funciones retribuidas en las Administraciones Públicas al servicio de los intereses generales.
 >
-> 2. Los empleados públicos se clasifican en: a) Funcionarios de carrera. b) Funcionarios interinos. c) Personal laboral, ya sea fijo, por tiempo indefinido o temporal. d) Personal eventual.
+> 2. Los empleados públicos se clasifican en:
+>
+> a) Funcionarios de carrera.
+> b) Funcionarios interinos.
+> c) Personal laboral, ya sea fijo, por tiempo indefinido o temporal.
+> d) Personal eventual.
 
 **Artículo 9.1. Funcionarios de carrera.**
 
@@ -19,7 +24,12 @@ fuentes:
 
 **Artículo 10.1 y 10.2. Funcionarios interinos.**
 
-> 1. Son funcionarios interinos los que, por razones expresamente justificadas de necesidad y urgencia, son nombrados como tales con carácter temporal para el desempeño de funciones propias de funcionarios de carrera, cuando se dé alguna de las siguientes circunstancias: a) La existencia de plazas vacantes, cuando no sea posible su cobertura por funcionarios de carrera, por un máximo de tres años. b) La sustitución transitoria de los titulares, durante el tiempo estrictamente necesario. c) La ejecución de programas de carácter temporal, que no podrán tener una duración superior a tres años, ampliable hasta doce meses más. d) El exceso o acumulación de tareas por plazo máximo de nueve meses, dentro de un periodo de dieciocho meses.
+> 1. Son funcionarios interinos los que, por razones expresamente justificadas de necesidad y urgencia, son nombrados como tales con carácter temporal para el desempeño de funciones propias de funcionarios de carrera, cuando se dé alguna de las siguientes circunstancias:
+>
+> a) La existencia de plazas vacantes, cuando no sea posible su cobertura por funcionarios de carrera, por un máximo de tres años.
+> b) La sustitución transitoria de los titulares, durante el tiempo estrictamente necesario.
+> c) La ejecución de programas de carácter temporal, que no podrán tener una duración superior a tres años, ampliable hasta doce meses más.
+> d) El exceso o acumulación de tareas por plazo máximo de nueve meses, dentro de un periodo de dieciocho meses.
 >
 > 2. [...] El nombramiento derivado de estos procedimientos de selección en ningún caso dará lugar al reconocimiento de la condición de funcionario de carrera.
 
@@ -37,11 +47,33 @@ fuentes:
 
 **Artículo 14 (selección). Derechos individuales.**
 
-> Los empleados públicos tienen los siguientes derechos de carácter individual en correspondencia con la naturaleza jurídica de su relación de servicio: a) A la inamovilidad en la condición de funcionario de carrera. [...] c) A la progresión en la carrera profesional y promoción interna según principios constitucionales de igualdad, mérito y capacidad [...]. d) A percibir las retribuciones y las indemnizaciones por razón del servicio. [...] g) A la formación continua y a la actualización permanente de sus conocimientos y capacidades profesionales, preferentemente en horario laboral. h) Al respeto de su intimidad, orientación e identidad sexual, expresión de género, características sexuales, propia imagen y dignidad en el trabajo, especialmente frente al acoso sexual y por razón de sexo [...]. i) A la no discriminación por razón de nacimiento, origen racial o étnico, género, sexo u orientación e identidad sexual [...] o cualquier otra condición o circunstancia personal o social. j) A la adopción de medidas que favorezcan la conciliación de la vida personal, familiar y laboral. [...] l) A recibir protección eficaz en materia de seguridad y salud en el trabajo. m) A las vacaciones, descansos, permisos y licencias. [...] p) A la libre asociación profesional. q) A los demás derechos reconocidos por el ordenamiento jurídico.
+> Los empleados públicos tienen los siguientes derechos de carácter individual en correspondencia con la naturaleza jurídica de su relación de servicio:
+>
+> a) A la inamovilidad en la condición de funcionario de carrera.
+> [...]
+> c) A la progresión en la carrera profesional y promoción interna según principios constitucionales de igualdad, mérito y capacidad [...].
+> d) A percibir las retribuciones y las indemnizaciones por razón del servicio.
+> [...]
+> g) A la formación continua y a la actualización permanente de sus conocimientos y capacidades profesionales, preferentemente en horario laboral.
+> h) Al respeto de su intimidad, orientación e identidad sexual, expresión de género, características sexuales, propia imagen y dignidad en el trabajo, especialmente frente al acoso sexual y por razón de sexo [...].
+> i) A la no discriminación por razón de nacimiento, origen racial o étnico, género, sexo u orientación e identidad sexual [...] o cualquier otra condición o circunstancia personal o social.
+> j) A la adopción de medidas que favorezcan la conciliación de la vida personal, familiar y laboral.
+> [...]
+> l) A recibir protección eficaz en materia de seguridad y salud en el trabajo.
+> m) A las vacaciones, descansos, permisos y licencias.
+> [...]
+> p) A la libre asociación profesional.
+> q) A los demás derechos reconocidos por el ordenamiento jurídico.
 
 **Artículo 15. Derechos individuales ejercidos colectivamente.**
 
-> Los empleados públicos tienen los siguientes derechos individuales que se ejercen de forma colectiva: a) A la libertad sindical. b) A la negociación colectiva y a la participación en la determinación de las condiciones de trabajo. c) Al ejercicio de la huelga, con la garantía del mantenimiento de los servicios esenciales de la comunidad. d) Al planteamiento de conflictos colectivos de trabajo, de acuerdo con la legislación aplicable en cada caso. e) Al de reunión, en los términos establecidos en el artículo 46 de este Estatuto.
+> Los empleados públicos tienen los siguientes derechos individuales que se ejercen de forma colectiva:
+>
+> a) A la libertad sindical.
+> b) A la negociación colectiva y a la participación en la determinación de las condiciones de trabajo.
+> c) Al ejercicio de la huelga, con la garantía del mantenimiento de los servicios esenciales de la comunidad.
+> d) Al planteamiento de conflictos colectivos de trabajo, de acuerdo con la legislación aplicable en cada caso.
+> e) Al de reunión, en los términos establecidos en el artículo 46 de este Estatuto.
 
 **Bloque 3 — Deberes y código de conducta**
 
@@ -73,7 +105,13 @@ fuentes:
 
 **Artículo 85.1. Situaciones administrativas de los funcionarios de carrera.**
 
-> Los funcionarios de carrera se hallarán en alguna de las siguientes situaciones: a) Servicio activo. b) Servicios especiales. c) Servicio en otras Administraciones Públicas. d) Excedencia. e) Suspensión de funciones.
+> Los funcionarios de carrera se hallarán en alguna de las siguientes situaciones:
+>
+> a) Servicio activo.
+> b) Servicios especiales.
+> c) Servicio en otras Administraciones Públicas.
+> d) Excedencia.
+> e) Suspensión de funciones.
 
 **Artículo 86.1. Servicio activo.**
 
@@ -81,7 +119,13 @@ fuentes:
 
 **Artículo 89.1 y 89.2. Excedencia.**
 
-> 1. La excedencia de los funcionarios de carrera podrá adoptar las siguientes modalidades: a) Excedencia voluntaria por interés particular. b) Excedencia voluntaria por agrupación familiar. c) Excedencia por cuidado de familiares. d) Excedencia por razón de violencia de género o de violencia sexual. e) Excedencia por razón de violencia terrorista.
+> 1. La excedencia de los funcionarios de carrera podrá adoptar las siguientes modalidades:
+>
+> a) Excedencia voluntaria por interés particular.
+> b) Excedencia voluntaria por agrupación familiar.
+> c) Excedencia por cuidado de familiares.
+> d) Excedencia por razón de violencia de género o de violencia sexual.
+> e) Excedencia por razón de violencia terrorista.
 >
 > 2. Los funcionarios de carrera podrán obtener la excedencia voluntaria por interés particular cuando hayan prestado servicios efectivos en cualquiera de las Administraciones Públicas durante un periodo mínimo de cinco años inmediatamente anteriores. [...] Quienes se encuentren en situación de excedencia por interés particular no devengarán retribuciones, ni les será computable el tiempo que permanezcan en tal situación a efectos de ascensos, trienios y derechos en el régimen de Seguridad Social que les sea de aplicación.
 
@@ -95,13 +139,25 @@ fuentes:
 
 **Artículo 94.2. Ejercicio de la potestad disciplinaria (principios).**
 
-> a) Principio de legalidad y tipicidad de las faltas y sanciones, a través de la predeterminación normativa o, en el caso del personal laboral, de los convenios colectivos. b) [Irretroactividad de las disposiciones sancionadoras no favorables y retroactividad de las favorables]. c) Principio de proporcionalidad [...]. d) Principio de culpabilidad. e) Principio de presunción de inocencia.
+> a) Principio de legalidad y tipicidad de las faltas y sanciones, a través de la predeterminación normativa o, en el caso del personal laboral, de los convenios colectivos.
+> b) [Irretroactividad de las disposiciones sancionadoras no favorables y retroactividad de las favorables].
+> c) Principio de proporcionalidad [...].
+> d) Principio de culpabilidad.
+> e) Principio de presunción de inocencia.
 
 **Artículo 95.1 y 95.2 (selección). Faltas disciplinarias.**
 
 > 1. Las faltas disciplinarias pueden ser muy graves, graves y leves.
 >
-> 2. Son faltas muy graves: a) El incumplimiento del deber de respeto a la Constitución y a los respectivos Estatutos de Autonomía de las comunidades autónomas y ciudades de Ceuta y Melilla, en el ejercicio de la función pública. b) Toda actuación que suponga discriminación por razón de origen racial o étnico, religión o convicciones, discapacidad, edad, orientación sexual [...], así como el acoso por razón de sexo [...] y el acoso moral y sexual. c) El abandono del servicio, así como no hacerse cargo voluntariamente de las tareas o funciones que tienen encomendadas. d) La adopción de acuerdos manifiestamente ilegales que causen perjuicio grave a la Administración o a los ciudadanos. [...] o) El acoso laboral. p) También serán faltas muy graves las que queden tipificadas como tales en ley de las Cortes Generales o de la asamblea legislativa de la correspondiente comunidad autónoma o por los convenios colectivos en el caso de personal laboral.
+> 2. Son faltas muy graves:
+>
+> a) El incumplimiento del deber de respeto a la Constitución y a los respectivos Estatutos de Autonomía de las comunidades autónomas y ciudades de Ceuta y Melilla, en el ejercicio de la función pública.
+> b) Toda actuación que suponga discriminación por razón de origen racial o étnico, religión o convicciones, discapacidad, edad, orientación sexual [...], así como el acoso por razón de sexo [...] y el acoso moral y sexual.
+> c) El abandono del servicio, así como no hacerse cargo voluntariamente de las tareas o funciones que tienen encomendadas.
+> d) La adopción de acuerdos manifiestamente ilegales que causen perjuicio grave a la Administración o a los ciudadanos.
+> [...]
+> o) El acoso laboral.
+> p) También serán faltas muy graves las que queden tipificadas como tales en ley de las Cortes Generales o de la asamblea legislativa de la correspondiente comunidad autónoma o por los convenios colectivos en el caso de personal laboral.
 
 **Bloque 6 — Acceso al empleo público**
 
@@ -109,7 +165,14 @@ fuentes:
 
 > 1. Todos los ciudadanos tienen derecho al acceso al empleo público de acuerdo con los principios constitucionales de igualdad, mérito y capacidad, y de acuerdo con lo previsto en el presente Estatuto y en el resto del ordenamiento jurídico.
 >
-> 2. [...] seleccionarán a su personal funcionario y laboral mediante procedimientos en los que se garanticen los principios constitucionales antes expresados, así como los establecidos a continuación: a) Publicidad de las convocatorias y de sus bases. b) Transparencia. c) Imparcialidad y profesionalidad de los miembros de los órganos de selección. d) Independencia y discrecionalidad técnica en la actuación de los órganos de selección. e) Adecuación entre el contenido de los procesos selectivos y las funciones o tareas a desarrollar. f) Agilidad, sin perjuicio de la objetividad, en los procesos de selección.
+> 2. [...] seleccionarán a su personal funcionario y laboral mediante procedimientos en los que se garanticen los principios constitucionales antes expresados, así como los establecidos a continuación:
+>
+> a) Publicidad de las convocatorias y de sus bases.
+> b) Transparencia.
+> c) Imparcialidad y profesionalidad de los miembros de los órganos de selección.
+> d) Independencia y discrecionalidad técnica en la actuación de los órganos de selección.
+> e) Adecuación entre el contenido de los procesos selectivos y las funciones o tareas a desarrollar.
+> f) Agilidad, sin perjuicio de la objetividad, en los procesos de selección.
 
 **Artículo 61.6 y 61.7. Sistemas selectivos.**
 

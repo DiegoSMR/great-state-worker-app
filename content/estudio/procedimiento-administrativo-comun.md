@@ -9,11 +9,19 @@ fuentes:
 
 **Artículo 3. Capacidad de obrar.**
 
-> A los efectos previstos en esta Ley, tendrán capacidad de obrar ante las Administraciones Públicas: a) Las personas físicas o jurídicas que ostenten capacidad de obrar con arreglo a las normas civiles. b) Los menores de edad para el ejercicio y defensa de aquellos de sus derechos e intereses cuya actuación esté permitida por el ordenamiento jurídico sin la asistencia de la persona que ejerza la patria potestad, tutela o curatela. Se exceptúa el supuesto de los menores incapacitados, cuando la extensión de la incapacitación afecte al ejercicio y defensa de los derechos o intereses de que se trate. c) Cuando la Ley así lo declare expresamente, los grupos de afectados, las uniones y entidades sin personalidad jurídica y los patrimonios independientes o autónomos.
+> A los efectos previstos en esta Ley, tendrán capacidad de obrar ante las Administraciones Públicas:
+>
+> a) Las personas físicas o jurídicas que ostenten capacidad de obrar con arreglo a las normas civiles.
+> b) Los menores de edad para el ejercicio y defensa de aquellos de sus derechos e intereses cuya actuación esté permitida por el ordenamiento jurídico sin la asistencia de la persona que ejerza la patria potestad, tutela o curatela. Se exceptúa el supuesto de los menores incapacitados, cuando la extensión de la incapacitación afecte al ejercicio y defensa de los derechos o intereses de que se trate.
+> c) Cuando la Ley así lo declare expresamente, los grupos de afectados, las uniones y entidades sin personalidad jurídica y los patrimonios independientes o autónomos.
 
 **Artículo 4. Concepto de interesado.**
 
-> 1. Se consideran interesados en el procedimiento administrativo: a) Quienes lo promuevan como titulares de derechos o intereses legítimos individuales o colectivos. b) Los que, sin haber iniciado el procedimiento, tengan derechos que puedan resultar afectados por la decisión que en el mismo se adopte. c) Aquellos cuyos intereses legítimos, individuales o colectivos, puedan resultar afectados por la resolución y se personen en el procedimiento en tanto no haya recaído resolución definitiva.
+> 1. Se consideran interesados en el procedimiento administrativo:
+>
+> a) Quienes lo promuevan como titulares de derechos o intereses legítimos individuales o colectivos.
+> b) Los que, sin haber iniciado el procedimiento, tengan derechos que puedan resultar afectados por la decisión que en el mismo se adopte.
+> c) Aquellos cuyos intereses legítimos, individuales o colectivos, puedan resultar afectados por la resolución y se personen en el procedimiento en tanto no haya recaído resolución definitiva.
 >
 > 3. Cuando la condición de interesado derivase de alguna relación jurídica transmisible, el derecho-habiente sucederá en tal condición cualquiera que sea el estado del procedimiento.
 
@@ -65,7 +73,17 @@ fuentes:
 
 **Artículo 35.1. Motivación.**
 
-> Serán motivados, con sucinta referencia de hechos y fundamentos de derecho: a) Los actos que limiten derechos subjetivos o intereses legítimos. b) Los actos que resuelvan procedimientos de revisión de oficio de disposiciones o actos administrativos, recursos administrativos y procedimientos de arbitraje y los que declaren su inadmisión. c) Los actos que se separen del criterio seguido en actuaciones precedentes o del dictamen de órganos consultivos. d) Los acuerdos de suspensión de actos [...] así como la adopción de medidas provisionales [...]. e) Los acuerdos de aplicación de la tramitación de urgencia, de ampliación de plazos y de realización de actuaciones complementarias. f) Los actos que rechacen pruebas propuestas por los interesados. g) Los actos que acuerden la terminación del procedimiento por la imposibilidad material de continuarlo por causas sobrevenidas, así como los que acuerden el desistimiento por la Administración en procedimientos iniciados de oficio. h) Las propuestas de resolución en los procedimientos de carácter sancionador, así como los actos que resuelvan procedimientos de carácter sancionador o de responsabilidad patrimonial. i) Los actos que se dicten en el ejercicio de potestades discrecionales, así como los que deban serlo en virtud de disposición legal o reglamentaria expresa.
+> Serán motivados, con sucinta referencia de hechos y fundamentos de derecho:
+>
+> a) Los actos que limiten derechos subjetivos o intereses legítimos.
+> b) Los actos que resuelvan procedimientos de revisión de oficio de disposiciones o actos administrativos, recursos administrativos y procedimientos de arbitraje y los que declaren su inadmisión.
+> c) Los actos que se separen del criterio seguido en actuaciones precedentes o del dictamen de órganos consultivos.
+> d) Los acuerdos de suspensión de actos [...] así como la adopción de medidas provisionales [...].
+> e) Los acuerdos de aplicación de la tramitación de urgencia, de ampliación de plazos y de realización de actuaciones complementarias.
+> f) Los actos que rechacen pruebas propuestas por los interesados.
+> g) Los actos que acuerden la terminación del procedimiento por la imposibilidad material de continuarlo por causas sobrevenidas, así como los que acuerden el desistimiento por la Administración en procedimientos iniciados de oficio.
+> h) Las propuestas de resolución en los procedimientos de carácter sancionador, así como los actos que resuelvan procedimientos de carácter sancionador o de responsabilidad patrimonial.
+> i) Los actos que se dicten en el ejercicio de potestades discrecionales, así como los que deban serlo en virtud de disposición legal o reglamentaria expresa.
 
 **Artículo 39.1, 39.2 y 39.3. Efectos.**
 
@@ -83,7 +101,15 @@ fuentes:
 
 **Artículo 47. Nulidad de pleno derecho.**
 
-> 1. Los actos de las Administraciones Públicas son nulos de pleno derecho en los casos siguientes: a) Los que lesionen los derechos y libertades susceptibles de amparo constitucional. b) Los dictados por órgano manifiestamente incompetente por razón de la materia o del territorio. c) Los que tengan un contenido imposible. d) Los que sean constitutivos de infracción penal o se dicten como consecuencia de ésta. e) Los dictados prescindiendo total y absolutamente del procedimiento legalmente establecido o de las normas que contienen las reglas esenciales para la formación de la voluntad de los órganos colegiados. f) Los actos expresos o presuntos contrarios al ordenamiento jurídico por los que se adquieren facultades o derechos cuando se carezca de los requisitos esenciales para su adquisición. g) Cualquier otro que se establezca expresamente en una disposición con rango de Ley.
+> 1. Los actos de las Administraciones Públicas son nulos de pleno derecho en los casos siguientes:
+>
+> a) Los que lesionen los derechos y libertades susceptibles de amparo constitucional.
+> b) Los dictados por órgano manifiestamente incompetente por razón de la materia o del territorio.
+> c) Los que tengan un contenido imposible.
+> d) Los que sean constitutivos de infracción penal o se dicten como consecuencia de ésta.
+> e) Los dictados prescindiendo total y absolutamente del procedimiento legalmente establecido o de las normas que contienen las reglas esenciales para la formación de la voluntad de los órganos colegiados.
+> f) Los actos expresos o presuntos contrarios al ordenamiento jurídico por los que se adquieren facultades o derechos cuando se carezca de los requisitos esenciales para su adquisición.
+> g) Cualquier otro que se establezca expresamente en una disposición con rango de Ley.
 >
 > 2. También serán nulas de pleno derecho las disposiciones administrativas que vulneren la Constitución, las leyes u otras disposiciones administrativas de rango superior, las que regulen materias reservadas a la Ley, y las que establezcan la retroactividad de disposiciones sancionadoras no favorables o restrictivas de derechos individuales.
 
@@ -129,7 +155,10 @@ fuentes:
 
 **Artículo 25.1. Falta de resolución expresa en procedimientos iniciados de oficio (caducidad de oficio).**
 
-> En los procedimientos iniciados de oficio, el vencimiento del plazo máximo establecido sin que se haya dictado y notificado resolución expresa no exime a la Administración del cumplimiento de la obligación legal de resolver, produciendo los siguientes efectos: a) En el caso de procedimientos de los que pudiera derivarse el reconocimiento o, en su caso, la constitución de derechos u otras situaciones jurídicas favorables, los interesados que hubieren comparecido podrán entender desestimadas sus pretensiones por silencio administrativo. b) En los procedimientos en que la Administración ejercite potestades sancionadoras o, en general, de intervención, susceptibles de producir efectos desfavorables o de gravamen, se producirá la caducidad. En estos casos, la resolución que declare la caducidad ordenará el archivo de las actuaciones, con los efectos previstos en el artículo 95.
+> En los procedimientos iniciados de oficio, el vencimiento del plazo máximo establecido sin que se haya dictado y notificado resolución expresa no exime a la Administración del cumplimiento de la obligación legal de resolver, produciendo los siguientes efectos:
+>
+> a) En el caso de procedimientos de los que pudiera derivarse el reconocimiento o, en su caso, la constitución de derechos u otras situaciones jurídicas favorables, los interesados que hubieren comparecido podrán entender desestimadas sus pretensiones por silencio administrativo.
+> b) En los procedimientos en que la Administración ejercite potestades sancionadoras o, en general, de intervención, susceptibles de producir efectos desfavorables o de gravamen, se producirá la caducidad. En estos casos, la resolución que declare la caducidad ordenará el archivo de las actuaciones, con los efectos previstos en el artículo 95.
 
 **Artículo 95.1 y 95.2. Caducidad en procedimientos a solicitud del interesado.**
 
@@ -179,7 +208,12 @@ fuentes:
 
 **Artículo 125.1 y 125.2. Recurso extraordinario de revisión: causas tasadas y plazos.**
 
-> 1. Contra los actos firmes en vía administrativa podrá interponerse el recurso extraordinario de revisión ante el órgano administrativo que los dictó [...] cuando concurra alguna de las circunstancias siguientes: a) Que al dictarlos se hubiera incurrido en error de hecho, que resulte de los propios documentos incorporados al expediente. b) Que aparezcan documentos de valor esencial para la resolución del asunto que, aunque sean posteriores, evidencien el error de la resolución recurrida. c) Que en la resolución hayan influido esencialmente documentos o testimonios declarados falsos por sentencia judicial firme, anterior o posterior a aquella resolución. d) Que la resolución se hubiese dictado como consecuencia de prevaricación, cohecho, violencia, maquinación fraudulenta u otra conducta punible y se haya declarado así en virtud de sentencia judicial firme.
+> 1. Contra los actos firmes en vía administrativa podrá interponerse el recurso extraordinario de revisión ante el órgano administrativo que los dictó [...] cuando concurra alguna de las circunstancias siguientes:
+>
+> a) Que al dictarlos se hubiera incurrido en error de hecho, que resulte de los propios documentos incorporados al expediente.
+> b) Que aparezcan documentos de valor esencial para la resolución del asunto que, aunque sean posteriores, evidencien el error de la resolución recurrida.
+> c) Que en la resolución hayan influido esencialmente documentos o testimonios declarados falsos por sentencia judicial firme, anterior o posterior a aquella resolución.
+> d) Que la resolución se hubiese dictado como consecuencia de prevaricación, cohecho, violencia, maquinación fraudulenta u otra conducta punible y se haya declarado así en virtud de sentencia judicial firme.
 >
 > 2. El recurso extraordinario de revisión se interpondrá, cuando se trate de la causa a) del apartado anterior, dentro del plazo de cuatro años siguientes a la fecha de la notificación de la resolución impugnada. En los demás casos, el plazo será de tres meses a contar desde el conocimiento de los documentos o desde que la sentencia judicial quedó firme.
 
