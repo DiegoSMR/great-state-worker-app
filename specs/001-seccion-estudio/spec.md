@@ -1,6 +1,6 @@
 # Spec: Sección de Estudio
 
-Estado: requirements.md y design.md aprobados — tasks.md en revisión
+Estado: implementación completa (18/18 tareas), pendiente de revisión final de Diego antes de abrir el Pull Request hacia `development`
 Última actualización: 2026-09-14
 
 ## Resumen

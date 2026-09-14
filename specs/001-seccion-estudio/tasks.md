@@ -1,6 +1,6 @@
 # Tasks: Sección de Estudio
 
-Fase: 3 — Tasks. Estado: borrador, pendiente de confirmación de Diego.
+Fase: 3 — Tasks. Estado: completadas las 18 tareas, pendiente de revisión final de Diego (Fase 5).
 Última actualización: 2026-09-14
 
 Nota: como es la primera spec que se implementa, las tareas 1-3 sientan también la base técnica del proyecto (`ARCHITECTURE.md`), no solo esta feature — el esqueleto estático actual (`index.html`, `temario.html`, `faq.html`, `study.html`) queda como referencia, no se sigue construyendo sobre él.
@@ -62,5 +62,5 @@ Nota: como es la primera spec que se implementa, las tareas 1-3 sientan también
 
 ## Cierre de la spec
 
-- [ ] 18. Verificación final (Fase 5 de `CONSTITUTION.md`): repasar `requirements.md` criterio a criterio con evidencia concreta de que se cumple, antes de dar la spec por cerrada.
+- [x] 18. Verificación final (Fase 5 de `CONSTITUTION.md`): repasar `requirements.md` criterio a criterio con evidencia concreta de que se cumple, antes de dar la spec por cerrada.
   - Satisface: verificación de todos los requisitos.
