@@ -36,7 +36,7 @@ Nota: como es la primera spec que se implementa, las tareas 1-3 sientan también
 - [x] 9. Estado "contenido pendiente" en la vista de tema, para cuando el loader de la tarea 7 no encuentra fichero.
   - Detalle: mensaje explícito y visualmente distinto de un tema con contenido real — nunca una sección en blanco ni un error de render. Ver criterio de diseño del agente `disenador-maquetador`.
   - Satisface: Requisito 2, criterio 3.
-- [ ] 10. Redactar 2-3 conceptos reales de núcleo común en `content/estudio/` con los agentes `scrapeador-fuentes-primarias` + `preparador-opos`, para validar el formato de extremo a extremo antes de cerrar la spec.
+- [x] 10. Redactar 2-3 conceptos reales de núcleo común en `content/estudio/` con los agentes `scrapeador-fuentes-primarias` + `preparador-opos`, para validar el formato de extremo a extremo antes de cerrar la spec.
   - Detalle: elegir conceptos que compartan varias de las oposiciones en alcance (Ayuntamiento de Zaragoza, Diputación de Zaragoza, DGA, AGE) — mayor apalancamiento. Confirmar manualmente que ninguna de las tres secciones reproduce texto de editoriales de oposiciones.
   - Satisface: Requisito 2, criterio 1 y criterio 2 (verificación práctica del principio 3 de `CONSTITUTION.md`).
 
