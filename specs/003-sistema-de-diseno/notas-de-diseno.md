@@ -351,6 +351,16 @@ lectura: {
 
 (Valores de partida tomados del mockup validado por Diego; `lead-developer` puede ajustarlos ligeramente al integrarlos si el resultado real en pantalla lo pide, sin que haga falta otra ronda de aprobación por un ajuste tan fino.)
 
+**Revisión (Diego, 2026-09-14, tras la implementación inicial):** con los tres niveles poniendo fuente manuscrita en todo (h1-h3 y cuerpo), "intensidad" solo se notaba en el tamaño de letra — no en cuánto texto era realmente manuscrito. Se cambia a que la intensidad controle también el ALCANCE (qué elementos pasan a manuscrita), de menor a mayor:
+
+| Intensidad | h1 | h2/h3 | Cuerpo (párrafos) |
+|---|---|---|---|
+| Ligera | Caveat | digital (sin cambios) | digital (sin cambios) |
+| Media (default) | Caveat | Caveat | digital (sin cambios) |
+| Intensa | Caveat | Caveat | Kalam |
+
+El tamaño/interlineado de cuerpo elevado (tabla de arriba) solo aplica en "intensa", que es el único nivel donde el cuerpo está realmente en Kalam — la razón original ("una tipografía de mano necesita más aire") no aplica si el cuerpo sigue en tipografía digital. En ligera/media el cuerpo hereda tal cual el tamaño/interlineado digital normal.
+
 - **Contraste:** `Caveat`/`Kalam` en manuscrito siguen usando los mismos tokens de color de texto (`--texto-primario`, `--acento-titulo`, `--acento-resumen`) ya verificados en ambos temas (Requisito 1) — el cambio de tipografía no cambia ningún color, así que no hace falta reverificar contraste, solo confirmar visualmente que el trazo más fino de una fuente manuscrita no compromete la lectura (si hiciera falta, aumentar peso/tamaño antes que tocar el color).
 
 ### Tokens nuevos para el modo manuscrito

@@ -292,24 +292,28 @@ html {
    app/layout.tsx (--font-caveat, --font-kalam), nunca por <link> en
    runtime.
 
-   Los tres bloques de intensidad fijan tamaño/interlineado (tabla de §15);
-   los selectores de h1/h2/h3 de más abajo son deliberadamente genéricos
-   (no `.prose h1`) para cubrir tanto los encabezados propios de la app
-   (p.ej. el <h1> del título del concepto) como los que renderiza
-   react-markdown dentro de `.prose` — ambos deben cambiar juntos. */
+   La intensidad ya no es solo tamaño/interlineado: también controla CUÁNTO
+   texto pasa a manuscrita (feedback de Diego 2026-09-14 — con los tres
+   niveles poniendo fuente manuscrita en todo, "intensidad" solo se notaba
+   en el tamaño de letra). Progresión por tipo de elemento, de menor a mayor
+   alcance:
+     - ligera: solo el h1 (título) pasa a Caveat; h2/h3 y el cuerpo se quedan
+       en la tipografía digital normal.
+     - media: h1-h3 pasan a Caveat; el cuerpo se queda en digital.
+     - intensa: h1-h3 en Caveat y el cuerpo en Kalam (comportamiento previo
+       a este cambio, cuando "intensidad" era el único nivel con todo
+       manuscrito).
+   Solo "intensa" necesita subir tamaño/interlineado del cuerpo (la razón de
+   ese aumento — que una tipografía de mano necesita más aire — solo aplica
+   cuando el cuerpo REALMENTE está en Kalam); en ligera/media el cuerpo
+   hereda tal cual el tamaño/interlineado digital ya definidos más arriba. */
 :root[data-estilo-texto="manuscrito"][data-intensidad-manuscrito="ligera"] {
   --manuscrito-tamano-titulo: 2.1rem;
-  --manuscrito-tamano-h2: 1.85rem;
-  --manuscrito-tamano-h3: 1.5rem;
-  --manuscrito-tamano-cuerpo: 17.5px;
-  --interlineado-lectura: 1.8;
 }
 :root[data-estilo-texto="manuscrito"][data-intensidad-manuscrito="media"] {
   --manuscrito-tamano-titulo: 2.8rem;
   --manuscrito-tamano-h2: 2.2rem;
   --manuscrito-tamano-h3: 1.75rem;
-  --manuscrito-tamano-cuerpo: 18px;
-  --interlineado-lectura: 1.85;
 }
 :root[data-estilo-texto="manuscrito"][data-intensidad-manuscrito="intensa"] {
   --manuscrito-tamano-titulo: 3.4rem;
@@ -319,30 +323,39 @@ html {
   --interlineado-lectura: 1.9;
 }
 
+/* h1 pasa a manuscrita en los tres niveles — es el único elemento que la
+   intensidad "ligera" llega a tocar. Selector genérico (no `.prose h1`) para
+   cubrir tanto los encabezados propios de la app como los que renderiza
+   react-markdown dentro de `.prose` — ambos deben cambiar juntos. */
 :root[data-estilo-texto="manuscrito"] h1 {
   font-family: var(--font-caveat);
   font-weight: 700;
   font-size: var(--manuscrito-tamano-titulo);
   color: var(--acento-titulo);
 }
-:root[data-estilo-texto="manuscrito"] h2,
-:root[data-estilo-texto="manuscrito"] h3 {
+
+/* h2/h3 solo pasan a manuscrita desde "media" hacia arriba — con solo 3
+   valores válidos, ":not([...=ligera])" equivale a "media o intensa". */
+:root[data-estilo-texto="manuscrito"]:not([data-intensidad-manuscrito="ligera"]) h2,
+:root[data-estilo-texto="manuscrito"]:not([data-intensidad-manuscrito="ligera"]) h3 {
   font-family: var(--font-caveat);
   font-weight: 600;
   color: var(--acento-resumen);
 }
-:root[data-estilo-texto="manuscrito"] h2 {
+:root[data-estilo-texto="manuscrito"]:not([data-intensidad-manuscrito="ligera"]) h2 {
   font-size: var(--manuscrito-tamano-h2);
 }
-:root[data-estilo-texto="manuscrito"] h3 {
+:root[data-estilo-texto="manuscrito"]:not([data-intensidad-manuscrito="ligera"]) h3 {
   font-size: var(--manuscrito-tamano-h3);
 }
 
 /* Cuerpo — párrafos del contenido de lectura (Markdown.tsx) y de cualquier
-   otro texto de prosa. `--interlineado-lectura` ya cambió arriba según la
-   intensidad; aquí solo hace falta tipografía y tamaño. */
-:root[data-estilo-texto="manuscrito"] .contenido-lectura,
-:root[data-estilo-texto="manuscrito"] .prose {
+   otro texto de prosa. Solo pasa a Kalam en "intensa"; en ligera/media se
+   queda con la tipografía digital normal (ver bloques de intensidad de
+   arriba: `--interlineado-lectura` y `--manuscrito-tamano-cuerpo` solo
+   están definidas para "intensa"). */
+:root[data-estilo-texto="manuscrito"][data-intensidad-manuscrito="intensa"] .contenido-lectura,
+:root[data-estilo-texto="manuscrito"][data-intensidad-manuscrito="intensa"] .prose {
   font-family: var(--font-kalam);
   font-size: var(--manuscrito-tamano-cuerpo);
   line-height: var(--interlineado-lectura);
