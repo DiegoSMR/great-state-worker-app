@@ -4,7 +4,9 @@ App de estudio personal para preparar oposiciones (funcionariado público en Esp
 
 ## Estado actual
 
-En fase de planificación — todavía sin código. [`CONTEXT.md`](./CONTEXT.md) recoge los requisitos según se van definiendo, y [`TEMARIOS.md`](./TEMARIOS.md) explica cómo está modelado el contenido del temario (datos filtrables en [`content/temario.yaml`](./content/temario.yaml), no documentos separados por oposición).
+En fase de planificación, siguiendo Spec-Driven Development — todavía sin código de la app real. Empieza por [`CONSTITUTION.md`](./CONSTITUTION.md) (principios del proyecto y cómo se trabaja aquí), y luego [`specs/`](./specs/) (una carpeta por feature: `requirements.md` → `design.md` → `tasks.md`, cada fase con aprobación explícita antes de avanzar). `CONTEXT.md`, `TEMARIOS.md` y `ARCHITECTURE.md` se mantienen como registro histórico de decisiones y como investigación de referencia (temario real por oposición), pero la fuente de verdad vigente es `CONSTITUTION.md` + `specs/`.
+
+> **Nota:** `index.html`, `temario.html`, `faq.html` y `assets/` son una prueba de concepto desplegable en Vercel hecha antes de adoptar Spec-Driven Development. Quedan como referencia, no como base de la implementación real — se pueden eliminar cuando convenga.
 
 ## Visión funcional
 
