@@ -34,6 +34,14 @@
   --atencion-bg: #f2decc;
   --atencion-texto: #513a2c;
 
+  /* Resaltado de anotación personal de lectura (specs/020) — color propio,
+     deliberadamente distinto de los 6 `ink-*` de autoría (nucleo/ejemplo/
+     excepcion/bookmark/atencion/revision), para que una marca que hace
+     Diego al leer no se confunda visualmente con un resaltado que puso el
+     redactor del contenido. */
+  --anotacion-fondo: #cfeef0;
+  --anotacion-texto: #164e52;
+
   /* Modo de texto "Manuscrito" (notas-de-diseno.md §15) — color de
      encabezados en h1 (acento-titulo) y h2/h3 (acento-resumen). Valores
      light tal cual del mockup validado por Diego; el par dark está
@@ -137,6 +145,8 @@
   --excepcion-texto: #552b2b;
   --atencion-bg: #f2decc;
   --atencion-texto: #513a2c;
+  --anotacion-fondo: #cfeef0;
+  --anotacion-texto: #164e52;
   --acento-titulo: #b0526f;
   --acento-resumen: #5c7a52;
 }
@@ -160,6 +170,8 @@
   --excepcion-texto: #c98f8f;
   --atencion-bg: #453221;
   --atencion-texto: #c99a72;
+  --anotacion-fondo: #1c3f42;
+  --anotacion-texto: #8fd4d9;
   /* acento-titulo/acento-resumen dark (notas-de-diseno.md §15) — el mockup
      de Diego solo daba valores para claro; derivados por lead-developer
      manteniendo el mismo matiz (H) y aclarando/desaturando lo necesario
@@ -216,6 +228,8 @@
     --excepcion-texto: #c98f8f;
     --atencion-bg: #453221;
     --atencion-texto: #c99a72;
+    --anotacion-fondo: #1c3f42;
+    --anotacion-texto: #8fd4d9;
   }
 }
 
@@ -246,6 +260,8 @@
   --color-excepcion-texto: var(--excepcion-texto);
   --color-atencion-bg: var(--atencion-bg);
   --color-atencion-texto: var(--atencion-texto);
+  --color-anotacion-fondo: var(--anotacion-fondo);
+  --color-anotacion-texto: var(--anotacion-texto);
   --color-acento-titulo: var(--acento-titulo);
   --color-acento-resumen: var(--acento-resumen);
   --font-sans: var(--font-geist-sans);
@@ -429,6 +445,22 @@ html {
 .prose mark.ink-info {
   background: var(--revision-bg);
   color: var(--revision-texto);
+}
+
+/* Resaltado de anotación personal de lectura (specs/020) — mismo tratamiento
+   visual que los `mark.ink-*` de arriba (redondeo, padding, partido en dos
+   líneas) pero con su propio color (--anotacion-*), para no confundirse con
+   un resaltado que puso el redactor del contenido. No va scoped dentro de
+   `.prose u`/`.prose mark.ink-*` porque no es una convención de autoría de
+   content/estudio/*.md — la aplica `lib/anotaciones-lectura.ts` sobre HTML
+   ya sanitizado, siempre dentro del `.prose` que envuelve cada sección. */
+.prose mark.anotacion-resaltado {
+  border-radius: 0.15em;
+  padding-inline: 0.2em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  background: var(--anotacion-fondo);
+  color: var(--anotacion-texto);
 }
 
 /* <dialog> nativo para el overlay de navegación móvil y el panel de
