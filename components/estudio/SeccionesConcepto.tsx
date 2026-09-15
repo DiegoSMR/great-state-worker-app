@@ -142,10 +142,20 @@ export function SeccionesConcepto({
   // anotación guardada cuyo hash coincide con el texto actual, la aplica;
   // si el hash no coincide (el contenido cambió desde que se guardó), la
   // descarta de localStorage en vez de mezclarla con el contenido nuevo.
+  //
+  // La captura de `htmlOriginalRef` está protegida con un `if` (solo se
+  // guarda si todavía no hay nada ahí): en desarrollo, StrictMode invoca
+  // este efecto dos veces sobre el mismo DOM sin desmontar de verdad entre
+  // medias (no hay cleanup que lo evite) — sin este guard, la segunda
+  // pasada capturaría como "original" el HTML ya anotado que la primera
+  // pasada acababa de escribir, perdiendo la vista limpia para siempre
+  // (bug real encontrado verificando Requisito 3 en el navegador).
   useEffect(() => {
     function restaurar(seccionId: SeccionAnotableId, el: HTMLDivElement | null) {
       if (!el) return;
-      htmlOriginalRef.current[seccionId] = el.innerHTML;
+      if (htmlOriginalRef.current[seccionId] === undefined) {
+        htmlOriginalRef.current[seccionId] = el.innerHTML;
+      }
       const anotacion = leerAnotacion(conceptoId, seccionId);
       if (!anotacion) return;
       const hashActual = calcularHash(el.textContent ?? "");

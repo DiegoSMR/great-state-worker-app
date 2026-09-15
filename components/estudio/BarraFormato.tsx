@@ -63,12 +63,63 @@ function desenvolverEtiquetas(nodo: Node): void {
   }
 }
 
+/**
+ * Tras `extractContents()`, un envoltorio de formato que quedó vacío puede
+ * aparecer en dos sitios distintos según cómo cayeran los límites exactos
+ * de la selección (comportamiento de Range API, no algo elegible):
+ *
+ * - Como ANCESTRO del punto de inserción: cuando inicio y fin de la
+ *   selección caían en el mismo nodo de texto (p. ej. seleccionar justo el
+ *   fragmento ya en negrita) — `extractContents()` vacía ese nodo de texto
+ *   en vez de eliminarlo (spec DOM Range sobre CharacterData), así que el
+ *   envoltorio se queda en el DOM con el punto de inserción dentro de él.
+ * - Como HERMANO directo del punto de inserción: cuando el límite de la
+ *   selección caía fuera del envoltorio (p. ej. seleccionar un `<mark>`
+ *   completo arrastrando desde antes de él) — en ese caso Range extrae el
+ *   envoltorio entero como nodo contenido del fragmento, y el punto de
+ *   inserción queda al nivel del padre común, justo al lado del envoltorio
+ *   (ya vacío) en vez de dentro de él.
+ *
+ * Sin cubrir ambos casos, el contenido ya limpio se reinserta junto a (o
+ * dentro de) una etiqueta vacía que nunca se llega a quitar, dejando el
+ * resultado visual idéntico al de partida (bug real encontrado verificando
+ * "Quitar formato" en navegador sobre varios patrones de selección).
+ */
+function purgarEnvoltoriosVacios(marcador: Text): void {
+  while (marcador.parentNode && marcador.parentNode.nodeType === Node.ELEMENT_NODE) {
+    const padre = marcador.parentNode as Element;
+    if (esTagDeFormato(padre) && padre.textContent === "" && padre.parentNode) {
+      padre.parentNode.insertBefore(marcador, padre);
+      padre.parentNode.removeChild(padre);
+    } else {
+      break;
+    }
+  }
+  for (const lado of ["previousSibling", "nextSibling"] as const) {
+    let hermano = marcador[lado];
+    while (
+      hermano &&
+      hermano.nodeType === Node.ELEMENT_NODE &&
+      esTagDeFormato(hermano as Element) &&
+      (hermano as Element).textContent === ""
+    ) {
+      const siguiente = hermano[lado];
+      hermano.parentNode?.removeChild(hermano);
+      hermano = siguiente;
+    }
+  }
+}
+
 function quitarFormatoSeleccion(): void {
   const rango = obtenerRangoValido();
   if (!rango) return;
   const contenido = rango.extractContents();
   Array.from(contenido.childNodes).forEach(desenvolverEtiquetas);
-  rango.insertNode(contenido);
+
+  const marcador = document.createTextNode("");
+  rango.insertNode(marcador);
+  purgarEnvoltoriosVacios(marcador);
+  marcador.replaceWith(contenido);
 }
 
 function aplicar(accion: Accion): void {
