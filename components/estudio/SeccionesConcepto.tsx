@@ -8,17 +8,24 @@ import { BarraFormato } from "./BarraFormato";
 
 const SECCIONES = [
   { id: "texto-oficial", etiqueta: "Texto oficial" },
+  { id: "material-oficial-anotado", etiqueta: "Material oficial anotado" },
   { id: "material-adaptado", etiqueta: "Material adaptado" },
   { id: "resumen", etiqueta: "Resumen" },
 ] as const;
 
 /**
  * Ids de las 4 secciones anotables (Requisito 2, specs/020) — cada una es
- * el `div.contenido-lectura` que pasa a `contentEditable` en modo edición y
- * la clave de sección usada en `lib/anotaciones-lectura.ts`. Distintos de
- * los 3 ids de `SECCIONES` (pestañas/scrollspy, arriba): el "resumen" de
- * las pestañas agrupa dos secciones anotables independientes (esquema y
- * resumen extenso).
+ * el `div.contenido-lectura` seleccionable con el que opera `BarraFormato`
+ * (Range API manual, nunca `contentEditable` — ver comentario en el propio
+ * `<div>` de abajo sobre por qué) y la clave de sección usada en
+ * `lib/anotaciones-lectura.ts`. No son 1:1 con los 4 ids de `SECCIONES`
+ * (pestañas/scrollspy, arriba): "resumen" agrupa dos secciones anotables
+ * independientes (esquema y resumen extenso), y "texto-oficial" tiene DOS
+ * pestañas propias — "Texto oficial" (siempre limpio, sin ref ni anotación)
+ * y "Material oficial anotado" (la única que usa la clave anotable
+ * `texto-oficial`) — feedback directo de Diego probando la app: quiere el
+ * texto oficial siempre intacto en su propia pestaña, y su versión anotada
+ * en una pestaña aparte, no alternando en el mismo sitio con un checkbox.
  */
 type SeccionAnotableId = "texto-oficial" | "material-adaptado" | "esquema" | "resumen-extenso";
 
@@ -61,7 +68,10 @@ export function SeccionesConcepto({
   // Por defecto "con mis anotaciones" (Requisito 3.2) — se reinicia a este
   // valor en cada carga de página a propósito, no se persiste entre
   // sesiones (requirements.md, Fuera de alcance — mismo criterio que modo
-  // concentración).
+  // concentración). Solo gobierna material-adaptado/esquema/resumen-extenso:
+  // el texto oficial anotado tiene su propia pestaña siempre visible (ver
+  // comentario sobre `SeccionAnotableId` más abajo), no depende de este
+  // checkbox.
   const [mostrarAnotaciones, setMostrarAnotaciones] = useState(true);
   const refTextoOficial = useRef<HTMLDivElement>(null);
   const refMaterialAdaptado = useRef<HTMLDivElement>(null);
@@ -76,7 +86,6 @@ export function SeccionesConcepto({
   // contenido), así que vivir en un `ref` evita re-renders innecesarios.
   const htmlOriginalRef = useRef<Partial<Record<SeccionAnotableId, string>>>({});
   const htmlAnotadoRef = useRef<Partial<Record<SeccionAnotableId, string>>>({});
-  const timeoutGuardadoAnotacion = useRef<Partial<Record<SeccionAnotableId, ReturnType<typeof setTimeout>>>>({});
 
   function elementoDeSeccion(seccionId: SeccionAnotableId): HTMLDivElement | null {
     switch (seccionId) {
@@ -92,28 +101,15 @@ export function SeccionesConcepto({
   }
 
   // Sanitiza, calcula el hash del texto plano actual y persiste (Requisito
-  // 2.1) — se llama tanto al perder el foco como (debounced) mientras se
-  // escribe, y también tras cada acción de BarraFormato.
+  // 2.1) — se llama justo después de cada acción de BarraFormato (no hay
+  // escritura libre de texto que guardar con debounce: ver comentario sobre
+  // por qué estas secciones ya no son `contentEditable`).
   function guardarSeccion(seccionId: SeccionAnotableId) {
     const el = elementoDeSeccion(seccionId);
     if (!el) return;
     const hash = calcularHash(el.textContent ?? "");
     guardarAnotacion(conceptoId, seccionId, el.innerHTML, hash);
     htmlAnotadoRef.current[seccionId] = el.innerHTML;
-  }
-
-  function alEscribirSeccion(seccionId: SeccionAnotableId) {
-    if (!modoEdicion) return;
-    const timeouts = timeoutGuardadoAnotacion.current;
-    if (timeouts[seccionId]) clearTimeout(timeouts[seccionId]);
-    timeouts[seccionId] = setTimeout(() => guardarSeccion(seccionId), 500);
-  }
-
-  function alPerderFocoSeccion(seccionId: SeccionAnotableId) {
-    if (!modoEdicion) return;
-    const timeouts = timeoutGuardadoAnotacion.current;
-    if (timeouts[seccionId]) clearTimeout(timeouts[seccionId]);
-    guardarSeccion(seccionId);
   }
 
   // Qué sección contiene la selección actual (`data-seccion-id` del
@@ -179,8 +175,13 @@ export function SeccionesConcepto({
   // localStorage ni los refs, solo decide cuál de los dos ya-disponibles se
   // pinta. También se aplica en el montaje (mismo efecto, misma pasada que
   // el resto de renders): si no hay versión anotada, no cambia nada.
+  //
+  // "texto-oficial" queda fuera del checkbox a propósito: su pestaña
+  // "Material oficial anotado" siempre muestra la versión anotada (o la
+  // original si todavía no hay ninguna) — es la propia pestaña la que decide
+  // "limpio vs. anotado" para el texto oficial, no este toggle compartido.
   useEffect(() => {
-    function aplicarVista(seccionId: SeccionAnotableId, el: HTMLDivElement | null) {
+    function aplicarVista(seccionId: SeccionAnotableId, el: HTMLDivElement | null, mostrar: boolean) {
       if (!el) return;
       const original = htmlOriginalRef.current[seccionId];
       // Todavía no capturado (el efecto de restauración de arriba corre
@@ -188,12 +189,12 @@ export function SeccionesConcepto({
       // igual frente a cualquier reordenación futura de los efectos).
       if (original === undefined) return;
       const anotado = htmlAnotadoRef.current[seccionId];
-      el.innerHTML = mostrarAnotaciones ? (anotado ?? original) : original;
+      el.innerHTML = mostrar ? (anotado ?? original) : original;
     }
-    aplicarVista("texto-oficial", refTextoOficial.current);
-    aplicarVista("material-adaptado", refMaterialAdaptado.current);
-    aplicarVista("esquema", refEsquema.current);
-    aplicarVista("resumen-extenso", refResumenExtenso.current);
+    aplicarVista("texto-oficial", refTextoOficial.current, true);
+    aplicarVista("material-adaptado", refMaterialAdaptado.current, mostrarAnotaciones);
+    aplicarVista("esquema", refEsquema.current, mostrarAnotaciones);
+    aplicarVista("resumen-extenso", refResumenExtenso.current, mostrarAnotaciones);
   }, [mostrarAnotaciones]);
 
   // Activar el modo edición fuerza la vista a "con mis anotaciones"
@@ -287,11 +288,19 @@ export function SeccionesConcepto({
     return () => observer.disconnect();
   }, []);
 
-  // Área editable de una sección anotable (Requisito 1.2/1.3): dashed cuando
-  // no tiene foco (deja claro, sobre todo en touch, dónde se puede
-  // seleccionar texto) y borde sólido al enfocar.
-  const claseEditable = modoEdicion
-    ? " rounded-sm outline outline-1 outline-dashed outline-borde focus:outline-solid focus:outline-texto-secundario"
+  // Contorno discontinuo que marca, en modo edición, dónde se puede
+  // seleccionar texto para anotar (Requisito 1.2/1.3) — deja claro el área,
+  // sobre todo en touch. A propósito NO son `contentEditable`: permitirlo
+  // habilitaba escritura libre de teclado (escribir, borrar, Enter) encima
+  // de contenido que ya trae su propia estructura (listas, blockquotes del
+  // "Texto oficial"), y el navegador reestructura esos elementos al escribir
+  // dentro — feedback directo de Diego, que vio una lista/cita reventar tras
+  // escribir en modo edición. La API de Range (`BarraFormato`) manipula el
+  // DOM igual de bien sobre un `<div>` normal; `contentEditable` nunca fue
+  // necesario para envolver/desenvolver la selección en `<strong>`/`<u>`/
+  // `<mark>`, solo añadía la posibilidad — no deseada — de teclear encima.
+  const claseAnotable = modoEdicion
+    ? " rounded-sm outline outline-1 outline-dashed outline-borde"
     : "";
 
   return (
@@ -336,7 +345,7 @@ export function SeccionesConcepto({
               onChange={(evento) => setMostrarAnotaciones(evento.target.checked)}
               className="h-4 w-4 rounded border-borde accent-texto-primario disabled:opacity-60"
             />
-            Ver con mis anotaciones
+            Ver material adaptado y resumen con mis anotaciones
           </label>
         </div>
 
@@ -357,18 +366,25 @@ export function SeccionesConcepto({
           className="medida-lectura-oficial scroll-mt-28 rounded-md border border-borde bg-bg-secundario p-4 sm:p-6"
         >
           <h2 className="text-lg font-medium">Texto oficial</h2>
+          {/* Siempre el original, tal cual — sin ref ni anotación posible
+              aquí (ver "Material oficial anotado" más abajo). */}
+          <div className="contenido-lectura mt-3">{textoOficial}</div>
+          {fuenteNormativa}
+        </section>
+
+        <section id="material-oficial-anotado" className="medida-lectura-oficial scroll-mt-28">
+          <h2 className="text-lg font-medium">Material oficial anotado</h2>
+          <p className="mt-1 text-sm text-texto-secundario">
+            Tu propia copia del texto oficial, con negrita/subrayado/resaltado — el texto
+            oficial de arriba no cambia nunca.
+          </p>
           <div
             ref={refTextoOficial}
             data-seccion-id="texto-oficial"
-            contentEditable={modoEdicion}
-            suppressContentEditableWarning
-            onInput={() => alEscribirSeccion("texto-oficial")}
-            onBlur={() => alPerderFocoSeccion("texto-oficial")}
-            className={`contenido-lectura mt-3${claseEditable}`}
+            className={`contenido-lectura mt-3${claseAnotable}`}
           >
             {textoOficial}
           </div>
-          {fuenteNormativa}
         </section>
 
         <section id="material-adaptado" className="medida-lectura scroll-mt-28">
@@ -376,11 +392,7 @@ export function SeccionesConcepto({
           <div
             ref={refMaterialAdaptado}
             data-seccion-id="material-adaptado"
-            contentEditable={modoEdicion}
-            suppressContentEditableWarning
-            onInput={() => alEscribirSeccion("material-adaptado")}
-            onBlur={() => alPerderFocoSeccion("material-adaptado")}
-            className={`contenido-lectura mt-3${claseEditable}`}
+            className={`contenido-lectura mt-3${claseAnotable}`}
           >
             {materialAdaptado}
           </div>
@@ -393,11 +405,7 @@ export function SeccionesConcepto({
             <div
               ref={refEsquema}
               data-seccion-id="esquema"
-              contentEditable={modoEdicion}
-              suppressContentEditableWarning
-              onInput={() => alEscribirSeccion("esquema")}
-              onBlur={() => alPerderFocoSeccion("esquema")}
-              className={`contenido-lectura mt-2${claseEditable}`}
+              className={`contenido-lectura mt-2${claseAnotable}`}
             >
               {esquema}
             </div>
@@ -407,11 +415,7 @@ export function SeccionesConcepto({
             <div
               ref={refResumenExtenso}
               data-seccion-id="resumen-extenso"
-              contentEditable={modoEdicion}
-              suppressContentEditableWarning
-              onInput={() => alEscribirSeccion("resumen-extenso")}
-              onBlur={() => alPerderFocoSeccion("resumen-extenso")}
-              className={`contenido-lectura mt-2${claseEditable}`}
+              className={`contenido-lectura mt-2${claseAnotable}`}
             >
               {resumenExtenso}
             </div>
