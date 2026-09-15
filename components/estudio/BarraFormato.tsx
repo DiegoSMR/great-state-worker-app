@@ -146,7 +146,14 @@ const BOTONES: { accion: Accion; etiqueta: string }[] = [
   { accion: "quitar", etiqueta: "Quitar formato" },
 ];
 
-export function BarraFormato({ onCambio }: { onCambio: () => void }) {
+export function BarraFormato<T>({
+  puedeFormatear,
+  onFormatear,
+}: {
+  /** Sección anotable donde cae la selección actual, o `null` si no cae en ninguna (p. ej. el texto oficial limpio) — se comprueba ANTES de tocar el DOM, no después, para que ese texto nunca llegue a mutarse. */
+  puedeFormatear: () => T | null;
+  onFormatear: (seccionId: T) => void;
+}) {
   return (
     <div
       role="toolbar"
@@ -159,8 +166,10 @@ export function BarraFormato({ onCambio }: { onCambio: () => void }) {
           type="button"
           onMouseDown={(evento) => evento.preventDefault()}
           onClick={() => {
+            const seccionId = puedeFormatear();
+            if (seccionId === null) return;
             aplicar(accion);
-            onCambio();
+            onFormatear(seccionId);
           }}
           className="rounded-md border border-borde bg-bg-primario px-3 py-1.5 text-sm font-medium text-texto-secundario hover:border-texto-secundario hover:text-texto-primario"
         >

@@ -19,7 +19,7 @@ const SECCIONES = [
  * (Range API manual, nunca `contentEditable` — ver comentario en el propio
  * `<div>` de abajo sobre por qué) y la clave de sección usada en
  * `lib/anotaciones-lectura.ts`. No son 1:1 con los 4 ids de `SECCIONES`
- * (pestañas/scrollspy, arriba): "resumen" agrupa dos secciones anotables
+ * (pestañas, arriba): "resumen" agrupa dos secciones anotables
  * independientes (esquema y resumen extenso), y "texto-oficial" tiene DOS
  * pestañas propias — "Texto oficial" (siempre limpio, sin ref ni anotación)
  * y "Material oficial anotado" (la única que usa la clave anotable
@@ -30,8 +30,9 @@ const SECCIONES = [
 type SeccionAnotableId = "texto-oficial" | "material-adaptado" | "esquema" | "resumen-extenso";
 
 /**
- * Tabs + scrollspy entre las tres partes del contenido de un concepto
- * (Requisito 4), con restauración de posición de scroll y aviso "continuar
+ * Pestañas entre las cuatro partes del contenido de un concepto (Requisito
+ * 4) — solo la pestaña activa está en el DOM visible, el resto se oculta con
+ * `hidden` —, con restauración de posición de scroll y aviso "continuar
  * leyendo" (Requisito 10). Recibe el contenido ya renderizado en servidor
  * (ReactMarkdown, FuenteNormativa) como `ReactNode` — evita que este Client
  * Component tenga que importar lib/contenido.ts (que usa `fs`, no
@@ -128,9 +129,20 @@ export function SeccionesConcepto({
     return null;
   }
 
-  function alFormatearSeleccion() {
-    const seccionId = seccionDesdeSeleccionActual();
-    if (seccionId) guardarSeccion(seccionId);
+  // Solo guarda (y por tanto solo deja aplicar formato) cuando la selección
+  // actual cae dentro de una sección anotable de verdad — `BarraFormato`
+  // llama a esto ANTES de tocar el DOM (ver `puedeFormatear` que le pasamos
+  // más abajo), así un texto seleccionado fuera de cualquier
+  // `data-seccion-id` (la sección "Texto oficial" limpia, sin ref, no tiene
+  // ninguno) nunca llega a envolverse en `<strong>`/`<u>`/`<mark>`: el texto
+  // oficial debe quedar intacto siempre, solo su copia en "Material oficial
+  // anotado" es editable (feedback directo de Diego).
+  function seccionAnotableParaFormato(): SeccionAnotableId | null {
+    return seccionDesdeSeleccionActual();
+  }
+
+  function alFormatear(seccionId: SeccionAnotableId) {
+    guardarSeccion(seccionId);
   }
 
   // Restaurar anotaciones al montar (Requisito 2.2/2.3): por cada sección,
@@ -226,9 +238,23 @@ export function SeccionesConcepto({
     }
 
     const posicion = leerPosicion(conceptoId);
-    if (posicion !== null && posicion > 40) {
-      window.scrollTo({ top: posicion, behavior: "instant" });
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- lectura de localStorage al montar, no hay forma de resolverlo antes sin mismatch de hidratación (ver comentario arriba).
+    if (posicion !== null && posicion.scrollY > 40) {
+      // La pestaña guardada puede no ser la activa por defecto ("texto
+      // oficial") — si no coincide, hay que cambiar de pestaña primero (lo
+      // que oculta/muestra secciones y cambia la altura de la página) antes
+      // de hacer scroll, o el scrollY guardado no correspondería a nada.
+      if (posicion.seccion && SECCIONES.some((s) => s.id === posicion.seccion)) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- lectura de localStorage al montar, no hay forma de resolverlo antes sin mismatch de hidratación (ver comentario arriba).
+        setSeccionActiva(posicion.seccion);
+      }
+      // requestAnimationFrame en vez de scrollTo directo: si el cambio de
+      // pestaña de arriba disparó un re-render, hay que esperar a que se
+      // pinte esa pestaña (con su altura real) antes de hacer scroll —
+      // scrollear en el mismo tick del efecto lo haría contra el DOM
+      // todavía mostrando la pestaña anterior.
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: posicion.scrollY, behavior: "instant" });
+      });
       setAvisoContinuar(true);
     }
   }, [conceptoId]);
@@ -256,12 +282,16 @@ export function SeccionesConcepto({
     };
   }, [avisoContinuar]);
 
-  // Guardar posición de scroll (debounced ~500ms).
+  // Guardar posición de scroll (debounced ~500ms), junto con la pestaña
+  // activa en ese momento (necesaria para restaurar bien, ver efecto de
+  // montaje más arriba). Depende también de `seccionActiva`: al cambiar de
+  // pestaña hay que volver a enganchar el listener para que capture el valor
+  // correcto en el cierre, no uno obsoleto.
   useEffect(() => {
     function alScroll() {
       if (timeoutGuardado.current) clearTimeout(timeoutGuardado.current);
       timeoutGuardado.current = setTimeout(() => {
-        guardarPosicion(conceptoId, window.scrollY);
+        guardarPosicion(conceptoId, window.scrollY, seccionActiva);
       }, 500);
     }
     window.addEventListener("scroll", alScroll, { passive: true });
@@ -269,24 +299,30 @@ export function SeccionesConcepto({
       window.removeEventListener("scroll", alScroll);
       if (timeoutGuardado.current) clearTimeout(timeoutGuardado.current);
     };
-  }, [conceptoId]);
+  }, [conceptoId, seccionActiva]);
 
-  // Scrollspy: qué sección está visible ahora mismo (Requisito 4.1).
-  useEffect(() => {
-    const elementos = SECCIONES.map((s) => document.getElementById(s.id)).filter(
-      (el): el is HTMLElement => el !== null
-    );
-    if (elementos.length === 0) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.find((entry) => entry.isIntersecting);
-        if (visible) setSeccionActiva(visible.target.id);
-      },
-      { rootMargin: "-35% 0px -55% 0px" }
-    );
-    elementos.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
+  // Pestañas de verdad (Requisito 4, ajustado tras probar la app: antes esto
+  // era scrollspy — las 4 secciones montadas a la vez en una página larga, y
+  // la pestaña activa solo reflejaba cuál estaba a la vista al hacer scroll.
+  // Diego pidió que seleccionar una pestaña oculte el resto del contenido,
+  // no que siga siendo un ancla dentro de la misma página — así que cada
+  // sección se oculta con `hidden` salvo la activa (ver JSX más abajo) y
+  // cambiar de pestaña es una acción explícita de click, no algo que dependa
+  // de la posición de scroll.
+  function seleccionarSeccion(id: string) {
+    setSeccionActiva(id);
+    // Cada pestaña empieza arriba del todo — no tiene sentido conservar el
+    // scroll de la pestaña anterior cuando su contenido ya no está a la vista.
+    window.scrollTo({ top: 0, behavior: "instant" });
+    // `ProgresoLectura` solo recalcula en scroll/resize; el cambio de
+    // pestaña sustituye el contenido sin disparar ninguno de los dos, así
+    // que fuerza un recálculo con la nueva altura de página.
+    window.dispatchEvent(new Event("resize"));
+    // Guarda ya la pestaña elegida (con scroll 0): si el usuario navega fuera
+    // justo después de cambiar de pestaña, sin llegar a hacer scroll, debe
+    // "continuar" en esta pestaña y no en la anterior.
+    guardarPosicion(conceptoId, 0, id);
+  }
 
   // Contorno discontinuo que marca, en modo edición, dónde se puede
   // seleccionar texto para anotar (Requisito 1.2/1.3) — deja claro el área,
@@ -306,12 +342,16 @@ export function SeccionesConcepto({
   return (
     <div>
       <div className="sticky top-0 z-10 -mx-4 bg-bg-primario sm:mx-0">
-        <nav aria-label="Secciones del concepto" className="flex gap-1 overflow-x-auto border-b border-borde px-4 sm:px-0">
+        <div role="tablist" aria-label="Secciones del concepto" className="flex gap-1 overflow-x-auto border-b border-borde px-4 sm:px-0">
           {SECCIONES.map((seccion) => (
-            <a
+            <button
               key={seccion.id}
-              href={`#${seccion.id}`}
-              aria-current={seccionActiva === seccion.id ? "true" : undefined}
+              type="button"
+              role="tab"
+              id={`pestana-${seccion.id}`}
+              aria-selected={seccionActiva === seccion.id}
+              aria-controls={seccion.id}
+              onClick={() => seleccionarSeccion(seccion.id)}
               className={
                 seccionActiva === seccion.id
                   ? "whitespace-nowrap border-b-2 border-texto-primario px-3 py-2.5 text-sm font-medium text-texto-primario"
@@ -319,9 +359,9 @@ export function SeccionesConcepto({
               }
             >
               {seccion.etiqueta}
-            </a>
+            </button>
           ))}
-        </nav>
+        </div>
 
         <div className="flex flex-wrap items-center gap-3 border-b border-borde px-4 py-2 sm:px-0">
           <button
@@ -349,7 +389,7 @@ export function SeccionesConcepto({
           </label>
         </div>
 
-        {modoEdicion && <BarraFormato onCambio={alFormatearSeleccion} />}
+        {modoEdicion && <BarraFormato puedeFormatear={seccionAnotableParaFormato} onFormatear={alFormatear} />}
 
         <ProgresoLectura />
       </div>
@@ -363,7 +403,10 @@ export function SeccionesConcepto({
       <div className="mt-6 space-y-10 px-4 sm:px-0">
         <section
           id="texto-oficial"
-          className="medida-lectura-oficial scroll-mt-28 rounded-md border border-borde bg-bg-secundario p-4 sm:p-6"
+          role="tabpanel"
+          aria-labelledby="pestana-texto-oficial"
+          hidden={seccionActiva !== "texto-oficial"}
+          className="medida-lectura-oficial rounded-md border border-borde bg-bg-secundario p-4 sm:p-6"
         >
           <h2 className="text-lg font-medium">Texto oficial</h2>
           {/* Siempre el original, tal cual — sin ref ni anotación posible
@@ -372,7 +415,13 @@ export function SeccionesConcepto({
           {fuenteNormativa}
         </section>
 
-        <section id="material-oficial-anotado" className="medida-lectura-oficial scroll-mt-28">
+        <section
+          id="material-oficial-anotado"
+          role="tabpanel"
+          aria-labelledby="pestana-material-oficial-anotado"
+          hidden={seccionActiva !== "material-oficial-anotado"}
+          className="medida-lectura-oficial"
+        >
           <h2 className="text-lg font-medium">Material oficial anotado</h2>
           <p className="mt-1 text-sm text-texto-secundario">
             Tu propia copia del texto oficial, con negrita/subrayado/resaltado — el texto
@@ -387,7 +436,13 @@ export function SeccionesConcepto({
           </div>
         </section>
 
-        <section id="material-adaptado" className="medida-lectura scroll-mt-28">
+        <section
+          id="material-adaptado"
+          role="tabpanel"
+          aria-labelledby="pestana-material-adaptado"
+          hidden={seccionActiva !== "material-adaptado"}
+          className="medida-lectura"
+        >
           <h2 className="text-lg font-medium">Material adaptado</h2>
           <div
             ref={refMaterialAdaptado}
@@ -398,9 +453,15 @@ export function SeccionesConcepto({
           </div>
         </section>
 
-        <section id="resumen" className="medida-lectura scroll-mt-28 border-l-4 border-borde pl-4">
+        <section
+          id="resumen"
+          role="tabpanel"
+          aria-labelledby="pestana-resumen"
+          hidden={seccionActiva !== "resumen"}
+          className="medida-lectura border-l-4 border-borde pl-4"
+        >
           <h2 className="text-lg font-medium">Resumen</h2>
-          <div id="esquema" className="mt-4 scroll-mt-28">
+          <div id="esquema" className="mt-4">
             <h3 className="text-base font-medium">Esquema</h3>
             <div
               ref={refEsquema}
@@ -410,7 +471,7 @@ export function SeccionesConcepto({
               {esquema}
             </div>
           </div>
-          <div id="resumen-extenso" className="mt-6 scroll-mt-28">
+          <div id="resumen-extenso" className="mt-6">
             <h3 className="text-base font-medium">Resumen extenso</h3>
             <div
               ref={refResumenExtenso}
