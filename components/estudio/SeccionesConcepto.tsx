@@ -58,6 +58,11 @@ export function SeccionesConcepto({
   // comentario en lib/anotaciones-lectura.ts sobre el porqué). Se usan en
   // Requisito 2 para restaurar/guardar anotaciones.
   const [modoEdicion, setModoEdicion] = useState(false);
+  // Por defecto "con mis anotaciones" (Requisito 3.2) — se reinicia a este
+  // valor en cada carga de página a propósito, no se persiste entre
+  // sesiones (requirements.md, Fuera de alcance — mismo criterio que modo
+  // concentración).
+  const [mostrarAnotaciones, setMostrarAnotaciones] = useState(true);
   const refTextoOficial = useRef<HTMLDivElement>(null);
   const refMaterialAdaptado = useRef<HTMLDivElement>(null);
   const refEsquema = useRef<HTMLDivElement>(null);
@@ -156,6 +161,43 @@ export function SeccionesConcepto({
     restaurar("esquema", refEsquema.current);
     restaurar("resumen-extenso", refResumenExtenso.current);
   }, [conceptoId]);
+
+  // Alternar "con/sin anotaciones" (Requisito 3): por cada sección, cambia
+  // entre el HTML original (vista limpia) y el HTML anotado ya restaurado
+  // arriba — sin volver a pedir datos al servidor ni duplicar el árbol de
+  // Markdown. Es un control de visualización, no de borrado: no toca
+  // localStorage ni los refs, solo decide cuál de los dos ya-disponibles se
+  // pinta. También se aplica en el montaje (mismo efecto, misma pasada que
+  // el resto de renders): si no hay versión anotada, no cambia nada.
+  useEffect(() => {
+    function aplicarVista(seccionId: SeccionAnotableId, el: HTMLDivElement | null) {
+      if (!el) return;
+      const original = htmlOriginalRef.current[seccionId];
+      // Todavía no capturado (el efecto de restauración de arriba corre
+      // antes, en el mismo commit de montaje, pero por claridad se protege
+      // igual frente a cualquier reordenación futura de los efectos).
+      if (original === undefined) return;
+      const anotado = htmlAnotadoRef.current[seccionId];
+      el.innerHTML = mostrarAnotaciones ? (anotado ?? original) : original;
+    }
+    aplicarVista("texto-oficial", refTextoOficial.current);
+    aplicarVista("material-adaptado", refMaterialAdaptado.current);
+    aplicarVista("esquema", refEsquema.current);
+    aplicarVista("resumen-extenso", refResumenExtenso.current);
+  }, [mostrarAnotaciones]);
+
+  // Activar el modo edición fuerza la vista a "con mis anotaciones"
+  // (Requisito 3.5) — no tiene sentido editar sin verlas. Se decide en el
+  // propio manejador del botón (no en un efecto que reaccione a
+  // `modoEdicion`): un `setState` síncrono dentro de un efecto solo para
+  // reaccionar a otro estado local de React provoca un render en cascada
+  // evitable — aquí ya sabemos en el momento del click qué dos estados
+  // deben cambiar juntos.
+  function alternarModoEdicion() {
+    const nuevoModoEdicion = !modoEdicion;
+    setModoEdicion(nuevoModoEdicion);
+    if (nuevoModoEdicion) setMostrarAnotaciones(true);
+  }
 
   // Restaurar posición de scroll al montar (Requisito 10.1) — sin salto
   // brusco perceptible ni diálogo de confirmación. localStorage solo existe
@@ -265,7 +307,7 @@ export function SeccionesConcepto({
         <div className="flex flex-wrap items-center gap-3 border-b border-borde px-4 py-2 sm:px-0">
           <button
             type="button"
-            onClick={() => setModoEdicion((valor) => !valor)}
+            onClick={alternarModoEdicion}
             aria-pressed={modoEdicion}
             className={
               modoEdicion
@@ -275,6 +317,17 @@ export function SeccionesConcepto({
           >
             {modoEdicion ? "Salir de modo edición" : "Modo edición"}
           </button>
+
+          <label className="flex items-center gap-2 text-sm text-texto-secundario">
+            <input
+              type="checkbox"
+              checked={mostrarAnotaciones}
+              disabled={modoEdicion}
+              onChange={(evento) => setMostrarAnotaciones(evento.target.checked)}
+              className="h-4 w-4 rounded border-borde accent-texto-primario disabled:opacity-60"
+            />
+            Ver con mis anotaciones
+          </label>
         </div>
 
         {modoEdicion && <BarraFormato onCambio={alFormatearSeleccion} />}
