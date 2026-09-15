@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { guardarPosicion, leerPosicion } from "@/lib/progreso-lectura";
+import { borrarAnotacion, calcularHash, guardarAnotacion, leerAnotacion } from "@/lib/anotaciones-lectura";
 import { ProgresoLectura } from "./ProgresoLectura";
 import { BarraFormato } from "./BarraFormato";
 
@@ -10,6 +11,16 @@ const SECCIONES = [
   { id: "material-adaptado", etiqueta: "Material adaptado" },
   { id: "resumen", etiqueta: "Resumen" },
 ] as const;
+
+/**
+ * Ids de las 4 secciones anotables (Requisito 2, specs/020) — cada una es
+ * el `div.contenido-lectura` que pasa a `contentEditable` en modo edición y
+ * la clave de sección usada en `lib/anotaciones-lectura.ts`. Distintos de
+ * los 3 ids de `SECCIONES` (pestañas/scrollspy, arriba): el "resumen" de
+ * las pestañas agrupa dos secciones anotables independientes (esquema y
+ * resumen extenso).
+ */
+type SeccionAnotableId = "texto-oficial" | "material-adaptado" | "esquema" | "resumen-extenso";
 
 /**
  * Tabs + scrollspy entre las tres partes del contenido de un concepto
@@ -51,6 +62,100 @@ export function SeccionesConcepto({
   const refMaterialAdaptado = useRef<HTMLDivElement>(null);
   const refEsquema = useRef<HTMLDivElement>(null);
   const refResumenExtenso = useRef<HTMLDivElement>(null);
+
+  // HTML tal cual vino del servidor (Requisito 2.3/3.3, capturado al montar
+  // antes de restaurar ninguna anotación) y última versión anotada válida
+  // conocida (Requisito 2.2/3.2) — por sección. No son estado de React a
+  // propósito: se leen/escriben imperativamente sobre el DOM real (ver
+  // comentario más arriba sobre por qué React no es dueño de este
+  // contenido), así que vivir en un `ref` evita re-renders innecesarios.
+  const htmlOriginalRef = useRef<Partial<Record<SeccionAnotableId, string>>>({});
+  const htmlAnotadoRef = useRef<Partial<Record<SeccionAnotableId, string>>>({});
+  const timeoutGuardadoAnotacion = useRef<Partial<Record<SeccionAnotableId, ReturnType<typeof setTimeout>>>>({});
+
+  function elementoDeSeccion(seccionId: SeccionAnotableId): HTMLDivElement | null {
+    switch (seccionId) {
+      case "texto-oficial":
+        return refTextoOficial.current;
+      case "material-adaptado":
+        return refMaterialAdaptado.current;
+      case "esquema":
+        return refEsquema.current;
+      case "resumen-extenso":
+        return refResumenExtenso.current;
+    }
+  }
+
+  // Sanitiza, calcula el hash del texto plano actual y persiste (Requisito
+  // 2.1) — se llama tanto al perder el foco como (debounced) mientras se
+  // escribe, y también tras cada acción de BarraFormato.
+  function guardarSeccion(seccionId: SeccionAnotableId) {
+    const el = elementoDeSeccion(seccionId);
+    if (!el) return;
+    const hash = calcularHash(el.textContent ?? "");
+    guardarAnotacion(conceptoId, seccionId, el.innerHTML, hash);
+    htmlAnotadoRef.current[seccionId] = el.innerHTML;
+  }
+
+  function alEscribirSeccion(seccionId: SeccionAnotableId) {
+    if (!modoEdicion) return;
+    const timeouts = timeoutGuardadoAnotacion.current;
+    if (timeouts[seccionId]) clearTimeout(timeouts[seccionId]);
+    timeouts[seccionId] = setTimeout(() => guardarSeccion(seccionId), 500);
+  }
+
+  function alPerderFocoSeccion(seccionId: SeccionAnotableId) {
+    if (!modoEdicion) return;
+    const timeouts = timeoutGuardadoAnotacion.current;
+    if (timeouts[seccionId]) clearTimeout(timeouts[seccionId]);
+    guardarSeccion(seccionId);
+  }
+
+  // Qué sección contiene la selección actual (`data-seccion-id` del
+  // contenedor más cercano) — para saber, tras pulsar un botón de
+  // BarraFormato, qué anotación guardar (la propia acción de formato no
+  // dispara un evento "input" nativo, al ser una manipulación manual del
+  // DOM vía Range API, así que hace falta guardar explícitamente aquí).
+  function seccionDesdeSeleccionActual(): SeccionAnotableId | null {
+    let nodo: Node | null = window.getSelection()?.anchorNode ?? null;
+    while (nodo) {
+      if (nodo instanceof HTMLElement && nodo.dataset.seccionId) {
+        return nodo.dataset.seccionId as SeccionAnotableId;
+      }
+      nodo = nodo.parentNode;
+    }
+    return null;
+  }
+
+  function alFormatearSeleccion() {
+    const seccionId = seccionDesdeSeleccionActual();
+    if (seccionId) guardarSeccion(seccionId);
+  }
+
+  // Restaurar anotaciones al montar (Requisito 2.2/2.3): por cada sección,
+  // guarda el HTML original tal cual vino del servidor y, si hay una
+  // anotación guardada cuyo hash coincide con el texto actual, la aplica;
+  // si el hash no coincide (el contenido cambió desde que se guardó), la
+  // descarta de localStorage en vez de mezclarla con el contenido nuevo.
+  useEffect(() => {
+    function restaurar(seccionId: SeccionAnotableId, el: HTMLDivElement | null) {
+      if (!el) return;
+      htmlOriginalRef.current[seccionId] = el.innerHTML;
+      const anotacion = leerAnotacion(conceptoId, seccionId);
+      if (!anotacion) return;
+      const hashActual = calcularHash(el.textContent ?? "");
+      if (anotacion.hashOriginal === hashActual) {
+        htmlAnotadoRef.current[seccionId] = anotacion.html;
+        el.innerHTML = anotacion.html;
+      } else {
+        borrarAnotacion(conceptoId, seccionId);
+      }
+    }
+    restaurar("texto-oficial", refTextoOficial.current);
+    restaurar("material-adaptado", refMaterialAdaptado.current);
+    restaurar("esquema", refEsquema.current);
+    restaurar("resumen-extenso", refResumenExtenso.current);
+  }, [conceptoId]);
 
   // Restaurar posición de scroll al montar (Requisito 10.1) — sin salto
   // brusco perceptible ni diálogo de confirmación. localStorage solo existe
@@ -172,7 +277,7 @@ export function SeccionesConcepto({
           </button>
         </div>
 
-        {modoEdicion && <BarraFormato onCambio={() => {}} />}
+        {modoEdicion && <BarraFormato onCambio={alFormatearSeleccion} />}
 
         <ProgresoLectura />
       </div>
@@ -194,6 +299,8 @@ export function SeccionesConcepto({
             data-seccion-id="texto-oficial"
             contentEditable={modoEdicion}
             suppressContentEditableWarning
+            onInput={() => alEscribirSeccion("texto-oficial")}
+            onBlur={() => alPerderFocoSeccion("texto-oficial")}
             className={`contenido-lectura mt-3${claseEditable}`}
           >
             {textoOficial}
@@ -208,6 +315,8 @@ export function SeccionesConcepto({
             data-seccion-id="material-adaptado"
             contentEditable={modoEdicion}
             suppressContentEditableWarning
+            onInput={() => alEscribirSeccion("material-adaptado")}
+            onBlur={() => alPerderFocoSeccion("material-adaptado")}
             className={`contenido-lectura mt-3${claseEditable}`}
           >
             {materialAdaptado}
@@ -223,6 +332,8 @@ export function SeccionesConcepto({
               data-seccion-id="esquema"
               contentEditable={modoEdicion}
               suppressContentEditableWarning
+              onInput={() => alEscribirSeccion("esquema")}
+              onBlur={() => alPerderFocoSeccion("esquema")}
               className={`contenido-lectura mt-2${claseEditable}`}
             >
               {esquema}
@@ -235,6 +346,8 @@ export function SeccionesConcepto({
               data-seccion-id="resumen-extenso"
               contentEditable={modoEdicion}
               suppressContentEditableWarning
+              onInput={() => alEscribirSeccion("resumen-extenso")}
+              onBlur={() => alPerderFocoSeccion("resumen-extenso")}
               className={`contenido-lectura mt-2${claseEditable}`}
             >
               {resumenExtenso}
