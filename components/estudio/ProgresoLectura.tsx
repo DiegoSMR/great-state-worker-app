@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useProgresoLectura } from "./useProgresoLectura";
 
 /**
  * Barra fina de progreso de lectura (Requisito 10.2) — color neutro
@@ -9,22 +9,7 @@ import { useEffect, useState } from "react";
  * `aria-hidden`, no lleva foco.
  */
 export function ProgresoLectura() {
-  const [progreso, setProgreso] = useState(0);
-
-  useEffect(() => {
-    function calcular() {
-      const alto = document.documentElement.scrollHeight - window.innerHeight;
-      const ratio = alto > 0 ? window.scrollY / alto : 0;
-      setProgreso(Math.min(1, Math.max(0, ratio)));
-    }
-    calcular();
-    window.addEventListener("scroll", calcular, { passive: true });
-    window.addEventListener("resize", calcular);
-    return () => {
-      window.removeEventListener("scroll", calcular);
-      window.removeEventListener("resize", calcular);
-    };
-  }, []);
+  const progreso = useProgresoLectura();
 
   return (
     <div aria-hidden="true" className="h-[3px] w-full bg-bg-secundario">
