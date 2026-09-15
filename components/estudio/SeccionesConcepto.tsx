@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { guardarPosicion, leerPosicion } from "@/lib/progreso-lectura";
 import { ProgresoLectura } from "./ProgresoLectura";
+import { BarraFormato } from "./BarraFormato";
 
 const SECCIONES = [
   { id: "texto-oficial", etiqueta: "Texto oficial" },
@@ -39,6 +40,17 @@ export function SeccionesConcepto({
   // montados en el cliente, para no producir un mismatch de hidratación.
   const [avisoContinuar, setAvisoContinuar] = useState(false);
   const timeoutGuardado = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Modo edición de anotaciones (Requisito 1) — un ref por sección anotable,
+  // para leer/escribir su `innerHTML` directamente sin pasar por el árbol
+  // de React (que no es dueño de este contenido una vez montado, ver
+  // comentario en lib/anotaciones-lectura.ts sobre el porqué). Se usan en
+  // Requisito 2 para restaurar/guardar anotaciones.
+  const [modoEdicion, setModoEdicion] = useState(false);
+  const refTextoOficial = useRef<HTMLDivElement>(null);
+  const refMaterialAdaptado = useRef<HTMLDivElement>(null);
+  const refEsquema = useRef<HTMLDivElement>(null);
+  const refResumenExtenso = useRef<HTMLDivElement>(null);
 
   // Restaurar posición de scroll al montar (Requisito 10.1) — sin salto
   // brusco perceptible ni diálogo de confirmación. localStorage solo existe
@@ -118,6 +130,13 @@ export function SeccionesConcepto({
     return () => observer.disconnect();
   }, []);
 
+  // Área editable de una sección anotable (Requisito 1.2/1.3): dashed cuando
+  // no tiene foco (deja claro, sobre todo en touch, dónde se puede
+  // seleccionar texto) y borde sólido al enfocar.
+  const claseEditable = modoEdicion
+    ? " rounded-sm outline outline-1 outline-dashed outline-borde focus:outline-solid focus:outline-texto-secundario"
+    : "";
+
   return (
     <div>
       <div className="sticky top-0 z-10 -mx-4 bg-bg-primario sm:mx-0">
@@ -137,6 +156,24 @@ export function SeccionesConcepto({
             </a>
           ))}
         </nav>
+
+        <div className="flex flex-wrap items-center gap-3 border-b border-borde px-4 py-2 sm:px-0">
+          <button
+            type="button"
+            onClick={() => setModoEdicion((valor) => !valor)}
+            aria-pressed={modoEdicion}
+            className={
+              modoEdicion
+                ? "rounded-md border border-texto-secundario/40 bg-bg-secundario px-3 py-1.5 text-sm font-medium text-texto-primario"
+                : "rounded-md border border-borde px-3 py-1.5 text-sm font-medium text-texto-secundario hover:border-texto-secundario hover:text-texto-primario"
+            }
+          >
+            {modoEdicion ? "Salir de modo edición" : "Modo edición"}
+          </button>
+        </div>
+
+        {modoEdicion && <BarraFormato onCambio={() => {}} />}
+
         <ProgresoLectura />
       </div>
 
@@ -152,24 +189,56 @@ export function SeccionesConcepto({
           className="medida-lectura-oficial scroll-mt-28 rounded-md border border-borde bg-bg-secundario p-4 sm:p-6"
         >
           <h2 className="text-lg font-medium">Texto oficial</h2>
-          <div className="contenido-lectura mt-3">{textoOficial}</div>
+          <div
+            ref={refTextoOficial}
+            data-seccion-id="texto-oficial"
+            contentEditable={modoEdicion}
+            suppressContentEditableWarning
+            className={`contenido-lectura mt-3${claseEditable}`}
+          >
+            {textoOficial}
+          </div>
           {fuenteNormativa}
         </section>
 
         <section id="material-adaptado" className="medida-lectura scroll-mt-28">
           <h2 className="text-lg font-medium">Material adaptado</h2>
-          <div className="contenido-lectura mt-3">{materialAdaptado}</div>
+          <div
+            ref={refMaterialAdaptado}
+            data-seccion-id="material-adaptado"
+            contentEditable={modoEdicion}
+            suppressContentEditableWarning
+            className={`contenido-lectura mt-3${claseEditable}`}
+          >
+            {materialAdaptado}
+          </div>
         </section>
 
         <section id="resumen" className="medida-lectura scroll-mt-28 border-l-4 border-borde pl-4">
           <h2 className="text-lg font-medium">Resumen</h2>
           <div id="esquema" className="mt-4 scroll-mt-28">
             <h3 className="text-base font-medium">Esquema</h3>
-            <div className="contenido-lectura mt-2">{esquema}</div>
+            <div
+              ref={refEsquema}
+              data-seccion-id="esquema"
+              contentEditable={modoEdicion}
+              suppressContentEditableWarning
+              className={`contenido-lectura mt-2${claseEditable}`}
+            >
+              {esquema}
+            </div>
           </div>
           <div id="resumen-extenso" className="mt-6 scroll-mt-28">
             <h3 className="text-base font-medium">Resumen extenso</h3>
-            <div className="contenido-lectura mt-2">{resumenExtenso}</div>
+            <div
+              ref={refResumenExtenso}
+              data-seccion-id="resumen-extenso"
+              contentEditable={modoEdicion}
+              suppressContentEditableWarning
+              className={`contenido-lectura mt-2${claseEditable}`}
+            >
+              {resumenExtenso}
+            </div>
           </div>
         </section>
       </div>
