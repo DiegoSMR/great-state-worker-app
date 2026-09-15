@@ -26,6 +26,17 @@ Diego quiere poder marcar visualmente (negrita, subrayado, resaltado) partes del
 3. CUANDO el contenido real de una sección (`content/estudio/<concepto-id>.md`) ha cambiado respecto a la versión que tenía cuando se guardó la anotación ENTONCES el sistema DEBERÁ descartar la anotación desactualizada de esa sección y mostrar el contenido nuevo sin formato personal, en vez de mezclarlos de forma inconsistente o tapar en silencio una corrección de contenido.
 4. CUANDO el usuario abre el mismo concepto desde otro dispositivo o navegador ENTONCES el sistema NO DEBERÁ mostrar las anotaciones hechas en otro sitio (son locales al dispositivo, mismo criterio que `progreso-lectura`).
 
+## Requisito 3: Alternar entre vista con anotaciones y vista limpia
+
+**Historia:** Como usuario, quiero poder ver el contenido con mis anotaciones o sin ellas, para poder repasar la versión oficial limpia cuando lo necesite (por ejemplo, antes de un examen) sin perder las anotaciones que ya tengo guardadas.
+
+**Criterios de aceptación:**
+1. CUANDO el usuario está en la página de un concepto ENTONCES el sistema DEBERÁ ofrecer un control (checkbox/switch) para elegir entre "con mis anotaciones" y "sin anotaciones".
+2. CUANDO el control está en "con mis anotaciones" ENTONCES el sistema DEBERÁ mostrar el contenido con el formato personal aplicado, si existe alguno guardado para ese concepto.
+3. CUANDO el control está en "sin anotaciones" ENTONCES el sistema DEBERÁ mostrar el contenido tal cual viene de `content/estudio/*.md`, sin aplicar ningún formato personal guardado.
+4. CUANDO el usuario cambia entre una vista y otra ENTONCES el sistema NO DEBERÁ borrar ni modificar las anotaciones guardadas — es un control de visualización, no de borrado.
+5. CUANDO el usuario activa el modo edición (Requisito 1) ENTONCES el sistema DEBERÁ forzar la vista a "con mis anotaciones" (no tiene sentido editar sin verlas).
+
 ## Fuera de alcance
 
 - Sincronizar anotaciones entre dispositivos o guardarlas en base de datos.
@@ -33,3 +44,4 @@ Diego quiere poder marcar visualmente (negrita, subrayado, resaltado) partes del
 - Anotar mientras está activo el modo concentración (se deja para una iteración futura si hace falta).
 - Deshacer/rehacer con historial de cambios — basta con "quitar formato" sobre la selección.
 - Cualquier cambio al texto enriquecido de autoría ya existente (`u`/`mark.ink-*` en `content/estudio/*.md`) — es un sistema aparte y no se toca.
+- Persistir la elección de "con/sin anotaciones" entre sesiones — se reinicia a "con mis anotaciones" en cada carga de página (mismo criterio que modo concentración, `ARCHITECTURE.md`).
