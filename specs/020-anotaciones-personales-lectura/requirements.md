@@ -1,6 +1,6 @@
 # Requirements: Anotaciones personales de lectura
 
-Fase: 1 — Requirements. Estado: borrador, pendiente de aprobación de Diego.
+Fase: 1 — Requirements (aprobado, implementado en Fase 4/5). Ver "Extensión" al final: ajuste tras revisión de Diego probando la app ya en marcha.
 Última actualización: 2026-09-15
 
 ## Resumen
@@ -45,3 +45,12 @@ Diego quiere poder marcar visualmente (negrita, subrayado, resaltado) partes del
 - Deshacer/rehacer con historial de cambios — basta con "quitar formato" sobre la selección.
 - Cualquier cambio al texto enriquecido de autoría ya existente (`u`/`mark.ink-*` en `content/estudio/*.md`) — es un sistema aparte y no se toca.
 - Persistir la elección de "con/sin anotaciones" entre sesiones — se reinicia a "con mis anotaciones" en cada carga de página (mismo criterio que modo concentración, `ARCHITECTURE.md`).
+
+## Extensión (2026-09-15): ajuste tras revisión de Diego con la app ya en marcha
+
+Probando la implementación real, Diego pidió dos cambios que amplían/corrigen Requisitos 1 y 3 (no reabren Requisito 2 ni el resto de `Fuera de alcance`):
+
+1. **Requisito 1.2 se restringe:** "seleccionar texto... y aplicarle negrita, subrayado o resaltado" nunca pretendía permitir escribir/borrar texto libre, pero la implementación original (`contentEditable`) sí lo permitía de hecho — y el navegador reestructuraba listas/citas del contenido al teclear dentro (bug visual real, visto en la propia app). Criterio de aceptación añadido: **el sistema NO DEBERÁ permitir editar el texto en sí (escribir, borrar, Intro) en ninguna sección anotable, solo aplicar/quitar formato sobre una selección existente mediante la barra de herramientas.**
+2. **Requisito 3 se resuelve de otra forma para el texto oficial:** en vez de un checkbox que alterna "con/sin anotaciones" en el mismo sitio, el texto oficial anotado vive en su **propia pestaña, "Material oficial anotado"**, entre "Texto oficial" y "Material adaptado" — la pestaña "Texto oficial" pasa a mostrar siempre el original, sin ninguna anotación ni posibilidad de aplicarla ahí. El checkbox de Requisito 3 se mantiene, pero pasa a gobernar solo material adaptado y resumen (esquema + resumen extenso), que sí siguen alternando in-place.
+
+Detalle técnico completo (por qué `contentEditable` no era necesario para que la Range API funcionase, y cómo se reparte "texto-oficial" entre dos pestañas) en `design.md`.

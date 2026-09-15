@@ -71,3 +71,26 @@ Repaso criterio a criterio de `requirements.md`, con evidencia concreta. `npm ru
 - **Bug real encontrado en `SeccionesConcepto.tsx` (efecto de restauración, Requisito 2):** sin protección, la doble invocación de efectos de React StrictMode en desarrollo sobrescribía `htmlOriginalRef` con el HTML ya anotado en su segunda pasada (mismo nodo DOM real entre ambas pasadas, sin desmontaje real de por medio) — rompía silenciosamente el checkbox "Ver con mis anotaciones" tras recargar la página, solo en `npm run dev`, nunca en producción (sin doble invocación de efectos). Corregido con un guard (`if (htmlOriginalRef.current[seccionId] === undefined)`) que solo captura el HTML original la primera vez.
 - **Color de resaltado elegido (`--anotacion-fondo`/`--anotacion-texto`):** teal (`#cfeef0`/`#164e52` en claro, `#1c3f42`/`#8fd4d9` en oscuro), deliberadamente distinto del azul ya usado por `--revision-bg`/`--revision-texto` para no repetir hue con un estado existente. Contraste verificado ≥6.8:1 contra su propio fondo y contra `--bg-primario`/`--bg-secundario` de cada tema (cálculo WCAG 2.1, luminancia relativa).
 - **`npm ci` necesario en este worktree** (no compartía `node_modules` con el checkout principal — Turbopack, a diferencia de la resolución estándar de Node, no camina hacia directorios padre en busca de `node_modules` cuando el worktree tiene su propio `package-lock.json`) y `.env` copiado desde el checkout principal (gitignored, nunca commiteado) para poder levantar `npm run dev` con `DATABASE_URL` real durante la verificación — sin él, la página falla con 500 porque `isBookmarked` (Server Action) necesita la base de datos incluso para una ruta que no depende del bookmark en sí.
+
+## Extensión (2026-09-15): ajuste tras revisión de Diego con la app ya en marcha
+
+Diego probó `Modo edición` en `/estudio/tema/constitucion-espanola` (tema "1978", modo manuscrito/papel) y encontró el problema que anticipaba `design.md` en su sección de Riesgos: escribir dentro de una sección `contentEditable` reestructuraba listas/citas del "Texto oficial". Pidió además que el texto oficial anotado tenga su propia pestaña en vez de alternar con el checkbox. Ver `requirements.md` y `design.md`, secciones "Extensión (2026-09-15)", para el detalle de las dos decisiones.
+
+- [x] TE.1 `components/estudio/SeccionesConcepto.tsx`: nueva entrada `material-oficial-anotado` en `SECCIONES`, entre `texto-oficial` y `material-adaptado`; nueva `<section id="material-oficial-anotado">` con el `ref`/`data-seccion-id="texto-oficial"` que antes vivía dentro de "Texto oficial"; `<section id="texto-oficial">` pasa a renderizar `{textoOficial}` sin ref ni anotación.
+  - Satisface: Requisito 3 (extensión).
+- [x] TE.2 `components/estudio/SeccionesConcepto.tsx`: se retiran `contentEditable`/`suppressContentEditableWarning`/`onInput`/`onBlur` de las 4 divs anotables (ya no hace falta guardar mientras se "escribe" — no hay escritura); el guardado pasa a depender solo de `onCambio` de `BarraFormato`. `aplicarVista` deja `texto-oficial` fuera del toggle del checkbox (siempre `mostrar = true` para esa clave).
+  - Satisface: Requisito 1.2 (extensión), Requisito 3 (extensión).
+- [x] TE.3 Etiqueta del checkbox actualizada a "Ver material adaptado y resumen con mis anotaciones", reflejando que ya no gobierna el texto oficial.
+  - Satisface: Requisito 3 (extensión).
+
+### Verificación (extensión)
+
+`npx eslint components/estudio/SeccionesConcepto.tsx components/estudio/BarraFormato.tsx lib/anotaciones-lectura.ts` y `npm run build` limpios. Recorrido con Playwright headless (dev server, puerto 3033, viewport 834×1100) contra `constitucion-espanola`:
+
+1. **Pestañas en el orden correcto.** `["Texto oficial", "Material oficial anotado", "Material adaptado", "Resumen"]` — confirmado leyendo los textos de la barra de navegación sticky.
+2. **Ninguna de las dos secciones es `contentEditable`.** `getAttribute("contenteditable")` devuelve `null` tanto en `#texto-oficial .contenido-lectura` como en `#material-oficial-anotado .contenido-lectura`, con "Modo edición" activo.
+3. **El formato sigue funcionando sin `contentEditable`.** Selección por arrastre de ratón real dentro de "Material oficial anotado" + clic en "Negrita" → el `innerHTML` de esa sección pasa a contener `<strong>`.
+4. **Teclear ya no hace nada.** Con foco dentro de "Material oficial anotado", `page.keyboard.type("ESTO NO DEBERIA APARECER")` + Enter → el texto no aparece en el DOM. Mismo resultado tecleando dentro de "Texto oficial": su `innerHTML` permanece **byte a byte idéntico** al capturado antes de la prueba.
+5. **Persistencia tras recargar, ya con la nueva estructura.** Tras salir de modo edición y recargar la página: "Material oficial anotado" conserva el `<strong>` aplicado; "Texto oficial" sigue idéntico al original. Sin errores de consola en todo el recorrido.
+
+Instalación de Playwright aislada en el scratchpad de la sesión (no como dependencia del proyecto), mismo criterio que las verificaciones anteriores de esta spec.
