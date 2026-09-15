@@ -2,13 +2,25 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { guardarPosicion, leerPosicion } from "@/lib/progreso-lectura";
+import { borrarAnotacion, calcularHash, guardarAnotacion, leerAnotacion } from "@/lib/anotaciones-lectura";
 import { ProgresoLectura } from "./ProgresoLectura";
+import { BarraFormato } from "./BarraFormato";
 
 const SECCIONES = [
   { id: "texto-oficial", etiqueta: "Texto oficial" },
   { id: "material-adaptado", etiqueta: "Material adaptado" },
   { id: "resumen", etiqueta: "Resumen" },
 ] as const;
+
+/**
+ * Ids de las 4 secciones anotables (Requisito 2, specs/020) — cada una es
+ * el `div.contenido-lectura` que pasa a `contentEditable` en modo edición y
+ * la clave de sección usada en `lib/anotaciones-lectura.ts`. Distintos de
+ * los 3 ids de `SECCIONES` (pestañas/scrollspy, arriba): el "resumen" de
+ * las pestañas agrupa dos secciones anotables independientes (esquema y
+ * resumen extenso).
+ */
+type SeccionAnotableId = "texto-oficial" | "material-adaptado" | "esquema" | "resumen-extenso";
 
 /**
  * Tabs + scrollspy entre las tres partes del contenido de un concepto
@@ -39,6 +51,163 @@ export function SeccionesConcepto({
   // montados en el cliente, para no producir un mismatch de hidratación.
   const [avisoContinuar, setAvisoContinuar] = useState(false);
   const timeoutGuardado = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Modo edición de anotaciones (Requisito 1) — un ref por sección anotable,
+  // para leer/escribir su `innerHTML` directamente sin pasar por el árbol
+  // de React (que no es dueño de este contenido una vez montado, ver
+  // comentario en lib/anotaciones-lectura.ts sobre el porqué). Se usan en
+  // Requisito 2 para restaurar/guardar anotaciones.
+  const [modoEdicion, setModoEdicion] = useState(false);
+  // Por defecto "con mis anotaciones" (Requisito 3.2) — se reinicia a este
+  // valor en cada carga de página a propósito, no se persiste entre
+  // sesiones (requirements.md, Fuera de alcance — mismo criterio que modo
+  // concentración).
+  const [mostrarAnotaciones, setMostrarAnotaciones] = useState(true);
+  const refTextoOficial = useRef<HTMLDivElement>(null);
+  const refMaterialAdaptado = useRef<HTMLDivElement>(null);
+  const refEsquema = useRef<HTMLDivElement>(null);
+  const refResumenExtenso = useRef<HTMLDivElement>(null);
+
+  // HTML tal cual vino del servidor (Requisito 2.3/3.3, capturado al montar
+  // antes de restaurar ninguna anotación) y última versión anotada válida
+  // conocida (Requisito 2.2/3.2) — por sección. No son estado de React a
+  // propósito: se leen/escriben imperativamente sobre el DOM real (ver
+  // comentario más arriba sobre por qué React no es dueño de este
+  // contenido), así que vivir en un `ref` evita re-renders innecesarios.
+  const htmlOriginalRef = useRef<Partial<Record<SeccionAnotableId, string>>>({});
+  const htmlAnotadoRef = useRef<Partial<Record<SeccionAnotableId, string>>>({});
+  const timeoutGuardadoAnotacion = useRef<Partial<Record<SeccionAnotableId, ReturnType<typeof setTimeout>>>>({});
+
+  function elementoDeSeccion(seccionId: SeccionAnotableId): HTMLDivElement | null {
+    switch (seccionId) {
+      case "texto-oficial":
+        return refTextoOficial.current;
+      case "material-adaptado":
+        return refMaterialAdaptado.current;
+      case "esquema":
+        return refEsquema.current;
+      case "resumen-extenso":
+        return refResumenExtenso.current;
+    }
+  }
+
+  // Sanitiza, calcula el hash del texto plano actual y persiste (Requisito
+  // 2.1) — se llama tanto al perder el foco como (debounced) mientras se
+  // escribe, y también tras cada acción de BarraFormato.
+  function guardarSeccion(seccionId: SeccionAnotableId) {
+    const el = elementoDeSeccion(seccionId);
+    if (!el) return;
+    const hash = calcularHash(el.textContent ?? "");
+    guardarAnotacion(conceptoId, seccionId, el.innerHTML, hash);
+    htmlAnotadoRef.current[seccionId] = el.innerHTML;
+  }
+
+  function alEscribirSeccion(seccionId: SeccionAnotableId) {
+    if (!modoEdicion) return;
+    const timeouts = timeoutGuardadoAnotacion.current;
+    if (timeouts[seccionId]) clearTimeout(timeouts[seccionId]);
+    timeouts[seccionId] = setTimeout(() => guardarSeccion(seccionId), 500);
+  }
+
+  function alPerderFocoSeccion(seccionId: SeccionAnotableId) {
+    if (!modoEdicion) return;
+    const timeouts = timeoutGuardadoAnotacion.current;
+    if (timeouts[seccionId]) clearTimeout(timeouts[seccionId]);
+    guardarSeccion(seccionId);
+  }
+
+  // Qué sección contiene la selección actual (`data-seccion-id` del
+  // contenedor más cercano) — para saber, tras pulsar un botón de
+  // BarraFormato, qué anotación guardar (la propia acción de formato no
+  // dispara un evento "input" nativo, al ser una manipulación manual del
+  // DOM vía Range API, así que hace falta guardar explícitamente aquí).
+  function seccionDesdeSeleccionActual(): SeccionAnotableId | null {
+    let nodo: Node | null = window.getSelection()?.anchorNode ?? null;
+    while (nodo) {
+      if (nodo instanceof HTMLElement && nodo.dataset.seccionId) {
+        return nodo.dataset.seccionId as SeccionAnotableId;
+      }
+      nodo = nodo.parentNode;
+    }
+    return null;
+  }
+
+  function alFormatearSeleccion() {
+    const seccionId = seccionDesdeSeleccionActual();
+    if (seccionId) guardarSeccion(seccionId);
+  }
+
+  // Restaurar anotaciones al montar (Requisito 2.2/2.3): por cada sección,
+  // guarda el HTML original tal cual vino del servidor y, si hay una
+  // anotación guardada cuyo hash coincide con el texto actual, la aplica;
+  // si el hash no coincide (el contenido cambió desde que se guardó), la
+  // descarta de localStorage en vez de mezclarla con el contenido nuevo.
+  //
+  // La captura de `htmlOriginalRef` está protegida con un `if` (solo se
+  // guarda si todavía no hay nada ahí): en desarrollo, StrictMode invoca
+  // este efecto dos veces sobre el mismo DOM sin desmontar de verdad entre
+  // medias (no hay cleanup que lo evite) — sin este guard, la segunda
+  // pasada capturaría como "original" el HTML ya anotado que la primera
+  // pasada acababa de escribir, perdiendo la vista limpia para siempre
+  // (bug real encontrado verificando Requisito 3 en el navegador).
+  useEffect(() => {
+    function restaurar(seccionId: SeccionAnotableId, el: HTMLDivElement | null) {
+      if (!el) return;
+      if (htmlOriginalRef.current[seccionId] === undefined) {
+        htmlOriginalRef.current[seccionId] = el.innerHTML;
+      }
+      const anotacion = leerAnotacion(conceptoId, seccionId);
+      if (!anotacion) return;
+      const hashActual = calcularHash(el.textContent ?? "");
+      if (anotacion.hashOriginal === hashActual) {
+        htmlAnotadoRef.current[seccionId] = anotacion.html;
+        el.innerHTML = anotacion.html;
+      } else {
+        borrarAnotacion(conceptoId, seccionId);
+      }
+    }
+    restaurar("texto-oficial", refTextoOficial.current);
+    restaurar("material-adaptado", refMaterialAdaptado.current);
+    restaurar("esquema", refEsquema.current);
+    restaurar("resumen-extenso", refResumenExtenso.current);
+  }, [conceptoId]);
+
+  // Alternar "con/sin anotaciones" (Requisito 3): por cada sección, cambia
+  // entre el HTML original (vista limpia) y el HTML anotado ya restaurado
+  // arriba — sin volver a pedir datos al servidor ni duplicar el árbol de
+  // Markdown. Es un control de visualización, no de borrado: no toca
+  // localStorage ni los refs, solo decide cuál de los dos ya-disponibles se
+  // pinta. También se aplica en el montaje (mismo efecto, misma pasada que
+  // el resto de renders): si no hay versión anotada, no cambia nada.
+  useEffect(() => {
+    function aplicarVista(seccionId: SeccionAnotableId, el: HTMLDivElement | null) {
+      if (!el) return;
+      const original = htmlOriginalRef.current[seccionId];
+      // Todavía no capturado (el efecto de restauración de arriba corre
+      // antes, en el mismo commit de montaje, pero por claridad se protege
+      // igual frente a cualquier reordenación futura de los efectos).
+      if (original === undefined) return;
+      const anotado = htmlAnotadoRef.current[seccionId];
+      el.innerHTML = mostrarAnotaciones ? (anotado ?? original) : original;
+    }
+    aplicarVista("texto-oficial", refTextoOficial.current);
+    aplicarVista("material-adaptado", refMaterialAdaptado.current);
+    aplicarVista("esquema", refEsquema.current);
+    aplicarVista("resumen-extenso", refResumenExtenso.current);
+  }, [mostrarAnotaciones]);
+
+  // Activar el modo edición fuerza la vista a "con mis anotaciones"
+  // (Requisito 3.5) — no tiene sentido editar sin verlas. Se decide en el
+  // propio manejador del botón (no en un efecto que reaccione a
+  // `modoEdicion`): un `setState` síncrono dentro de un efecto solo para
+  // reaccionar a otro estado local de React provoca un render en cascada
+  // evitable — aquí ya sabemos en el momento del click qué dos estados
+  // deben cambiar juntos.
+  function alternarModoEdicion() {
+    const nuevoModoEdicion = !modoEdicion;
+    setModoEdicion(nuevoModoEdicion);
+    if (nuevoModoEdicion) setMostrarAnotaciones(true);
+  }
 
   // Restaurar posición de scroll al montar (Requisito 10.1) — sin salto
   // brusco perceptible ni diálogo de confirmación. localStorage solo existe
@@ -118,6 +287,13 @@ export function SeccionesConcepto({
     return () => observer.disconnect();
   }, []);
 
+  // Área editable de una sección anotable (Requisito 1.2/1.3): dashed cuando
+  // no tiene foco (deja claro, sobre todo en touch, dónde se puede
+  // seleccionar texto) y borde sólido al enfocar.
+  const claseEditable = modoEdicion
+    ? " rounded-sm outline outline-1 outline-dashed outline-borde focus:outline-solid focus:outline-texto-secundario"
+    : "";
+
   return (
     <div>
       <div className="sticky top-0 z-10 -mx-4 bg-bg-primario sm:mx-0">
@@ -137,6 +313,35 @@ export function SeccionesConcepto({
             </a>
           ))}
         </nav>
+
+        <div className="flex flex-wrap items-center gap-3 border-b border-borde px-4 py-2 sm:px-0">
+          <button
+            type="button"
+            onClick={alternarModoEdicion}
+            aria-pressed={modoEdicion}
+            className={
+              modoEdicion
+                ? "rounded-md border border-texto-secundario/40 bg-bg-secundario px-3 py-1.5 text-sm font-medium text-texto-primario"
+                : "rounded-md border border-borde px-3 py-1.5 text-sm font-medium text-texto-secundario hover:border-texto-secundario hover:text-texto-primario"
+            }
+          >
+            {modoEdicion ? "Salir de modo edición" : "Modo edición"}
+          </button>
+
+          <label className="flex items-center gap-2 text-sm text-texto-secundario">
+            <input
+              type="checkbox"
+              checked={mostrarAnotaciones}
+              disabled={modoEdicion}
+              onChange={(evento) => setMostrarAnotaciones(evento.target.checked)}
+              className="h-4 w-4 rounded border-borde accent-texto-primario disabled:opacity-60"
+            />
+            Ver con mis anotaciones
+          </label>
+        </div>
+
+        {modoEdicion && <BarraFormato onCambio={alFormatearSeleccion} />}
+
         <ProgresoLectura />
       </div>
 
@@ -152,24 +357,64 @@ export function SeccionesConcepto({
           className="medida-lectura-oficial scroll-mt-28 rounded-md border border-borde bg-bg-secundario p-4 sm:p-6"
         >
           <h2 className="text-lg font-medium">Texto oficial</h2>
-          <div className="contenido-lectura mt-3">{textoOficial}</div>
+          <div
+            ref={refTextoOficial}
+            data-seccion-id="texto-oficial"
+            contentEditable={modoEdicion}
+            suppressContentEditableWarning
+            onInput={() => alEscribirSeccion("texto-oficial")}
+            onBlur={() => alPerderFocoSeccion("texto-oficial")}
+            className={`contenido-lectura mt-3${claseEditable}`}
+          >
+            {textoOficial}
+          </div>
           {fuenteNormativa}
         </section>
 
         <section id="material-adaptado" className="medida-lectura scroll-mt-28">
           <h2 className="text-lg font-medium">Material adaptado</h2>
-          <div className="contenido-lectura mt-3">{materialAdaptado}</div>
+          <div
+            ref={refMaterialAdaptado}
+            data-seccion-id="material-adaptado"
+            contentEditable={modoEdicion}
+            suppressContentEditableWarning
+            onInput={() => alEscribirSeccion("material-adaptado")}
+            onBlur={() => alPerderFocoSeccion("material-adaptado")}
+            className={`contenido-lectura mt-3${claseEditable}`}
+          >
+            {materialAdaptado}
+          </div>
         </section>
 
         <section id="resumen" className="medida-lectura scroll-mt-28 border-l-4 border-borde pl-4">
           <h2 className="text-lg font-medium">Resumen</h2>
           <div id="esquema" className="mt-4 scroll-mt-28">
             <h3 className="text-base font-medium">Esquema</h3>
-            <div className="contenido-lectura mt-2">{esquema}</div>
+            <div
+              ref={refEsquema}
+              data-seccion-id="esquema"
+              contentEditable={modoEdicion}
+              suppressContentEditableWarning
+              onInput={() => alEscribirSeccion("esquema")}
+              onBlur={() => alPerderFocoSeccion("esquema")}
+              className={`contenido-lectura mt-2${claseEditable}`}
+            >
+              {esquema}
+            </div>
           </div>
           <div id="resumen-extenso" className="mt-6 scroll-mt-28">
             <h3 className="text-base font-medium">Resumen extenso</h3>
-            <div className="contenido-lectura mt-2">{resumenExtenso}</div>
+            <div
+              ref={refResumenExtenso}
+              data-seccion-id="resumen-extenso"
+              contentEditable={modoEdicion}
+              suppressContentEditableWarning
+              onInput={() => alEscribirSeccion("resumen-extenso")}
+              onBlur={() => alPerderFocoSeccion("resumen-extenso")}
+              className={`contenido-lectura mt-2${claseEditable}`}
+            >
+              {resumenExtenso}
+            </div>
           </div>
         </section>
       </div>
