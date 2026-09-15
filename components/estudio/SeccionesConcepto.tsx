@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { guardarPosicion, leerPosicion } from "@/lib/progreso-lectura";
 import { borrarAnotacion, calcularHash, guardarAnotacion, leerAnotacion } from "@/lib/anotaciones-lectura";
 import { ProgresoLectura } from "./ProgresoLectura";
+import { ProgresoLecturaLateral } from "./ProgresoLecturaLateral";
 import { BarraFormato } from "./BarraFormato";
 
 const SECCIONES = [
@@ -394,6 +395,10 @@ export function SeccionesConcepto({
         <ProgresoLectura />
       </div>
 
+      {(seccionActiva === "texto-oficial" || seccionActiva === "material-oficial-anotado") && (
+        <ProgresoLecturaLateral />
+      )}
+
       {avisoContinuar && (
         <p role="status" className="mt-3 px-4 text-sm text-texto-secundario sm:px-0">
           Continuando desde donde lo dejaste.
@@ -406,7 +411,7 @@ export function SeccionesConcepto({
           role="tabpanel"
           aria-labelledby="pestana-texto-oficial"
           hidden={seccionActiva !== "texto-oficial"}
-          className="medida-lectura-oficial rounded-md border border-borde bg-bg-secundario p-4 sm:p-6"
+          className="medida-lectura-oficial"
         >
           <h2 className="text-lg font-medium">Texto oficial</h2>
           {/* Siempre el original, tal cual — sin ref ni anotación posible
@@ -420,7 +425,7 @@ export function SeccionesConcepto({
           role="tabpanel"
           aria-labelledby="pestana-material-oficial-anotado"
           hidden={seccionActiva !== "material-oficial-anotado"}
-          className="medida-lectura-oficial"
+          className="medida-lectura-oficial rounded-md border border-borde bg-bg-secundario p-4 sm:p-6"
         >
           <h2 className="text-lg font-medium">Material oficial anotado</h2>
           <p className="mt-1 text-sm text-texto-secundario">
