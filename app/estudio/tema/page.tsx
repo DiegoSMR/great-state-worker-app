@@ -1,9 +1,34 @@
 import Link from "next/link";
-import { esNucleoComun, getConceptosEnAlcance } from "@/lib/temario";
+import {
+  esNucleoComun,
+  getConceptosEnAlcance,
+  getOposicionesDeConcepto,
+  getOposicionesEnAlcance,
+  OPOSICIONES_EN_ALCANCE_V1,
+} from "@/lib/temario";
 import { NucleoComunBadge } from "../_components/NucleoComunBadge";
+import { FiltroOposicion } from "@/components/estudio/FiltroOposicion";
 
-export default function CatalogoTemasPage() {
-  const conceptos = getConceptosEnAlcance();
+export default async function CatalogoTemasPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ oposicion?: string }>;
+}) {
+  const { oposicion } = await searchParams;
+  // Id inválido o ausente en la URL se trata igual que "todas" — nunca una
+  // pantalla rota por un query param manipulado (ver design.md, Riesgos).
+  const oposicionSeleccionada = (OPOSICIONES_EN_ALCANCE_V1 as readonly string[]).includes(
+    oposicion ?? ""
+  )
+    ? oposicion
+    : undefined;
+
+  const todosLosConceptos = getConceptosEnAlcance();
+  const conceptos = oposicionSeleccionada
+    ? todosLosConceptos.filter((concepto) =>
+        getOposicionesDeConcepto(concepto.id).some((r) => r.oposicion.id === oposicionSeleccionada)
+      )
+    : todosLosConceptos;
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
@@ -12,6 +37,8 @@ export default function CatalogoTemasPage() {
         {conceptos.length} conceptos, sin repetir lo que comparten varias
         oposiciones.
       </p>
+
+      <FiltroOposicion oposiciones={getOposicionesEnAlcance()} seleccionActual={oposicionSeleccionada} />
 
       <ul className="mt-8 space-y-2">
         {conceptos.map((concepto) => (
