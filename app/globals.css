@@ -205,6 +205,58 @@
   --texto-secundario: #5a6870;
 }
 
+/* Tema "Comunista" (petición de Diego) — paleta constructivista/soviética
+   (rojo, oro, negro-tinta) sobre papel envejecido. Fondo claro y cálido a
+   propósito, NO rojo a pantalla completa: esta es una app de lectura larga
+   (texto legal denso), y un fondo rojo saturado fatiga la vista en sesiones
+   prolongadas más que un fondo neutro — el carácter del tema vive en los
+   tokens de estado (oro/rojo/vino/herrumbre) y en los acentos de
+   "Manuscrito", no en el fondo general (mismo principio que ya usa "papel"
+   arriba). Ratios de contraste verificados (WCAG, luminancia relativa),
+   diseño delegado al agente disenador-maquetador de este proyecto. */
+:root[data-theme="comunista"] {
+  --bg-primario: #f5efe0;
+  --bg-secundario: #e9ddc0;
+  --borde: #c9b48a;
+  --texto-primario: #241a12;
+  --texto-secundario: #5c4a37;
+
+  /* nucleo: oro/mostaza — 8.41:1 */
+  --nucleo-bg: #f2dfa0;
+  --nucleo-texto: #4a3910;
+  /* bookmark: ciruela/vino, distinto del rojo de excepcion — 8.12:1 */
+  --bookmark-bg: #e6cdda;
+  --bookmark-texto: #5c1f45;
+  /* revision: azul acero industrial, mismo matiz que usa "claro" — 8.97:1 */
+  --revision-bg: #d3dce6;
+  --revision-texto: #1c3555;
+  /* ejemplo: verde oliva/bronce — 8.01:1 */
+  --ejemplo-bg: #dbe3c4;
+  --ejemplo-texto: #35431c;
+  /* excepcion: rojo bandera, el "hero color" del tema — 8.40:1 */
+  --excepcion-bg: #f3cfc9;
+  --excepcion-texto: #6b1414;
+  /* atencion: herrumbre/terracota — 8.86:1 */
+  --atencion-bg: #efd6b7;
+  --atencion-texto: #5a2408;
+
+  /* anotacion: turquesa, único tono frío de la paleta — deliberadamente
+     distinto de los 6 ink-* de arriba (mismo motivo que en claro/oscuro),
+     para que una marca de lectura de Diego nunca se confunda con un
+     resaltado de autoría — 8.17:1 */
+  --anotacion-fondo: #cdeaec;
+  --anotacion-texto: #12474b;
+
+  /* Acentos "Manuscrito" — a diferencia de "papel", NO heredados de :root:
+     el par de claro (rosa H341°/verde H105°) chocaría con la identidad del
+     tema y duplicaría hues ya usados por bookmark (H323°) y ejemplo (H82°).
+     En su lugar, reutilizan los dos hues "bandera" del propio tema (rojo
+     H356°≈excepcion, oro H42°≈nucleo) oscurecidos para texto de título —
+     6.43:1/5.47:1 y 5.55:1/4.72:1 contra bg-primario/bg-secundario. */
+  --acento-titulo: #a3242c;
+  --acento-resumen: #7a5a12;
+}
+
 /* Primera visita, sin cookie todavía (Requisito 3.1): se respeta la
    preferencia del sistema operativo solo mientras no exista una elección
    explícita — en cuanto se escribe data-theme, este bloque deja de aplicar

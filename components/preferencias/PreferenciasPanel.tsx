@@ -15,6 +15,7 @@ const OPCIONES_TEMA: { valor: Tema; etiqueta: string }[] = [
   { valor: "claro", etiqueta: "Claro" },
   { valor: "oscuro", etiqueta: "Oscuro" },
   { valor: "papel", etiqueta: "Papel" },
+  { valor: "comunista", etiqueta: "Comunista" },
 ];
 
 const OPCIONES_TAMANO: { valor: TamanoLetra; etiqueta: string }[] = [
