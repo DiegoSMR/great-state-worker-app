@@ -14,10 +14,13 @@
 
 export const PREFERENCIAS_COOKIE = "gsw_prefs";
 
-/** "papel" añadido en la tercera revisión (notas-de-diseno.md §16) — el
- * modelo de tema ya se diseñó como string extensible (Requisito 3.4)
- * precisamente para este caso, así que solo se añade el valor nuevo. */
-export type Tema = "claro" | "oscuro" | "papel";
+/** "papel" añadido en la tercera revisión (notas-de-diseno.md §16) y
+ * "comunista" después (petición de Diego, paleta constructivista/soviética
+ * — rojo, oro, negro-tinta sobre papel envejecido, ver bloque
+ * `[data-theme="comunista"]` en app/globals.css) — el modelo de tema ya se
+ * diseñó como string extensible (Requisito 3.4) precisamente para este
+ * caso, así que solo se añade el valor nuevo. */
+export type Tema = "claro" | "oscuro" | "papel" | "comunista";
 export type NavDensidad = "hamburguesa" | "iconos" | "visible";
 export type TamanoLetra = "pequeno" | "mediano" | "grande";
 /** Modo de texto "Manuscrito" (notas-de-diseno.md §15). */
@@ -63,7 +66,7 @@ export const PREFERENCIAS_POR_DEFECTO: Preferencias = {
   lectura: { tamanoLetra: "mediano", estiloTexto: "digital", intensidadManuscrito: "media" },
 };
 
-const TEMAS_VALIDOS: readonly Tema[] = ["claro", "oscuro", "papel"];
+const TEMAS_VALIDOS: readonly Tema[] = ["claro", "oscuro", "papel", "comunista"];
 const NAV_DENSIDADES_VALIDAS: readonly NavDensidad[] = ["hamburguesa", "iconos", "visible"];
 const TAMANOS_LETRA_VALIDOS: readonly TamanoLetra[] = ["pequeno", "mediano", "grande"];
 const ESTILOS_TEXTO_VALIDOS: readonly EstiloTexto[] = ["digital", "manuscrito"];
