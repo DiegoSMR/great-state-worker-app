@@ -8,14 +8,18 @@ const MARCAS = [0, 25, 50, 75, 100];
  * Raíl vertical de progreso de lectura — pedido por Diego probando la app
  * ("barra lateral donde se vea el porcentaje de la lección") para las dos
  * pestañas de documento largo (Texto oficial / Material oficial anotado,
- * ver `SeccionesConcepto`). `fixed` respecto a la ventana, anclado al margen
- * derecho de la columna de lectura centrada (`max-w-3xl` en
- * app/estudio/tema/[conceptoId]/page.tsx) en vez de vivir en el flujo:
- * dentro de esos 768px ya no queda aire para un raíl junto a un documento de
- * 72ch (`.medida-lectura-oficial`). Solo desde `lg:` — por debajo no hay
- * margen fiable fuera de esa columna sin solaparse con el texto (tablet
- * portrait y móvil se apoyan solo en `ProgresoLectura`, la barra horizontal
- * ya existente).
+ * ver `SeccionesConcepto`). Renderizado como hijo `flex` normal, junto a la
+ * columna de lectura, con `position: sticky` para quedarse a la vista al
+ * hacer scroll — a propósito NO `fixed` con una posición calculada desde el
+ * viewport: `main` no está centrado sobre la ventana completa (`NavShell`
+ * mete una barra de navegación a la izquierda), así que un `calc(50% + ...)`
+ * relativo al viewport acababa solapado con el texto (bug real visto por
+ * Diego). Como hijo `flex` en el propio flujo del documento, siempre cae al
+ * lado correcto sea cual sea el ancho de esa barra de navegación. Solo desde
+ * `lg:` — por debajo no hay margen fiable junto a la columna de 72ch
+ * (`.medida-lectura-oficial`) sin solaparse con el texto (tablet portrait y
+ * móvil se apoyan solo en `ProgresoLectura`, la barra horizontal ya
+ * existente).
  *
  * Igual que `ProgresoLectura`: puramente informativo (`aria-hidden`), color
  * neutro (`--borde`), nunca uno de los colores de estado.
@@ -27,8 +31,7 @@ export function ProgresoLecturaLateral() {
   return (
     <div
       aria-hidden="true"
-      className="fixed top-6 bottom-6 z-10 hidden w-10 lg:block"
-      style={{ left: "calc(50% + 24rem + 1.5rem)" }}
+      className="sticky top-6 z-10 hidden h-[calc(100vh-3rem)] w-10 shrink-0 lg:block"
     >
       <div className="relative mx-auto h-full w-px bg-borde">
         {MARCAS.map((marca) => (

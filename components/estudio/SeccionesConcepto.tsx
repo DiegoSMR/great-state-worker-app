@@ -146,6 +146,25 @@ export function SeccionesConcepto({
     guardarSeccion(seccionId);
   }
 
+  // Restablecer "Material oficial anotado" a como está "Texto oficial"
+  // (Requisito 2, pedido por Diego probando la app) — descarta la anotación
+  // guardada y vuelve a pintar el HTML original capturado al montar. No hay
+  // nada que restablecer si nunca se guardó una anotación (`htmlAnotadoRef`
+  // sigue `undefined`), así que no molesta con una confirmación de balde.
+  function restablecerMaterialAnotado() {
+    const el = refTextoOficial.current;
+    const original = htmlOriginalRef.current["texto-oficial"];
+    if (!el || original === undefined) return;
+    if (htmlAnotadoRef.current["texto-oficial"] === undefined) return;
+    const confirmado = window.confirm(
+      "¿Quitar todas tus anotaciones de \"Material oficial anotado\"? No se puede deshacer."
+    );
+    if (!confirmado) return;
+    el.innerHTML = original;
+    delete htmlAnotadoRef.current["texto-oficial"];
+    borrarAnotacion(conceptoId, "texto-oficial");
+  }
+
   // Restaurar anotaciones al montar (Requisito 2.2/2.3): por cada sección,
   // guarda el HTML original tal cual vino del servidor y, si hay una
   // anotación guardada cuyo hash coincide con el texto actual, la aplica;
@@ -364,40 +383,54 @@ export function SeccionesConcepto({
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 border-b border-borde px-4 py-2 sm:px-0">
-          <button
-            type="button"
-            onClick={alternarModoEdicion}
-            aria-pressed={modoEdicion}
-            className={
-              modoEdicion
-                ? "rounded-md border border-texto-secundario/40 bg-bg-secundario px-3 py-1.5 text-sm font-medium text-texto-primario"
-                : "rounded-md border border-borde px-3 py-1.5 text-sm font-medium text-texto-secundario hover:border-texto-secundario hover:text-texto-primario"
-            }
-          >
-            {modoEdicion ? "Salir de modo edición" : "Modo edición"}
-          </button>
+        {/* "Texto oficial" es inmutable — ni el toggle de modo edición ni la
+            barra de formato tienen nada que hacer ahí (feedback de Diego:
+            ver ese botón en esa pestaña sugería, por error, que se podía
+            editar). Solo aparecen en el resto de pestañas. */}
+        {seccionActiva !== "texto-oficial" && (
+          <div className="flex flex-wrap items-center gap-3 border-b border-borde px-4 py-2 sm:px-0">
+            <button
+              type="button"
+              onClick={alternarModoEdicion}
+              aria-pressed={modoEdicion}
+              className={
+                modoEdicion
+                  ? "rounded-md border border-texto-secundario/40 bg-bg-secundario px-3 py-1.5 text-sm font-medium text-texto-primario"
+                  : "rounded-md border border-borde px-3 py-1.5 text-sm font-medium text-texto-secundario hover:border-texto-secundario hover:text-texto-primario"
+              }
+            >
+              {modoEdicion ? "Salir de modo edición" : "Modo edición"}
+            </button>
 
-          <label className="flex items-center gap-2 text-sm text-texto-secundario">
-            <input
-              type="checkbox"
-              checked={mostrarAnotaciones}
-              disabled={modoEdicion}
-              onChange={(evento) => setMostrarAnotaciones(evento.target.checked)}
-              className="h-4 w-4 rounded border-borde accent-texto-primario disabled:opacity-60"
-            />
-            Ver material adaptado y resumen con mis anotaciones
-          </label>
-        </div>
+            {seccionActiva === "material-oficial-anotado" && (
+              <button
+                type="button"
+                onClick={restablecerMaterialAnotado}
+                className="rounded-md border border-borde px-3 py-1.5 text-sm font-medium text-texto-secundario hover:border-texto-secundario hover:text-texto-primario"
+              >
+                Restablecer al texto oficial
+              </button>
+            )}
 
-        {modoEdicion && <BarraFormato puedeFormatear={seccionAnotableParaFormato} onFormatear={alFormatear} />}
+            <label className="flex items-center gap-2 text-sm text-texto-secundario">
+              <input
+                type="checkbox"
+                checked={mostrarAnotaciones}
+                disabled={modoEdicion}
+                onChange={(evento) => setMostrarAnotaciones(evento.target.checked)}
+                className="h-4 w-4 rounded border-borde accent-texto-primario disabled:opacity-60"
+              />
+              Ver material adaptado y resumen con mis anotaciones
+            </label>
+          </div>
+        )}
+
+        {seccionActiva !== "texto-oficial" && modoEdicion && (
+          <BarraFormato puedeFormatear={seccionAnotableParaFormato} onFormatear={alFormatear} />
+        )}
 
         <ProgresoLectura />
       </div>
-
-      {(seccionActiva === "texto-oficial" || seccionActiva === "material-oficial-anotado") && (
-        <ProgresoLecturaLateral />
-      )}
 
       {avisoContinuar && (
         <p role="status" className="mt-3 px-4 text-sm text-texto-secundario sm:px-0">
@@ -405,88 +438,104 @@ export function SeccionesConcepto({
         </p>
       )}
 
-      <div className="mt-6 space-y-10 px-4 sm:px-0">
-        <section
-          id="texto-oficial"
-          role="tabpanel"
-          aria-labelledby="pestana-texto-oficial"
-          hidden={seccionActiva !== "texto-oficial"}
-          className="medida-lectura-oficial"
-        >
-          <h2 className="text-lg font-medium">Texto oficial</h2>
-          {/* Siempre el original, tal cual — sin ref ni anotación posible
-              aquí (ver "Material oficial anotado" más abajo). */}
-          <div className="contenido-lectura mt-3">{textoOficial}</div>
-          {fuenteNormativa}
-        </section>
-
-        <section
-          id="material-oficial-anotado"
-          role="tabpanel"
-          aria-labelledby="pestana-material-oficial-anotado"
-          hidden={seccionActiva !== "material-oficial-anotado"}
-          className="medida-lectura-oficial rounded-md border border-borde bg-bg-secundario p-4 sm:p-6"
-        >
-          <h2 className="text-lg font-medium">Material oficial anotado</h2>
-          <p className="mt-1 text-sm text-texto-secundario">
-            Tu propia copia del texto oficial, con negrita/subrayado/resaltado — el texto
-            oficial de arriba no cambia nunca.
-          </p>
-          <div
-            ref={refTextoOficial}
-            data-seccion-id="texto-oficial"
-            className={`contenido-lectura mt-3${claseAnotable}`}
+      {/* El raíl lateral vive DENTRO de este `flex` (no `fixed` con una
+          posición calculada desde el viewport) porque `main` no está
+          centrado sobre la ventana completa: `NavShell` mete una barra de
+          navegación a la izquierda con `flex`, así que el centro real de la
+          columna de lectura depende del ancho de esa barra (varía por
+          densidad de navegación) — un `fixed`/`calc(50% + ...)` asumía
+          ventana completa y por eso el raíl acababa solapado con el texto
+          (bug real visto por Diego probando la app). Como hijo `flex` normal
+          en vez de eso, siempre cae al lado correcto de la columna, sea cual
+          sea el ancho de la barra de navegación. */}
+      <div className="mt-6 flex items-start gap-4">
+        <div className="min-w-0 flex-1 space-y-10 px-4 sm:px-0">
+          <section
+            id="texto-oficial"
+            role="tabpanel"
+            aria-labelledby="pestana-texto-oficial"
+            hidden={seccionActiva !== "texto-oficial"}
+            className="medida-lectura-oficial"
           >
-            {textoOficial}
-          </div>
-        </section>
+            <h2 className="text-lg font-medium">Texto oficial</h2>
+            {/* Siempre el original, tal cual — sin ref ni anotación posible
+                aquí (ver "Material oficial anotado" más abajo). */}
+            <div className="contenido-lectura mt-3">{textoOficial}</div>
+            {fuenteNormativa}
+          </section>
 
-        <section
-          id="material-adaptado"
-          role="tabpanel"
-          aria-labelledby="pestana-material-adaptado"
-          hidden={seccionActiva !== "material-adaptado"}
-          className="medida-lectura"
-        >
-          <h2 className="text-lg font-medium">Material adaptado</h2>
-          <div
-            ref={refMaterialAdaptado}
-            data-seccion-id="material-adaptado"
-            className={`contenido-lectura mt-3${claseAnotable}`}
+          <section
+            id="material-oficial-anotado"
+            role="tabpanel"
+            aria-labelledby="pestana-material-oficial-anotado"
+            hidden={seccionActiva !== "material-oficial-anotado"}
+            className="medida-lectura-oficial rounded-md border border-borde bg-bg-secundario p-4 sm:p-6"
           >
-            {materialAdaptado}
-          </div>
-        </section>
+            <h2 className="text-lg font-medium">Material oficial anotado</h2>
+            <p className="mt-1 text-sm text-texto-secundario">
+              Tu propia copia del texto oficial, con negrita/subrayado/resaltado — el texto
+              oficial de arriba no cambia nunca.
+            </p>
+            <div
+              ref={refTextoOficial}
+              data-seccion-id="texto-oficial"
+              className={`contenido-lectura mt-3${claseAnotable}`}
+            >
+              {textoOficial}
+            </div>
+          </section>
 
-        <section
-          id="resumen"
-          role="tabpanel"
-          aria-labelledby="pestana-resumen"
-          hidden={seccionActiva !== "resumen"}
-          className="medida-lectura border-l-4 border-borde pl-4"
-        >
-          <h2 className="text-lg font-medium">Resumen</h2>
-          <div id="esquema" className="mt-4">
-            <h3 className="text-base font-medium">Esquema</h3>
+          <section
+            id="material-adaptado"
+            role="tabpanel"
+            aria-labelledby="pestana-material-adaptado"
+            hidden={seccionActiva !== "material-adaptado"}
+            className="medida-lectura"
+          >
+            <h2 className="text-lg font-medium">Material adaptado</h2>
             <div
-              ref={refEsquema}
-              data-seccion-id="esquema"
-              className={`contenido-lectura mt-2${claseAnotable}`}
+              ref={refMaterialAdaptado}
+              data-seccion-id="material-adaptado"
+              className={`contenido-lectura mt-3${claseAnotable}`}
             >
-              {esquema}
+              {materialAdaptado}
             </div>
-          </div>
-          <div id="resumen-extenso" className="mt-6">
-            <h3 className="text-base font-medium">Resumen extenso</h3>
-            <div
-              ref={refResumenExtenso}
-              data-seccion-id="resumen-extenso"
-              className={`contenido-lectura mt-2${claseAnotable}`}
-            >
-              {resumenExtenso}
+          </section>
+
+          <section
+            id="resumen"
+            role="tabpanel"
+            aria-labelledby="pestana-resumen"
+            hidden={seccionActiva !== "resumen"}
+            className="medida-lectura border-l-4 border-borde pl-4"
+          >
+            <h2 className="text-lg font-medium">Resumen</h2>
+            <div id="esquema" className="mt-4">
+              <h3 className="text-base font-medium">Esquema</h3>
+              <div
+                ref={refEsquema}
+                data-seccion-id="esquema"
+                className={`contenido-lectura mt-2${claseAnotable}`}
+              >
+                {esquema}
+              </div>
             </div>
-          </div>
-        </section>
+            <div id="resumen-extenso" className="mt-6">
+              <h3 className="text-base font-medium">Resumen extenso</h3>
+              <div
+                ref={refResumenExtenso}
+                data-seccion-id="resumen-extenso"
+                className={`contenido-lectura mt-2${claseAnotable}`}
+              >
+                {resumenExtenso}
+              </div>
+            </div>
+          </section>
+        </div>
+
+        {(seccionActiva === "texto-oficial" || seccionActiva === "material-oficial-anotado") && (
+          <ProgresoLecturaLateral />
+        )}
       </div>
     </div>
   );
