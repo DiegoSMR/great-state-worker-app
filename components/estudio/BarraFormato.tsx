@@ -8,6 +8,17 @@
  * ("Quitar formato"). Sin librería de editor ni `document.execCommand`
  * (design.md: Range API manual da control exacto de qué tag se inserta).
  *
+ * Ni aplicar ni quitar formato usan `Range.extractContents()`/`insertNode()`
+ * sobre el fragmento completo: mover contenido a un único punto de inserción
+ * rompe la estructura cuando ese punto cae dentro de un tag de formato ya
+ * existente (negrita de autoría, p. ej.) o cuando la selección cruza más de
+ * un `<p>` (un tag de frase no puede contener bloques sin que el navegador
+ * los reestructure al volver a parsear el HTML guardado). En su lugar, cada
+ * nodo de texto que interseca la selección se recorta a su porción exacta
+ * (`Text.splitText`) y se envuelve/desenvuelve EN SU SITIO, sin mover nada
+ * fuera de su padre original — así nunca se cruza un límite de bloque ni se
+ * inserta contenido dentro de un tag ajeno a la selección.
+ *
  * `onMouseDown` con `preventDefault()` en cada botón: un click normal
  * primero dispara `mousedown` (que, sobre un elemento fuera del
  * `contentEditable`, colapsaría la selección de texto antes de que llegue
@@ -34,92 +45,113 @@ function colocarCursorTrasNodo(nodo: Node): void {
   seleccion?.addRange(rango);
 }
 
-function envolverSeleccion(tag: "strong" | "u" | "mark"): void {
-  const rango = obtenerRangoValido();
-  if (!rango) return;
-  const contenido = rango.extractContents();
-  const envoltorio = document.createElement(tag);
-  if (tag === "mark") envoltorio.className = "anotacion-resaltado";
-  envoltorio.appendChild(contenido);
-  rango.insertNode(envoltorio);
-  colocarCursorTrasNodo(envoltorio);
-}
-
 /** ¿Es este elemento uno de los tags de formato de anotación? (no toca `p`/`div`/etc. de estructura). */
 function esTagDeFormato(elemento: Element): boolean {
   const tag = elemento.tagName.toLowerCase();
   return tag === "strong" || tag === "u" || (tag === "mark" && elemento.classList.contains("anotacion-resaltado"));
 }
 
-function desenvolverEtiquetas(nodo: Node): void {
-  if (nodo.nodeType !== Node.ELEMENT_NODE) return;
-  const elemento = nodo as Element;
-  Array.from(elemento.children).forEach(desenvolverEtiquetas);
-  if (esTagDeFormato(elemento) && elemento.parentNode) {
-    while (elemento.firstChild) {
-      elemento.parentNode.insertBefore(elemento.firstChild, elemento);
-    }
-    elemento.parentNode.removeChild(elemento);
+/** Todos los nodos de texto (no vacíos) que intersecan el rango, en orden de documento. */
+function nodosTextoEnRango(rango: Range): Text[] {
+  const contenedor = rango.commonAncestorContainer;
+  const raiz = contenedor.nodeType === Node.ELEMENT_NODE ? contenedor : contenedor.parentNode;
+  if (!raiz) return [];
+  const nodos: Text[] = [];
+  const walker = document.createTreeWalker(raiz, NodeFilter.SHOW_TEXT, {
+    acceptNode: (nodo) => (rango.intersectsNode(nodo) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT),
+  });
+  let actual = walker.nextNode();
+  while (actual) {
+    nodos.push(actual as Text);
+    actual = walker.nextNode();
   }
+  return nodos;
 }
 
 /**
- * Tras `extractContents()`, un envoltorio de formato que quedó vacío puede
- * aparecer en dos sitios distintos según cómo cayeran los límites exactos
- * de la selección (comportamiento de Range API, no algo elegible):
- *
- * - Como ANCESTRO del punto de inserción: cuando inicio y fin de la
- *   selección caían en el mismo nodo de texto (p. ej. seleccionar justo el
- *   fragmento ya en negrita) — `extractContents()` vacía ese nodo de texto
- *   en vez de eliminarlo (spec DOM Range sobre CharacterData), así que el
- *   envoltorio se queda en el DOM con el punto de inserción dentro de él.
- * - Como HERMANO directo del punto de inserción: cuando el límite de la
- *   selección caía fuera del envoltorio (p. ej. seleccionar un `<mark>`
- *   completo arrastrando desde antes de él) — en ese caso Range extrae el
- *   envoltorio entero como nodo contenido del fragmento, y el punto de
- *   inserción queda al nivel del padre común, justo al lado del envoltorio
- *   (ya vacío) en vez de dentro de él.
- *
- * Sin cubrir ambos casos, el contenido ya limpio se reinserta junto a (o
- * dentro de) una etiqueta vacía que nunca se llega a quitar, dejando el
- * resultado visual idéntico al de partida (bug real encontrado verificando
- * "Quitar formato" en navegador sobre varios patrones de selección).
+ * Recorta `nodo` a la porción exacta cubierta por `rango` (split en los
+ * límites de inicio/fin cuando el nodo es el contenedor de inicio/fin) y
+ * devuelve ese fragmento ya aislado como nodo de texto propio — sigue
+ * siendo hijo del mismo padre, en la misma posición relativa.
  */
-function purgarEnvoltoriosVacios(marcador: Text): void {
-  while (marcador.parentNode && marcador.parentNode.nodeType === Node.ELEMENT_NODE) {
-    const padre = marcador.parentNode as Element;
-    if (esTagDeFormato(padre) && padre.textContent === "" && padre.parentNode) {
-      padre.parentNode.insertBefore(marcador, padre);
-      padre.parentNode.removeChild(padre);
-    } else {
-      break;
+function recortarAlRango(nodo: Text, rango: Range): Text {
+  const esInicio = nodo === rango.startContainer;
+  const esFin = nodo === rango.endContainer;
+  const inicio = esInicio ? rango.startOffset : 0;
+  const fin = esFin ? rango.endOffset : nodo.length;
+  let objetivo = nodo;
+  if (fin < objetivo.length) objetivo.splitText(fin);
+  if (inicio > 0) objetivo = objetivo.splitText(inicio);
+  return objetivo;
+}
+
+function envolverSeleccion(tag: "strong" | "u" | "mark"): void {
+  const rango = obtenerRangoValido();
+  if (!rango) return;
+  const className = tag === "mark" ? "anotacion-resaltado" : undefined;
+  const nodos = nodosTextoEnRango(rango);
+  let ultimoEnvoltorio: Element | null = null;
+  nodos.forEach((nodo) => {
+    const objetivo = recortarAlRango(nodo, rango);
+    if (objetivo.length === 0 || !objetivo.parentNode) return;
+    const padre = objetivo.parentElement;
+    if (padre && padre.tagName.toLowerCase() === tag && (tag !== "mark" || padre.classList.contains(className!))) {
+      ultimoEnvoltorio = padre;
+      return;
     }
-  }
-  for (const lado of ["previousSibling", "nextSibling"] as const) {
-    let hermano = marcador[lado];
-    while (
-      hermano &&
-      hermano.nodeType === Node.ELEMENT_NODE &&
-      esTagDeFormato(hermano as Element) &&
-      (hermano as Element).textContent === ""
-    ) {
-      const siguiente = hermano[lado];
-      hermano.parentNode?.removeChild(hermano);
-      hermano = siguiente;
+    const envoltorio = document.createElement(tag);
+    if (className) envoltorio.className = className;
+    objetivo.parentNode.insertBefore(envoltorio, objetivo);
+    envoltorio.appendChild(objetivo);
+    ultimoEnvoltorio = envoltorio;
+  });
+  if (ultimoEnvoltorio) colocarCursorTrasNodo(ultimoEnvoltorio);
+}
+
+/**
+ * Saca `nodo` de cualquier cadena de tags de formato que lo envuelvan
+ * (`strong`/`u`/`mark.anotacion-resaltado`, anidados o no), subiendo un
+ * nivel cada vez: el tag se divide en un clon "antes" y un clon "después"
+ * con los hermanos que quedan fuera de la selección (para no perderles el
+ * formato a ellos), y `nodo` pasa a ser hijo directo del abuelo, sin
+ * envoltorio. Se detiene en el primer ancestro que no sea un tag de
+ * formato (un `<p>` o el `div.contenido-lectura`), así que nunca toca
+ * estructura de bloque.
+ */
+function sacarDeFormato(nodo: Node): void {
+  let padre = nodo.parentElement;
+  while (padre && esTagDeFormato(padre)) {
+    const abuelo = padre.parentNode;
+    if (!abuelo) break;
+    const hijos = Array.from(padre.childNodes);
+    const indice = hijos.indexOf(nodo as ChildNode);
+    const anteriores = hijos.slice(0, indice);
+    const posteriores = hijos.slice(indice + 1);
+    if (anteriores.length > 0) {
+      const clon = padre.cloneNode(false) as Element;
+      anteriores.forEach((hijo) => clon.appendChild(hijo));
+      abuelo.insertBefore(clon, padre);
     }
+    abuelo.insertBefore(nodo, padre);
+    if (posteriores.length > 0) {
+      const clon = padre.cloneNode(false) as Element;
+      posteriores.forEach((hijo) => clon.appendChild(hijo));
+      abuelo.insertBefore(clon, padre);
+    }
+    abuelo.removeChild(padre);
+    padre = nodo.parentElement;
   }
 }
 
 function quitarFormatoSeleccion(): void {
   const rango = obtenerRangoValido();
   if (!rango) return;
-  const contenido = rango.extractContents();
-  Array.from(contenido.childNodes).forEach(desenvolverEtiquetas);
-
-  const marcador = document.createTextNode("");
-  rango.insertNode(marcador);
-  purgarEnvoltoriosVacios(marcador);
-  marcador.replaceWith(contenido);
+  const nodos = nodosTextoEnRango(rango);
+  nodos.forEach((nodo) => {
+    const objetivo = recortarAlRango(nodo, rango);
+    if (objetivo.length === 0) return;
+    sacarDeFormato(objetivo);
+  });
 }
 
 function aplicar(accion: Accion): void {
