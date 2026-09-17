@@ -1,7 +1,7 @@
 # Tasks: Anotaciones personales de lectura
 
 Fase: 3 — Tasks (completa). Fase 4 — Implementación (completa, en la rama `020-anotaciones-personales-lectura`). Fase 5 — Verificación (completa, ver sección al final). Pendiente de revisión final de Diego y de su confirmación explícita para abrir el Pull Request hacia `development`.
-Última actualización: 2026-09-15
+Última actualización: 2026-09-17
 
 Generadas a partir de "Componentes afectados" y "Flujo de datos" de `design.md` (aprobado). Un commit por Requisito completado (más uno para la base técnica sin Requisito propio), según `CONSTITUTION.md`. Rama `020-anotaciones-personales-lectura`, creada desde `development` al empezar la Fase 4.
 
@@ -94,3 +94,48 @@ Diego probó `Modo edición` en `/estudio/tema/constitucion-espanola` (tema "197
 5. **Persistencia tras recargar, ya con la nueva estructura.** Tras salir de modo edición y recargar la página: "Material oficial anotado" conserva el `<strong>` aplicado; "Texto oficial" sigue idéntico al original. Sin errores de consola en todo el recorrido.
 
 Instalación de Playwright aislada en el scratchpad de la sesión (no como dependencia del proyecto), mismo criterio que las verificaciones anteriores de esta spec.
+
+## Corrección (2026-09-17): reescritura de `envolverSeleccion`/`quitarFormatoSeleccion`
+
+- [x] TC.1 `components/estudio/BarraFormato.tsx`: `nodosTextoEnRango`/`recortarAlRango` (recorren y recortan nodos de texto que intersecan el `Range`, sin mover nada de su padre original); `envolverSeleccion` envuelve cada nodo recortado en su sitio; `sacarDeFormato` desenvuelve dividiendo el/los tag(s) ancestro(s) en clones "antes"/"después"; se elimina `purgarEnvoltoriosVacios`/`desenvolverEtiquetas`/el marcador de texto vacío (ya no hacen falta, no hay extracción/reinserción).
+  - Satisface: Requisito 1.2 (corrección — el formato aplicado ya no rompe el layout al solaparse con formato existente ni al cruzar párrafos). Ver `design.md`, sección "Corrección (2026-09-17)".
+
+### Verificación (corrección)
+
+`npx tsc --noEmit` y `npx eslint components/estudio/BarraFormato.tsx` limpios. Recorrido con Playwright headless contra el dev server ya en marcha (puerto 3001) sobre `constitucion-espanola`, pestaña "Material adaptado":
+
+1. **Resaltar una porción parcial de texto ya en `<strong>`** ("máxima protección"): resultado `<strong><mark class="anotacion-resaltado">máxima</mark> protección</strong>` — el resaltado queda anidado limpiamente dentro de la negrita existente, sin mezclar el resto.
+2. **Quitar formato de una porción parcial de lo ya resaltado** (mitad de la palabra "máxima" ya en `<mark>`): resultado `máx<strong><mark class="anotacion-resaltado">ima</mark> protección</strong>` — solo se destachó la porción seleccionada, el resto conserva negrita y resaltado.
+3. **Negrita sobre una selección que cruza dos párrafos:** número de `<p>`/`<li>` antes y después idéntico (12), cero anidamiento inválido (`p p`, `strong p`, `mark li`, etc.), y se mantiene igual tras recargar la página (persistencia intacta). Sin errores de consola en ningún escenario.
+
+## Extensión (2026-09-17): `BarraFormato` a panel flotante contextual, con iconos
+
+Ver `design.md`, sección "Extensión (2026-09-17)", para el detalle de las 3 decisiones (panel contextual pegado a la selección, iconos propios extendiendo `components/nav/iconos.tsx`, controles de sesión fuera del panel).
+
+- [x] TF.1 `components/estudio/iconosFormato.tsx` (nuevo): iconos de Negrita ("B"), Subrayado ("U" + línea), Resaltar (rotulador), Quitar formato (goma), Modo edición (lápiz / check cuando `aria-pressed`), Restablecer al texto oficial (flecha circular) — mismo `Base` (`viewBox 0 0 20 20`, `stroke="currentColor"`, `fill="none"`, `strokeWidth={1.6}`) que `components/nav/iconos.tsx`.
+  - Satisface: petición de iconos, sin dependencia nueva.
+  - Hecho en `feat: añade iconos y sombra local para el panel de formato de anotación` (b102291).
+- [x] TF.2 `components/estudio/BarraFormato.tsx`: el panel deja de renderizarse en flujo normal dentro de la franja sticky; se posiciona con `position: fixed` sobre `range.getBoundingClientRect()` (centrado horizontal, ~10px por encima, volteo a debajo si no cabe arriba, clamp a bordes del viewport, recálculo en scroll/resize vía `requestAnimationFrame`); aparece solo cuando `obtenerRangoValido()` es no nulo y `puedeFormatear()` no es `null`, desaparece al colapsarse la selección. Botones ganan icono de `iconosFormato.tsx` (con `aria-label`/texto accesible, no solo icono visual). Sin cambios en `envolverSeleccion`/`quitarFormatoSeleccion`/helpers de formato.
+  - Satisface: Requisito 1.2 (extensión — barra flotante contextual).
+  - Hecho en `feat: convierte BarraFormato en panel flotante contextual sobre la selección` (963d0f1). Decisión de implementación no cerrada en `design.md`: el panel se mantiene siempre montado en el DOM (oculto con `visibility:hidden`/`pointer-events:none`/`aria-hidden`/`tabIndex=-1` en sus botones, nunca desmontado) para poder medir su propio ancho/alto con `panelRef` ANTES de la primera vez que se muestra — sin esa medida no se puede centrar ni decidir el volteo en el primer cálculo. Los listeners de scroll/resize se registran sobre `window` (no `document`, que no recibe esos dos eventos de forma útil) con `capture: true` para cubrir también el scroll de contenedores internos, no solo el de la página.
+- [x] TF.3 `components/estudio/SeccionesConcepto.tsx`: se retira el render de `<BarraFormato>` de la franja sticky (queda montado aparte, mismo gate `seccionActiva !== "texto-oficial" && modoEdicion`, ya no ocupa espacio en la franja); los botones "Modo edición"/"Salir de modo edición" y "Restablecer al texto oficial" ganan icono de `iconosFormato.tsx` junto al texto existente (no icono-solo en estos dos).
+  - Satisface: Requisito 1.2 (extensión), decisión de mantener los controles de sesión anclados.
+  - Hecho en `feat: convierte BarraFormato en panel flotante contextual sobre la selección` (963d0f1).
+- [x] TF.4 `app/globals.css`: sombra local modesta (nombre propio, no `--sombra-tarjeta`) para que el panel se lea como flotante en los 3 temas.
+  - Satisface: base visual de TF.2.
+  - Hecho en `feat: añade iconos y sombra local para el panel de formato de anotación` (b102291) — clase `.sombra-panel-flotante` (`box-shadow: 0 4px 14px rgb(0 0 0 / 0.18), 0 1px 3px rgb(0 0 0 / 0.14)`), mismo valor en los 3 temas (opacidad baja, se lee como elevación sutil sobre cualquiera de los tres fondos sin necesitar variarla).
+
+### Verificación (extensión)
+
+- [x] VF1 `npx tsc --noEmit`, `npm run lint` y `npm run build` limpios (los tres ejecutados tras TF.1-TF.4, cero errores/warnings).
+- [x] VF2 Recorrido con Playwright headless (instalado aislado en scratchpad, sin añadirlo a `package.json` — mismo criterio que la verificación de la corrección anterior) contra el dev server ya en marcha (puerto 3001), viewport de tablet 834×1194, sobre `constitucion-espanola`:
+  - Selección real vía `Range`/`window.getSelection()` (no arrastre de ratón) en las 3 secciones anotables (`material-oficial-anotado`, `material-adaptado`, `esquema`, `resumen-extenso` — las 4 claves de `SeccionAnotableId`): panel visible en las 4, sin errores de consola.
+  - Panel pegado a la selección: con la selección en `top:450/bottom:471` (coordenadas de viewport), el panel aparece en `y:386` (10px por encima, redondeado por su propio alto), centrado horizontalmente sobre la selección.
+  - Volteo a debajo cerca del borde superior: forzando una selección con `rect.top:40/rect.bottom:61` (bajo la franja sticky), el panel se coloca en `y:71` — DEBAJO de la selección en vez de encima, confirmando el volteo.
+  - Recolocación en scroll sin desaparecer: tras `scrollBy(0, 250)`, el panel sigue `visible:true` y su `y` cambia de `386` a `136` (se recoloca, no se oculta).
+  - Desaparición al colapsar: tras vaciar la selección, el panel pasa a `visible:false`.
+  - Iconos SVG renderizados con tamaño real (no solo presentes en el markup): los 4 botones del panel miden 20.8×20.8px de icono dentro de un botón de 44×44px (área táctil, cumple el ≥40-44px pedido) — comprobado con `getBoundingClientRect()` de cada `<svg>`, no solo con `querySelector`.
+  - Controles de sesión: "Modo edición"/"Salir de modo edición" (icono lápiz → check al activarse, `aria-pressed` correcto) y "Restablecer al texto oficial" (icono flecha circular) capturados con icono + texto, anclados en su franja de siempre (capturas `captura-franja-sesion-antes.png`/`captura-franja-sesion-despues.png` del scratchpad de esta sesión).
+  - 3 temas: capturas del panel en claro/oscuro/papel (`captura-panel-zoom-claro.png`, `-oscuro.png`, `-papel.png` del scratchpad) — sombra visible como elevación sutil en los tres, iconos legibles en todos.
+  - Cero errores de consola/página (`page.on("console"/"pageerror")`) en todo el recorrido.
+- [x] VF3 Criterio de Requisito 1.2 verificado con evidencia concreta: capturas en `C:\Users\diego\AppData\Local\Temp\claude\c--Projects-great-state-worker-app\73562998-2dc4-44f9-8973-4ebdca3ea7c6\scratchpad\pw\` (`captura-panel-flotante.png` recorrido completo en tablet, `captura-panel-hires.png` iconos a alta resolución, capturas por tema y de la franja de sesión) — el panel flotante contextual con iconos funciona en las 3 secciones anotables, en los 3 temas, sigue la selección en scroll, voltea correctamente cerca del borde superior, y los controles de sesión no perdieron accesibilidad al ganar icono.

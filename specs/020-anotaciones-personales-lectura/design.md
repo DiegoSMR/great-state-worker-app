@@ -1,7 +1,7 @@
 # Design: Anotaciones personales de lectura
 
 Fase: 2 — Design. Estado: borrador, pendiente de aprobación de Diego.
-Última actualización: 2026-09-15
+Última actualización: 2026-09-17
 
 ## Visión general
 
@@ -97,3 +97,51 @@ Diego probó la app ya implementada y encontró un problema real: escribir dentr
 
 - `components/estudio/SeccionesConcepto.tsx` — nueva entrada en `SECCIONES`; `<section id="texto-oficial">` sin ref ni anotación; nueva `<section id="material-oficial-anotado">` con el `ref`/`data-seccion-id="texto-oficial"` que antes vivía en "Texto oficial"; se retiran `contentEditable`/`onInput`/`onBlur` de las 4 divs anotables; `aplicarVista` deja de aplicar el toggle del checkbox a `texto-oficial` (siempre `mostrar = true` para esa clave).
 - `components/estudio/BarraFormato.tsx` — sin cambios (ya operaba vía Range API, independiente de `contentEditable`).
+
+## Corrección (2026-09-17): reescritura de `envolverSeleccion`/`quitarFormatoSeleccion` sin `extractContents()`/`insertNode()`
+
+Diego reportó que aplicar negrita/resaltado sobre una selección que se solapaba con formato ya existente (p. ej. resaltar solo una palabra dentro de un `<strong>` de autoría del Art. 1 de la Constitución) mezclaba negrita y texto normal de forma incorrecta, y que seleccionar texto que cruzaba dos párrafos podía perder el salto de párrafo tras guardar/recargar.
+
+**Causa raíz:** `envolverSeleccion()` usaba `Range.extractContents()` (que reconstruye correctamente la estructura de bloques dentro del fragmento extraído) pero luego envolvía ESE fragmento completo en un único tag nuevo y lo reinsertaba con `insertNode()` en el punto de inicio original del rango — punto que, si caía dentro de un `<strong>` ya existente, dejaba el nuevo tag anidado dentro de él (mezclando formato no pedido), y que, si el fragmento contenía `<p>` completos (selección multi-párrafo), producía un tag de frase (`<strong>`/`<mark>`) conteniendo elementos de bloque — anidamiento inválido que el navegador reestructura de forma impredecible en el siguiente round-trip de serializar/parsear (`el.innerHTML` al guardar, o `DOMParser` dentro de `sanitizarHtml()`). `quitarFormatoSeleccion()` tenía el mismo riesgo latente para selecciones multi-párrafo, aunque no era el síntoma reportado.
+
+- **Opción elegida:** ambas funciones dejan de mover contenido a un punto de inserción. En su lugar, recorren (`TreeWalker` + `Range.intersectsNode`) los nodos de texto que intersecan la selección, recortan cada uno a su porción exacta (`Text.splitText` en los límites de inicio/fin) y envuelven/desenvuelven ESE nodo EN SU SITIO — nunca se mueve nada fuera de su padre original, así que nunca se cruza un límite de bloque ni se inserta contenido dentro de un tag ajeno a la selección. "Quitar formato" divide el/los tag(s) de formato ancestros en un clon "antes" y un clon "después" (con los hermanos que quedan fuera de la selección, para no perderles el formato a ellos) en vez de extraer y volver a insertar.
+- **Alternativas consideradas:** normalizar los límites del `Range` antes de `extractContents()` (dividir manualmente los `<strong>`/`<mark>` que crucen el inicio/fin de la selección) y mantener el resto del algoritmo — descartada porque no resuelve el caso multi-párrafo (el fragmento seguiría conteniendo `<p>` que un tag de frase no puede contener) y añade una segunda pieza de lógica en vez de sustituir la que falla.
+- **Satisface:** Requisito 1.2 (que el formato aplicado sea consistente y no rompa el layout — ver `design.md` original, decisión de sanitización).
+- **Sin cambios en `lib/anotaciones-lectura.ts`** ni en el modelo de datos — el HTML resultante sigue siendo el mismo universo de tags, solo mejor formado.
+
+## Extensión (2026-09-17): `BarraFormato` pasa a panel flotante contextual, con iconos
+
+Diego, usando la app ya en marcha, pidió que la barra de anotación se vea menos "arcaica" y que el menú sea flotante, pensando en que el plan es estudiar sobre todo en tablet (principio de producto, `CONSTITUTION.md`). Propuesta elaborada por el agente `disenador-maquetador` y aprobada por Diego.
+
+### Decisión: `BarraFormato` deja de ser una franja sticky de ancho completo y pasa a ser un panel contextual pegado a la selección de texto ("selection toolbar", patrón Notion/Medium)
+
+- **Opción elegida:** cuando `obtenerRangoValido()` (ya existente) devuelve un rango no colapsado dentro de una sección anotable, el panel se planta con `position: fixed`, centrado horizontalmente sobre `range.getBoundingClientRect()`, ~10px por encima de la selección; si eso lo saca por encima del viewport, se voltea a mostrarse debajo. Se recalcula posición en scroll (con `requestAnimationFrame`, no se oculta al hacer scroll) y se clampa a los bordes del viewport para no cortarse en pantallas estrechas. Desaparece cuando la selección se colapsa o deja de caer en una sección anotable.
+- **Alternativas consideradas:** panel fijo de esquina (tipo FAB) — descartado porque los 4 botones son no-ops sin selección activa (`puedeFormatear()` devuelve `null`) y un panel siempre visible invitaría a pulsar controles muertos, además de quedar lejos del punto de anotación en una tablet grande en apaisado; mantener la franja estática solo con iconos, sin cambiar el posicionamiento — descartado por no responder a lo pedido ("flotante") y seguir restando alto de pantalla completo durante todo el modo edición.
+- **Sin cambios en la lógica de aplicar/quitar formato** de `BarraFormato.tsx` (líneas 1-180, recién corregidas en la sección anterior) — el cambio es exclusivamente dónde se planta el `<div role="toolbar">` y cómo se calcula su posición. El patrón `onMouseDown`+`preventDefault()` de cada botón se mantiene igual.
+- **Satisface:** petición de Diego, sin reabrir el modelo de datos de Requisito 2 ni la spec 021 (en borrador, sin implementar).
+
+### Decisión: iconos propios extendiendo `components/nav/iconos.tsx`, sin librería nueva
+
+- **Opción elegida:** no hay ninguna librería de iconos instalada (comprobado en `package.json`); se extiende el set inline ya existente (`Base` compartida: `viewBox 0 0 20 20`, `stroke="currentColor"`, `fill="none"`, `strokeWidth={1.6}`, trazo redondeado) en un archivo hermano `components/estudio/iconosFormato.tsx` (mismo `Base`, para no mezclar iconos de navegación con iconos de edición de contenido): "B" en negrita para Negrita, "U" con línea para Subrayado, rotulador para Resaltar, goma para Quitar formato, lápiz para Modo edición (check cuando `aria-pressed` es `true`), flecha circular para Restablecer al texto oficial.
+- **Alternativas consideradas:** instalar `lucide-react` u otra librería — descartada, no está adoptada en el stack y el propio código de `iconos.tsx` ya documenta esa decisión; añadirla para 6 glifos sería una dependencia nueva para un beneficio marginal frente a reusar el estilo ya validado.
+- **Satisface:** "que se vea menos arcaico" sin deuda de dependencia ni incoherencia visual con el resto de la navegación.
+
+### Decisión: los controles de sesión (Modo edición / Restablecer al texto oficial / checkbox de vista) NO entran en el panel flotante
+
+- **Opción elegida:** se quedan en la franja sticky actual bajo las pestañas (`SeccionesConcepto.tsx` líneas 390-426), solo ganan icono junto al texto. Solo `BarraFormato` sale de esa franja.
+- **Por qué:** son controles de sesión (se activan como mucho una vez por sesión de lectura, tienen sentido sin selección activa) frente a los 4 botones de formato, que son de acción repetida y solo tienen sentido con una selección viva. Además el checkbox ya está `disabled={modoEdicion}` — en el momento en que el panel flotante existiría, ese control ya está inerte, así que meterlo dentro de un panel "todo pulsable" confundiría. "Restablecer al texto oficial" es además una acción destructiva y poco frecuente que se beneficia de una posición ancla predecible, no de aparecer/desaparecer con la selección.
+- **Alternativas consideradas:** meter todo (sesión + formato) en un único panel flotante — descartado por mezclar controles inertes con controles siempre accionables y por perder el punto fijo de "¿estoy en modo edición?" sin tener que seleccionar texto para comprobarlo.
+- **Satisface:** separación clara entre acciones de sesión (ancladas) y acciones de anotación (contextuales), sin regresión del `aria-pressed` ya existente.
+
+### Riesgos y mitigaciones (extensión)
+
+- **Elevación visual sin los tokens de `specs/021-rediseno-visual`:** esa spec (borrador, sin implementar — confirmado en su `tasks.md`) definiría `--sombra-tarjeta`, pero no existe todavía en `globals.css`. Se define una sombra local modesta solo para este panel (sin adoptar ese nombre de token, para no adelantarse a esa spec); si 021 se implementa después, migrar entonces sin más cambio de diseño.
+- **Cálculo de posición sobre `Range` más frágil que una franja estática:** limitar el código nuevo estrictamente al cálculo de posición (montaje/desmontaje del panel, recolocación en scroll/resize), reutilizando el mismo gate (`obtenerRangoValido()`/`puedeFormatear()`) ya probado — cero cambios en la lógica de formato.
+- **Objetivo táctil en tablet:** cada botón debe mantener un área táctil ≥40-44px aunque el icono visual sea compacto (relleno/padding del botón, no tamaño del SVG).
+
+### Componentes afectados (extensión)
+
+- `components/estudio/BarraFormato.tsx` — el `<div role="toolbar">` (líneas 181-213 antes de esta extensión) pasa a panel posicionado; sin cambios en `envolverSeleccion`/`quitarFormatoSeleccion`/helpers.
+- `components/estudio/SeccionesConcepto.tsx` — se retira el render de `<BarraFormato>` de la franja sticky (antes en línea 428-430) y se monta aparte (mismo gate `seccionActiva !== "texto-oficial" && modoEdicion`); los botones de la franja sticky ganan icono.
+- `components/estudio/iconosFormato.tsx` (nuevo) — iconos de negrita/subrayado/resaltar/quitar formato/lápiz/check/reset, mismo `Base` que `components/nav/iconos.tsx`.
+- `app/globals.css` — sombra local modesta para el panel flotante (sin adoptar el nombre `--sombra-tarjeta` de la spec 021, aún sin implementar).

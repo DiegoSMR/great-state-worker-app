@@ -6,6 +6,7 @@ import { borrarAnotacion, calcularHash, guardarAnotacion, leerAnotacion } from "
 import { ProgresoLectura } from "./ProgresoLectura";
 import { ProgresoLecturaLateral } from "./ProgresoLecturaLateral";
 import { BarraFormato } from "./BarraFormato";
+import { IconoModoEdicion, IconoModoEdicionActivo, IconoRestablecer } from "./iconosFormato";
 
 const SECCIONES = [
   { id: "texto-oficial", etiqueta: "Texto oficial" },
@@ -395,10 +396,15 @@ export function SeccionesConcepto({
               aria-pressed={modoEdicion}
               className={
                 modoEdicion
-                  ? "rounded-md border border-texto-secundario/40 bg-bg-secundario px-3 py-1.5 text-sm font-medium text-texto-primario"
-                  : "rounded-md border border-borde px-3 py-1.5 text-sm font-medium text-texto-secundario hover:border-texto-secundario hover:text-texto-primario"
+                  ? "flex items-center gap-1.5 rounded-md border border-texto-secundario/40 bg-bg-secundario px-3 py-1.5 text-sm font-medium text-texto-primario"
+                  : "flex items-center gap-1.5 rounded-md border border-borde px-3 py-1.5 text-sm font-medium text-texto-secundario hover:border-texto-secundario hover:text-texto-primario"
               }
             >
+              {modoEdicion ? (
+                <IconoModoEdicionActivo aria-hidden width="1.1em" height="1.1em" />
+              ) : (
+                <IconoModoEdicion aria-hidden width="1.1em" height="1.1em" />
+              )}
               {modoEdicion ? "Salir de modo edición" : "Modo edición"}
             </button>
 
@@ -406,8 +412,9 @@ export function SeccionesConcepto({
               <button
                 type="button"
                 onClick={restablecerMaterialAnotado}
-                className="rounded-md border border-borde px-3 py-1.5 text-sm font-medium text-texto-secundario hover:border-texto-secundario hover:text-texto-primario"
+                className="flex items-center gap-1.5 rounded-md border border-borde px-3 py-1.5 text-sm font-medium text-texto-secundario hover:border-texto-secundario hover:text-texto-primario"
               >
+                <IconoRestablecer aria-hidden width="1.1em" height="1.1em" />
                 Restablecer al texto oficial
               </button>
             )}
@@ -425,12 +432,17 @@ export function SeccionesConcepto({
           </div>
         )}
 
-        {seccionActiva !== "texto-oficial" && modoEdicion && (
-          <BarraFormato puedeFormatear={seccionAnotableParaFormato} onFormatear={alFormatear} />
-        )}
-
         <ProgresoLectura />
       </div>
+
+      {/* `BarraFormato` ya no vive en la franja sticky (extensión 2026-09-17,
+          design.md): es un panel `position: fixed` que se ancla a la propia
+          selección de texto, así que montarlo aquí o en cualquier otro punto
+          del árbol da igual — no ocupa espacio en el flujo. Mismo gate de
+          antes (`seccionActiva !== "texto-oficial" && modoEdicion`). */}
+      {seccionActiva !== "texto-oficial" && modoEdicion && (
+        <BarraFormato puedeFormatear={seccionAnotableParaFormato} onFormatear={alFormatear} />
+      )}
 
       {avisoContinuar && (
         <p role="status" className="mt-3 px-4 text-sm text-texto-secundario sm:px-0">
