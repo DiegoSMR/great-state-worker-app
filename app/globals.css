@@ -555,6 +555,18 @@ dialog.panel-centrado::backdrop {
   background: rgb(0 0 0 / 0.4);
 }
 
+/* Panel flotante de formato de anotación (specs/020, extensión 2026-09-17)
+   — sombra local modesta, solo para este panel: `specs/021-rediseno-visual`
+   (borrador, sin implementar todavía — confirmado en su tasks.md) definiría
+   un token compartido `--sombra-tarjeta`, pero adoptar ese nombre ahora
+   adelantaría esa spec antes de que exista. Un solo valor para los 3 temas
+   (claro/oscuro/papel): una sombra de opacidad baja ya se lee como elevación
+   sutil sobre cualquiera de los tres fondos, sin necesitar variarla por
+   tema. */
+.sombra-panel-flotante {
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.18), 0 1px 3px rgb(0 0 0 / 0.14);
+}
+
 :focus-visible {
   outline: 2px solid var(--texto-primario);
   outline-offset: 2px;
