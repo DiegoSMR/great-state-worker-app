@@ -1,7 +1,10 @@
 "use client";
 
+import { useEffect, useRef, useState, type ReactElement, type SVGProps } from "react";
+import { IconoNegrita, IconoQuitarFormato, IconoResaltar, IconoSubrayado } from "./iconosFormato";
+
 /**
- * Barra de herramientas de anotación (Requisito 1.2,
+ * Panel de formato de anotación (Requisito 1.2,
  * specs/020-anotaciones-personales-lectura) — opera directamente sobre
  * `window.getSelection()`/`Range`, envolviendo la selección actual en
  * `<strong>`/`<u>`/`<mark class="anotacion-resaltado">`, o desenvolviéndola
@@ -26,6 +29,12 @@
  * por defecto es lo que permite pulsar un botón de la barra sin perder la
  * selección hecha en el contenido — importante especialmente en touch
  * (tablet), donde no hay una alternativa de teclado.
+ *
+ * Extensión (2026-09-17, design.md): el panel deja de vivir en flujo normal
+ * como franja sticky y pasa a ser un panel `position: fixed` pegado a la
+ * selección de texto ("selection toolbar", patrón Notion/Medium) — ver
+ * componente `BarraFormato` más abajo para el cálculo de posición. Nada de
+ * la lógica de formato de arriba (líneas ~30-180) cambia en esta extensión.
  */
 
 type Accion = "negrita" | "subrayado" | "resaltado" | "quitar";
@@ -171,12 +180,24 @@ function aplicar(accion: Accion): void {
   }
 }
 
-const BOTONES: { accion: Accion; etiqueta: string }[] = [
-  { accion: "negrita", etiqueta: "Negrita" },
-  { accion: "subrayado", etiqueta: "Subrayado" },
-  { accion: "resaltado", etiqueta: "Resaltar" },
-  { accion: "quitar", etiqueta: "Quitar formato" },
+const BOTONES: {
+  accion: Accion;
+  etiqueta: string;
+  Icono: (props: SVGProps<SVGSVGElement>) => ReactElement;
+}[] = [
+  { accion: "negrita", etiqueta: "Negrita", Icono: IconoNegrita },
+  { accion: "subrayado", etiqueta: "Subrayado", Icono: IconoSubrayado },
+  { accion: "resaltado", etiqueta: "Resaltar", Icono: IconoResaltar },
+  { accion: "quitar", etiqueta: "Quitar formato", Icono: IconoQuitarFormato },
 ];
+
+/** Posición en viewport (coordenadas `position: fixed`, coherentes con `getBoundingClientRect()`) donde se planta el panel. */
+type Posicion = { top: number; left: number };
+
+/** Margen respecto a los bordes del viewport (clamp horizontal) y respecto al borde superior (umbral de volteo). */
+const MARGEN_VIEWPORT = 8;
+/** Separación entre el panel y la selección, arriba o debajo de ella. */
+const SEPARACION_SELECCION = 10;
 
 export function BarraFormato<T>({
   puedeFormatear,
@@ -186,16 +207,110 @@ export function BarraFormato<T>({
   puedeFormatear: () => T | null;
   onFormatear: (seccionId: T) => void;
 }) {
+  // `null` = panel oculto (sin selección válida, o selección fuera de zona
+  // anotable). El panel sigue montado en el DOM incluso oculto (ver JSX más
+  // abajo: se oculta con `visibility`, no con `hidden`/desmontaje) para
+  // poder medir su propio ancho/alto con `panelRef` ANTES de mostrarlo por
+  // primera vez — sin esa medida no se puede centrar sobre la selección ni
+  // saber si voltear arriba/debajo.
+  const [posicion, setPosicion] = useState<Posicion | null>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function recalcular() {
+      const rango = obtenerRangoValido();
+      if (!rango) {
+        setPosicion(null);
+        return;
+      }
+      // Mismo gate que usa el propio botón al pulsar (`puedeFormatear`) —
+      // una selección fuera de una sección anotable (p. ej. en "Texto
+      // oficial", que no tiene `data-seccion-id`) no debe ni mostrar el
+      // panel, no solo rechazar el click.
+      if (puedeFormatear() === null) {
+        setPosicion(null);
+        return;
+      }
+      const rect = rango.getBoundingClientRect();
+      if (rect.width === 0 && rect.height === 0) {
+        // Rango técnicamente no colapsado pero sin caja visible (p. ej. el
+        // nodo quedó desconectado del documento tras una mutación) — nada
+        // sobre lo que anclar el panel.
+        setPosicion(null);
+        return;
+      }
+      const panel = panelRef.current;
+      const anchoPanel = panel?.offsetWidth ?? 0;
+      const altoPanel = panel?.offsetHeight ?? 0;
+
+      let left = rect.left + rect.width / 2 - anchoPanel / 2;
+      left = Math.min(
+        Math.max(left, MARGEN_VIEWPORT),
+        Math.max(MARGEN_VIEWPORT, window.innerWidth - anchoPanel - MARGEN_VIEWPORT)
+      );
+
+      const arriba = rect.top - altoPanel - SEPARACION_SELECCION;
+      // Si plantarlo arriba lo sacaría del viewport (o lo dejaría pegado al
+      // borde superior, típicamente bajo la franja sticky de pestañas), se
+      // voltea a debajo de la selección en su lugar.
+      const top = arriba < MARGEN_VIEWPORT ? rect.bottom + SEPARACION_SELECCION : arriba;
+
+      setPosicion({ top, left });
+    }
+
+    // `requestAnimationFrame` para no recalcular más de una vez por frame en
+    // scroll/resize (que pueden disparar decenas de eventos por segundo) —
+    // el panel debe seguir a la selección durante el scroll, nunca
+    // ocultarse mientras tanto.
+    let frameId: number | null = null;
+    function solicitarRecalculo() {
+      if (frameId !== null) return;
+      frameId = requestAnimationFrame(() => {
+        frameId = null;
+        recalcular();
+      });
+    }
+
+    document.addEventListener("selectionchange", solicitarRecalculo);
+    // `capture: true`: el scroll de un contenedor interno (no solo la
+    // ventana) no burbujea de forma nativa, pero sí se puede capturar desde
+    // `window` en fase de captura — cubre así cualquier zona con scroll
+    // propio, no solo el de la página completa.
+    window.addEventListener("scroll", solicitarRecalculo, { passive: true, capture: true });
+    window.addEventListener("resize", solicitarRecalculo);
+
+    return () => {
+      document.removeEventListener("selectionchange", solicitarRecalculo);
+      window.removeEventListener("scroll", solicitarRecalculo, { capture: true } as EventListenerOptions);
+      window.removeEventListener("resize", solicitarRecalculo);
+      if (frameId !== null) cancelAnimationFrame(frameId);
+    };
+  }, [puedeFormatear]);
+
+  const oculto = posicion === null;
+
   return (
     <div
+      ref={panelRef}
       role="toolbar"
       aria-label="Formato de anotación"
-      className="flex flex-wrap gap-2 border-b border-borde bg-bg-secundario px-4 py-2 sm:px-0"
+      aria-hidden={oculto}
+      style={{
+        position: "fixed",
+        top: posicion?.top ?? 0,
+        left: posicion?.left ?? 0,
+        visibility: oculto ? "hidden" : "visible",
+        pointerEvents: oculto ? "none" : "auto",
+      }}
+      className="z-20 flex gap-1 rounded-lg border border-borde bg-bg-primario p-1 sombra-panel-flotante"
     >
-      {BOTONES.map(({ accion, etiqueta }) => (
+      {BOTONES.map(({ accion, etiqueta, Icono }) => (
         <button
           key={accion}
           type="button"
+          aria-label={etiqueta}
+          title={etiqueta}
+          tabIndex={oculto ? -1 : 0}
           onMouseDown={(evento) => evento.preventDefault()}
           onClick={() => {
             const seccionId = puedeFormatear();
@@ -203,9 +318,9 @@ export function BarraFormato<T>({
             aplicar(accion);
             onFormatear(seccionId);
           }}
-          className="rounded-md border border-borde bg-bg-primario px-3 py-1.5 text-sm font-medium text-texto-secundario hover:border-texto-secundario hover:text-texto-primario"
+          className="flex h-11 w-11 items-center justify-center rounded-md text-texto-secundario hover:bg-bg-secundario hover:text-texto-primario"
         >
-          {etiqueta}
+          <Icono aria-hidden width="1.3em" height="1.3em" />
         </button>
       ))}
     </div>
